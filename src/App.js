@@ -1,6 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
+import { StyledFooter } from "./styles/Styled-footer";
+import { GlobalStyle } from "./styles/Styled-Globe";
+import Editor from "./components/Editor";
+import Note from "./components/note";
+
 
 export default function App() {
-    return <h1>開發環境設置成功！</h1>;
+    return (
+        <>  
+            <GlobalStyle />
+            {/* <Editor/> */}
+            {/* <Note /> */}
+            <StyledFooter>Copyright © 2023 L.Note</StyledFooter>
+        </>
+    );
 }
 
