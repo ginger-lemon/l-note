@@ -6,10 +6,11 @@ import Note from "./components/note";
 
 
 export default function App() {
+
     return (
         <>  
             <GlobalStyle />
-            {/* <Editor/> */}
+            <Editor/>
             {/* <Note /> */}
             <StyledFooter>Copyright © 2023 L.Note</StyledFooter>
         </>

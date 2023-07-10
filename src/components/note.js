@@ -4,7 +4,7 @@ import Button from "./button";
 
 export default function Note() {
 
-    const btnName = "publish"
+    // const btnName = ["Edit", "Share"];
     return (
         <StyledMainContainer>
             <StyledArticle>
@@ -12,8 +12,8 @@ export default function Note() {
                 <p>這裡有很多內容。</p>
             </StyledArticle>
             <StyledAsideContainer>
-                <Button btnName={btnName}>{btnName}</Button>
-                <Button btnName={btnName}>{btnName}</Button>
+                <Button btnName="Edit"></Button>
+                <Button btnName="Share"></Button>
             </StyledAsideContainer>
         </StyledMainContainer>
     );

@@ -5,13 +5,13 @@ import { StyledArticle, StyledAsideContainer, StyledMainContainer } from "../sty
 
 export default function Editor() {
 
-    const btnName = "publish"
+    const btnName = "publish";
     return (
         <StyledMainContainer>
             <StyledArticle>
-                <header>
+                {/* <header>
                     This is L.note
-                </header>
+                </header> */}
                 <textarea type="textarea" >23</textarea>
                 <div onClick={() => {console.log("選到 checkbox");}}>
                     <input 
