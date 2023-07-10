@@ -13,6 +13,10 @@ export const StyledArticle = styled.article`
     /* display: inline-block; */
     border: 1px solid blue;
     width: 600px;
+
+    @media (max-width: 500px) {
+        width: 320px;
+    }
     
 
     header {

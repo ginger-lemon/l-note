@@ -1,10 +1,9 @@
 import styled from "styled-components";
 
 export const StyledFooter = styled.footer`
-    border: 1px solid red;
     background-color: #ffffff;
     width: 100vw;
-    color: #000; 
+    color: #A7A7A7; 
     font-size: 14px;
     font-family: "Inter";
     font-weight: 400;
