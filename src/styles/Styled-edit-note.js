@@ -1,7 +1,8 @@
 import styled from "styled-components";
 
 export const StyledArticle = styled.article`
-    width: 600px;
+    width: 700px;
+    height: 70vh;
 
     header {
         font-family: inherit;
@@ -10,16 +11,39 @@ export const StyledArticle = styled.article`
         padding: 0 20px 10px 20px;
     }
 
+    input {
+        width: inherit;
+        padding: 0 20px 10px;
+        border: none;
+        outline: none;
+
+        /* input 內的字 */
+        font-family: inherit;
+        font-weight: 400;
+    }
+
+    .header {
+        font-size: 32px;
+    }
+
+    .author {
+        font-size: 18px;
+    }
+
     textarea {
         width: inherit;
-        height: 60vh;
+        /* height: auto; */
+        min-height: 50vh;
         border: none;
-        resize: vertical;
+        resize: none;
         margin-bottom: 10px;
+        outline: none;
 
         /* textarea 的文字（暫定） */
         font-family: inherit;
         font-size: 18px;
+        padding: 0 20px 10px;
+        font-weight: 400;
     }
 
     div {

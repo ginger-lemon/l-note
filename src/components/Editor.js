@@ -6,18 +6,33 @@ import Dialog from "./dialog.js";
 import { StyledDialogCustomDiv } from "../styles/Styled.Dialog.js";
 
 export default function Editor() {
-
     return (
         <StyledMainContainer>
             {/* <DeleteDialog /> */}
             <StyledArticle>
-                <h1>This is L.note</h1>
-                <p>Author</p>
-                <textarea type="textarea" >23</textarea>
+                <input 
+                    text="text" 
+                    className="header" 
+                    placeholder="Title"
+                >
+                </input>
+                <input 
+                    text="text" 
+                    className="author" 
+                    placeholder="Author"
+                >
+                </input>
+                    <textarea 
+                    // 要讓 textarea 的高度跟著文字數量自動增加
+                        id="textarea"
+                        type="textarea" 
+                        placeholder="Your content."
+                    >
+                    </textarea>
                 <div>
                     <input 
                         type="checkbox" 
-                        id="01"
+                        id="checkDelete"
                         onClick={(e) => console.log("觸發刪除功能")}
                     >
                     </input>

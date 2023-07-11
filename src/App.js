@@ -12,7 +12,7 @@ export default function App() {
             <CSSReset />
             <Editor/>
             {/* <Note /> */}
-            {/* <StyledFooter>Copyright © 2023 L.Note</StyledFooter> */}
+            <StyledFooter>Copyright © 2023 L.Note</StyledFooter>
         </>
     );
 }

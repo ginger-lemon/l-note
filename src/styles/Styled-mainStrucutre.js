@@ -1,7 +1,7 @@
-import styled, { createGlobalStyle } from "styled-components";
+import styled from "styled-components";
 
 export const StyledMainContainer = styled.main`
-    margin: 60px 0 100px;
+    margin: 60px 0 30px;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -9,7 +9,7 @@ export const StyledMainContainer = styled.main`
 
 
     @media (max-width: 700px) {
-        margin: 60px 20px 100px;
+        margin: 60px 20px 30px;
         gap: 30px;
         justify-content: left;
     }
@@ -21,7 +21,6 @@ export const StyledAsideContainer = styled.aside`
     gap: 30px;
     display: flex;
     flex-direction: column;
-
 
     @media (max-width: 700px) {
         flex-direction: row;
