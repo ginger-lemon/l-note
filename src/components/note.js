@@ -1,9 +1,10 @@
 import React from "react";
-import { StyledArticle, StyledMainContainer, StyledAsideContainer } from "../styles/Styled-Globe";
+import { StyledMainContainer, StyledAsideContainer } from "../styles/Styled-mainStrucutre";
+import { StyledArticle } from "../styles/Styled-edit-note";
 import Button from "./button";
 import Dialog from "./dialog";
 import copyUrlIcon from "../img/copy-icon.svg";
-import { StyledDialogCustomDiv } from "../styles/Styled.Dialog";
+
 
 export default function Note() {
     return (
@@ -11,7 +12,8 @@ export default function Note() {
             <ShareDialog />
             <StyledArticle>
                 <h1>This is title a note.</h1>
-                <p>這裡有很多內容。</p>
+                <p>Ginger-Lemon</p>
+                <p>Here is your text!</p>
             </StyledArticle>
             <StyledAsideContainer>
                 <Button 

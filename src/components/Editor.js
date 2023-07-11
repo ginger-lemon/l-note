@@ -1,20 +1,18 @@
 import React from "react";
 import Button from "./button.js";
-import { StyledArticle, StyledAsideContainer, StyledMainContainer } from "../styles/Styled-Globe.js";
+import { StyledAsideContainer, StyledMainContainer } from "../styles/Styled-mainStrucutre.js";
+import { StyledArticle } from "../styles/Styled-edit-note";
 import Dialog from "./dialog.js";
 import { StyledDialogCustomDiv } from "../styles/Styled.Dialog.js";
 
-
 export default function Editor() {
 
-    const btnName = "publish";
     return (
         <StyledMainContainer>
-            <DeleteDialog />
+            {/* <DeleteDialog /> */}
             <StyledArticle>
-                {/* <header>
-                    This is L.note
-                </header> */}
+                <h1>This is L.note</h1>
+                <p>Author</p>
                 <textarea type="textarea" >23</textarea>
                 <div>
                     <input 
@@ -28,11 +26,9 @@ export default function Editor() {
             </StyledArticle>
             <StyledAsideContainer>
                 <Button 
-                    btnName={btnName}
+                    btnName="Publish"
                     onClick={(e) => console.log('送出記事')}
-                >
-                    {btnName}
-                </Button>
+                />
             </StyledAsideContainer>
         </StyledMainContainer>
         
@@ -51,12 +47,10 @@ function DeleteDialog() {
                 <input
                     style={{
                         width: "250px",
-
                     }}
                 >
                 </input>
             </StyledDialogCustomDiv>
-            
         </Dialog>
     );
 }

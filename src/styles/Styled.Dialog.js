@@ -49,13 +49,13 @@ export const StyledDialogCustomDiv = styled.div`
     justify-content: center;
     /* align-items: center; */
     gap: 15px;
-    margin: 10px 20px 20px;
+    margin: 0 20px 20px;
 
     @media (max-width: 700px) {
         display: flex;
         flex-wrap: wrap;
         gap: 10px;
-        margin: 10px 20px 20px;
+        margin: 0 20px 20px;
     }
 
 `;
