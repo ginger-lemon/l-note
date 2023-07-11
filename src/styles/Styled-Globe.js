@@ -7,17 +7,18 @@ export const StyledMainContainer = styled.main`
     flex-wrap: wrap;
     justify-content: center;
     align-items: flex-start;
+
+
+    @media (max-width: 700px) {
+        margin: 60px 20px 100px;
+        gap: 30px;
+        justify-content: left;
+    }
 `;
 
 export const StyledArticle = styled.article`
-    /* display: inline-block; */
     border: 1px solid blue;
     width: 600px;
-
-    @media (max-width: 500px) {
-        width: 320px;
-    }
-    
 
     header {
         font-family: inherit;
@@ -49,8 +50,14 @@ export const StyledArticle = styled.article`
 export const StyledAsideContainer = styled.aside`
     border: 1px solid green;
     margin-top: 5px;
-    /* flex: none;
-    display: block; */
+    gap: 30px;
+    display: flex;
+    flex-direction: column;
+
+
+    @media (max-width: 700px) {
+        flex-direction: row;
+    }
 `;
 
 export const GlobalStyle = createGlobalStyle`

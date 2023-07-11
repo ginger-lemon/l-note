@@ -14,7 +14,7 @@ export const StyledButton = styled.button`
     padding: 10px 20px;
 
     display: block;
-    /* margin-bottom: 50px; */
+    /* margin-bottom: 30px; */
 
     /* 滑鼠 hover */
     &:hover {

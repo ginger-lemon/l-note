@@ -2,6 +2,7 @@ import React from "react";
 import Button from "./button.js";
 import { StyledArticle, StyledAsideContainer, StyledMainContainer } from "../styles/Styled-Globe.js";
 import Dialog from "./dialog.js";
+import { StyledDialogCustomDiv } from "../styles/Styled.Dialog.js";
 
 
 export default function Editor() {
@@ -40,9 +41,22 @@ export default function Editor() {
 
 function DeleteDialog() {
     return (
-        <Dialog dialogTitle="How long is this note available?">
-            <p>Delete time: <span style={{ color: "A7A7A7" }}>(default: 7 days)</span></p>
-            <input></input>
+        <Dialog 
+            dialogTitle="How long is this note available?"
+            dialogDescribe="Delete time: (default: 7 days)"
+        >
+            <StyledDialogCustomDiv
+                style= {{ margin: "10px 0 0 0" }}
+            >
+                <input
+                    style={{
+                        width: "250px",
+
+                    }}
+                >
+                </input>
+            </StyledDialogCustomDiv>
+            
         </Dialog>
     );
 }

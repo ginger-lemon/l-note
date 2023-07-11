@@ -3,7 +3,6 @@ import { StyledFooter } from "./styles/Styled-footer";
 import { GlobalStyle } from "./styles/Styled-Globe";
 import Editor from "./components/Editor";
 import Note from "./components/note";
-import Dialog from "./components/dialog";
 import { CSSReset } from "./styles/CSS-Reset";
 
 

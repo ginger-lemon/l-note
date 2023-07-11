@@ -14,10 +14,9 @@ export const StyledDialog = styled.div`
     transform: translate(-50%, -50%);
     z-index: +10;
 
-    @media (max-width: 500px) {
+    @media (max-width: 700px) {
         width: 320px;
     }
-
 
     h2 {
         font-size: 24px;
@@ -30,21 +29,33 @@ export const StyledDialog = styled.div`
 
     p {
         font-size: 18px;
-        padding: 0 20px 10px 20px;
-    }
-
-    span {
-        color: A7A7A7;
+        margin: 0 20px 10px 20px;
     }
 
     input {
-        width: 320px;
-        height: 40px;
         border: 2px solid #000000;
         border-radius: 10px;
-        font-size: 18px;
-        margin-bottom: 24px;
+        font-size: 20px;
         text-align: center;
-    
+        padding: 10px 20px;
     }
+`;
+
+
+export const StyledDialogCustomDiv = styled.div`
+    /* height: 48px; */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    /* align-items: center; */
+    gap: 15px;
+    margin: 10px 20px 20px;
+
+    @media (max-width: 700px) {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin: 10px 20px 20px;
+    }
+
 `;

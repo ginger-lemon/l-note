@@ -2,9 +2,10 @@ import React from "react";
 import { StyledArticle, StyledMainContainer, StyledAsideContainer } from "../styles/Styled-Globe";
 import Button from "./button";
 import Dialog from "./dialog";
+import copyUrlIcon from "../img/copy-icon.svg";
+import { StyledDialogCustomDiv } from "../styles/Styled.Dialog";
 
 export default function Note() {
-    // const btnName = ["Edit", "Share"];
     return (
         <StyledMainContainer>
             <ShareDialog />
@@ -28,18 +29,26 @@ export default function Note() {
     );
 }
 
+
 function ShareDialog() {
     return (
-        <Dialog dialogTitle="Share URL of this note">
-            <p>URL copied.</p>
-            <div>
-                <input></input>
-                <Button 
-                    btnName="copy"
-                    style={{ display: "inline-block" }}
+        <Dialog 
+            dialogTitle="Share URL of this note"
+            dialogDescribe="URL copied."
+        >
+                <input
+                    style={{
+                        width: "250px",
+                    }}
+                >
+                </input>
+                {/* 未複製網址時：You can copy the URL */}
+                {/* 按下複製時： URL copied.  */}
+                <img 
+                    height="48px"
+                    src={copyUrlIcon}
                     onClick={() => console.log('複製網址')}
                 />
-            </div>
         </Dialog>
     );
 }
