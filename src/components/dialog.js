@@ -8,7 +8,8 @@ const styledDoneButton = {
     width: "fit-content"
 }
 
-export default function Dialog({ children, dialogTitle, dialogDescribe }) {
+export default function Dialog({ children, dialogTitle, dialogDescribe, doneButtonMission }) {
+
     return (
         <StyledDialog>
             <h2>{dialogTitle}</h2>
@@ -16,19 +17,21 @@ export default function Dialog({ children, dialogTitle, dialogDescribe }) {
             <StyledDialogCustomDiv>
                 {children}
             </StyledDialogCustomDiv>
-            <DialogDoneButton />
+            <DialogDoneButton 
+                doneButtonMission={doneButtonMission}
+            />
         </StyledDialog>
     );
 }
 
-function DialogDoneButton() {
+function DialogDoneButton({ doneButtonMission }) {
     return (
         <div
             style={ styledDoneButton }
         >
                 <Button 
                     btnName="Done"
-                    onClick={() => console.log('確認')}
+                    onClick={doneButtonMission}
                 /> 
         </div>
     );

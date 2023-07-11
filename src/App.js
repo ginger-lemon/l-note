@@ -10,9 +10,11 @@ export default function App() {
     return (
         <>  
             <CSSReset />
-            <Editor/>
-            {/* <Note /> */}
-            <StyledFooter>Copyright © 2023 L.Note</StyledFooter>
+            {/* <Editor/> */}
+            <Note />
+            <StyledFooter>
+                Copyright © 2023 L.Note 
+            </StyledFooter>
         </>
     );
 }
