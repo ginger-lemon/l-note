@@ -6,7 +6,7 @@ import Dialog from "./dialog.js";
 import { StyledDialogCustomDiv } from "../styles/Styled.Dialog.js";
 import {  getPublishDate, getPublishTime } from "../library/getPublishData.js";
 
-export default function Editor() {
+export default function Editor({ toggleMode }) {
     const [wantDelete, setWantDelete] = useState(false);
     const [showDeleteDialog, setShowDeleteDialog] = useState(false);
     const [title, setTitle] = useState('');
@@ -15,12 +15,13 @@ export default function Editor() {
     const [availableDays, setAvailableDays] = useState(7);
  
     const note = {
-        date: "2023-07-11",
+        date: "2023-07-11", 
         title: title,
         author: author,
         texts: texts,
         isdelete: wantDelete,
         deleteTime: "7",
+        noteUrl: "https://l.note/" + title + date,
     };
 
     let { date } = note;
@@ -40,29 +41,24 @@ export default function Editor() {
     function getDeleteTime(e) {
         const days = e.target.value;
         setAvailableDays(days);
-        console.log('要刪除的天數：' + days);
     }
 
-    function handlePublish (e) {
-        let newDate = newDate
-
-        if (wantDelete !== false) {
-            console.log('取得資料與發布時間、刪除時間');
-            getNoteData();
-            getPublishTime();
-            console.log(getPublishTime());
-            // getPublishDate();
-            // console.log(getPublishDate());
-            console.log('要啟動刪除對話框');
-            console.log('將刪除對話框 display 顯示為 block');
-            setShowDeleteDialog(true);
-            console.log('將資料送到 firebase');
-        } else {
-            console.log('取得資料');
-            getNoteData();
-            console.log('直接送出去，整個頁面都不能編輯');
-            console.log('跟 firestore 有關的函數');
+    function handleShowDeleteDialog(e) {
+        if (e.target.value !== false) {
+            setShowDeleteDialog(!showDeleteDialog);
+            setWantDelete(!wantDelete);
         }
+    } 
+
+    function handlePublish (e) {
+        console.log('取得資料');
+        getNoteData();
+        console.log('取得送出的時間');
+        getPublishTime();
+        console.log(getPublishTime());
+        console.log('將資料送到 firestore ');
+        console.log('跳轉到 note 模式');
+        // setNoteMode(true);
     }
     
     return (
@@ -100,10 +96,7 @@ export default function Editor() {
                     <input 
                         type="checkbox" 
                         id="checkDelete"
-                        onClick={(e) => {
-                            console.log(e.target.checked);
-                            setWantDelete(e.target.checked);
-                        }}
+                        onClick={handleShowDeleteDialog}
                     >
                     </input>
                     <label>Enable the feature to delete notes in the future? (default by 7 days).</label>
