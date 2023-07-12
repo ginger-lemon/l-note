@@ -18,7 +18,8 @@ export default function Editor({ setToggleMode }) {
     const [date, setDate] = useState("2023-07-11");
     const [timeStamp, setTimeStamp] = useState('');
  
-    async function sentTestDataToDataBase() {
+    // ＝＝＝＝ 以下處理將資料儲存到 fireStore ＝＝＝＝
+    async function sentNoteDataToDatabase() {
         try {
             const docRef = await addDoc(collection(database, "notes"), {
                 date: date,
@@ -35,6 +36,7 @@ export default function Editor({ setToggleMode }) {
             console.error('Error adding document: ', e);
         }
     }
+    // ＝＝＝＝ 以上處理將資料儲存到 fireStore ＝＝＝＝
 
     function giveDoneButtonMission() {
         console.log('按到刪除對話框的 Done 按鈕 ')
@@ -43,9 +45,9 @@ export default function Editor({ setToggleMode }) {
         console.log('取得預計刪除的時間：' + availableDays + "天");
     }
 
-    function getNoteData() {
-        console.log('取得 note 資料');
-    }
+    // function getNoteData() {
+    //     console.log('取得 note 資料');
+    // }
 
     function getDeleteTime(e) {
         const days = e.target.value;
@@ -68,13 +70,14 @@ export default function Editor({ setToggleMode }) {
     }
 
     function handlePublish (e) {
+        e.preventDefault();
         // 取得日期、發送準確時間、將資料送到
         setDate(getPublishDate());
         setTimeStamp(getPublishTime());
         // console.log(getPublishTime());
         console.log('將資料送到 firestore ');
         // 取得時間
-        // sentTestDataToDataBase();
+        // sentNoteDataToDatabase();
         toggleToNoteMode()
     }
     
