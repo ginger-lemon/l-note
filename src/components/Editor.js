@@ -5,6 +5,8 @@ import { StyledArticle } from "../styles/Styled-edit-note";
 import Dialog from "./dialog.js";
 import { StyledDialogCustomDiv } from "../styles/Styled.Dialog.js";
 import { getPublishDate, getPublishTime } from "../library/getPublishData.js";
+import { app, database } from "../firebaseConfig.js"
+import { collection, addDoc } from "firebase/firestore";
 
 export default function Editor({ setToggleMode }) {
     const [wantDelete, setWantDelete] = useState(false);
@@ -12,19 +14,27 @@ export default function Editor({ setToggleMode }) {
     const [title, setTitle] = useState('');
     const [author, setAuthor] = useState('');
     const [texts, setTexts] = useState('');
-    const [availableDays, setAvailableDays] = useState(7);
+    const [availableDays, setAvailableDays] = useState(Infinity);
+    const [date, setDate] = useState("2023-07-11");
+    const [timeStamp, setTimeStamp] = useState('');
  
-    const note = {
-        date: "2023-07-11", 
-        title: title,
-        author: author,
-        texts: texts,
-        isdelete: wantDelete,
-        availableDays: availableDays,
-        noteUrl: "https://l.note/" + title + date,
-    };
-
-    let { date } = note;
+    async function sentTestDataToDataBase() {
+        try {
+            const docRef = await addDoc(collection(database, "notes"), {
+                date: date,
+                title: title,
+                author: author,
+                texts: texts,
+                isdelete: wantDelete,
+                availableDays: availableDays,
+                noteUrl: "https://l.note/" + title + date,
+                timeStamp: timeStamp,
+            });
+            console.log("Document written with ID: ", docRef.id);
+        } catch (e) {
+            console.error('Error adding document: ', e);
+        }
+    }
 
     function giveDoneButtonMission() {
         console.log('按到刪除對話框的 Done 按鈕 ')
@@ -35,7 +45,6 @@ export default function Editor({ setToggleMode }) {
 
     function getNoteData() {
         console.log('取得 note 資料');
-        console.log(note);
     }
 
     function getDeleteTime(e) {
@@ -59,13 +68,13 @@ export default function Editor({ setToggleMode }) {
     }
 
     function handlePublish (e) {
-        console.log('取得資料');
-        getNoteData();
-        console.log('取得送出的時間');
-        getPublishTime();
-        console.log(getPublishTime());
+        // 取得日期、發送準確時間、將資料送到
+        setDate(getPublishDate());
+        setTimeStamp(getPublishTime());
+        // console.log(getPublishTime());
         console.log('將資料送到 firestore ');
-        console.log('跳轉到 note 模式');
+        // 取得時間
+        // sentTestDataToDataBase();
         toggleToNoteMode()
     }
     

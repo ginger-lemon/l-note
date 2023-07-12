@@ -4,6 +4,8 @@ import { StyledArticle } from "../styles/Styled-edit-note";
 import Button from "./button";
 import Dialog from "./dialog";
 import copyUrlIcon from "../img/copy-icon.svg";
+import { app, database } from "../firebaseConfig"
+
 
 export default function Note({ setToggleMode }) {
     const [wantShare, setWantShare] = useState(false);

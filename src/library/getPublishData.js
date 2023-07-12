@@ -3,7 +3,7 @@ export function getPublishDate() {
     let newDate = new Date();
     let date = newDate.getDate();
     let month = newDate.getMonth() + 1;
-    let year = newData.getFullYear();
+    let year = newDate.getFullYear();
 
     const pubishDate = year + "-" + month + "-" + date;
 
