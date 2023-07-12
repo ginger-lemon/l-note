@@ -5,7 +5,7 @@ import Button from "./button";
 import Dialog from "./dialog";
 import copyUrlIcon from "../img/copy-icon.svg";
 
-export default function Note() {
+export default function Note({ setToggleMode }) {
     const [wantShare, setWantShare] = useState(false);
 
     const note = {
@@ -19,6 +19,10 @@ export default function Note() {
     };
 
     let { date, title, author, texts, noteUrl } = note;
+
+    function toggleToEditMode() {
+        setToggleMode(false);
+    }
 
     function showShareDialog() {
         console.log('我要複製網址');
@@ -46,7 +50,7 @@ export default function Note() {
             <StyledAsideContainer>
                 <Button 
                     btnName="Edit"
-                    onClick={() => console.log('切換到 editor.js')}
+                    onClick={toggleToEditMode}
                 >
                 </Button>
                 <Button 

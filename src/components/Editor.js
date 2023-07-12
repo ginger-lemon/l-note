@@ -4,9 +4,9 @@ import { StyledAsideContainer, StyledMainContainer } from "../styles/Styled-main
 import { StyledArticle } from "../styles/Styled-edit-note";
 import Dialog from "./dialog.js";
 import { StyledDialogCustomDiv } from "../styles/Styled.Dialog.js";
-import {  getPublishDate, getPublishTime } from "../library/getPublishData.js";
+import { getPublishDate, getPublishTime } from "../library/getPublishData.js";
 
-export default function Editor({ toggleMode }) {
+export default function Editor({ setToggleMode }) {
     const [wantDelete, setWantDelete] = useState(false);
     const [showDeleteDialog, setShowDeleteDialog] = useState(false);
     const [title, setTitle] = useState('');
@@ -20,7 +20,7 @@ export default function Editor({ toggleMode }) {
         author: author,
         texts: texts,
         isdelete: wantDelete,
-        deleteTime: "7",
+        availableDays: availableDays,
         noteUrl: "https://l.note/" + title + date,
     };
 
@@ -44,11 +44,19 @@ export default function Editor({ toggleMode }) {
     }
 
     function handleShowDeleteDialog(e) {
-        if (e.target.value !== false) {
-            setShowDeleteDialog(!showDeleteDialog);
-            setWantDelete(!wantDelete);
+        if (e.target.checked !== false) {
+            setShowDeleteDialog(true);
+            setWantDelete(true);
+        } else {
+            setShowDeleteDialog(false);
+            setWantDelete(false);
+            setAvailableDays(Infinity);
         }
     } 
+
+    function toggleToNoteMode() {
+        setToggleMode(true);
+    }
 
     function handlePublish (e) {
         console.log('取得資料');
@@ -58,7 +66,7 @@ export default function Editor({ toggleMode }) {
         console.log(getPublishTime());
         console.log('將資料送到 firestore ');
         console.log('跳轉到 note 模式');
-        // setNoteMode(true);
+        toggleToNoteMode()
     }
     
     return (
@@ -111,7 +119,7 @@ export default function Editor({ toggleMode }) {
             </StyledAsideContainer>
             { showDeleteDialog  && 
                 <DeleteDialog 
-                    onChange={getDeleteTime} 
+                    getDeleteTime={getDeleteTime} 
                     doneButtonMission={giveDoneButtonMission}
                 /> 
             }
@@ -120,7 +128,7 @@ export default function Editor({ toggleMode }) {
     ); 
 }
 
-function DeleteDialog({ showDeleteDialog, onChange, doneButtonMission }) {
+function DeleteDialog({ showDeleteDialog, getDeleteTime, doneButtonMission }) {
     return (
         <Dialog 
             style={{ display: showDeleteDialog ? 'block' : 'none' }}
@@ -140,7 +148,7 @@ function DeleteDialog({ showDeleteDialog, onChange, doneButtonMission }) {
                     style={{
                         width: "250px",
                     }}
-                    onChange={onChange}
+                    onChange={getDeleteTime}
                 >
                 </input>
             </StyledDialogCustomDiv>

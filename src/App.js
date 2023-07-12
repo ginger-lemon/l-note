@@ -6,19 +6,22 @@ import { CSSReset} from "./styles/CSS-Reset";
 
 
 export default function App() {
-    // editMode = 編輯模式； noteMode = 文章模式
-    const [noteMode, setNoteMode] = useState(false);
-
-    function toggleEditNoteMode() {
-        console.log('按下送出後切換模式');
-        setNoteMode(!noteMode);
-    }
+    // editMode = 編輯模式 = false； noteMode = 文章模式 = true
+    const [toggleMode, setToggleMode] = useState(false);
 
     return (
         <>  
             <CSSReset />
-            {/* <Editor toggleMode={toggleEditNoteMode} /> */}
-            <Note toggleMode={toggleEditNoteMode} />
+            { toggleMode ? '' : (
+                 <Editor setToggleMode={setToggleMode} />
+            ) }
+           
+            { toggleMode && 
+                <Note 
+                    setToggleMode={setToggleMode}
+                /> 
+            }
+            
             <StyledFooter>
                 Copyright © 2023 L.Note 
             </StyledFooter>
