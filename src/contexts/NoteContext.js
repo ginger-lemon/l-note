@@ -4,38 +4,42 @@ import { doc, getDoc } from "firebase/firestore";
 
 // Note, Edit mode 共享 notePackage 與 setNotePackage
 
-const defaultNote = {
-    title: '',
-    author: '',
-    date: '',
-    texts: ''
+const fakeTestNote = {
+    title: 'Test Fake Data',
+    author: 'Lemon',
+    date: '2023-07-13',
+    texts: 'This is fake data, preventing fetch to firestore too many times.',
+    noteUrl: "https://l.note/Test-Fake-Data-2023-07-13"
 }
 
 export const NotePackageContext = createContext();
 
 export const NotePackageProvider = ({ children }) => {
-    const [notePackage, setNotePackage] = useState({defaultNote});
+    const [notePackage, setNotePackage] = useState({});
 
-    async function getNoteDataFromDatabase() {
-        try {
-            const docRef = doc(database, "notes", "cpYTwVexYQ3o0NNnt8vQ");
-            const docSnap = await getDoc(docRef);
+    // async function getNoteDataFromDatabase() {
+    //     try {
+    //         const docRef = doc(database, "notes", "cpYTwVexYQ3o0NNnt8vQ");
+    //         const docSnap = await getDoc(docRef);
 
-            if (docSnap.exists()) {
-                return setNotePackage(docSnap.data());
-            }
+    //         if (docSnap.exists()) {
+    //             return setNotePackage(docSnap.data());
+    //         }
 
-        } catch (e) {
-            console.error(e);
-            return null;
-        }
-    }
+    //     } catch (e) {
+    //         console.error(e);
+    //         return null;
+    //     }
+    // }
+
+
 
     useEffect(() => {
         let isSubsrcibed = true;
 
-        getNoteDataFromDatabase();
-        console.log('抓完資料了')
+        // getNoteDataFromDatabase();
+        setNotePackage(fakeTestNote)
+        console.log('抓到資料了')
 
         return () => {
             isSubsrcibed = false;

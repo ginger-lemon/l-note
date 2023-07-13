@@ -20,6 +20,7 @@ export const StyledArticle = styled.article`
         padding: 0 20px 10px;
         border: none;
         outline: none;
+        font-size: 18px;
 
         /* input 內的字 */
         font-family:  "Noto Sans TC";
