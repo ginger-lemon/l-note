@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { StyledFooter } from "./styles/Styled-footer";
-import Editor from "./components/Editor";
-import Note from "./components/note";
+import EditMode from "./components/Editmode";
+import NoteMode from "./components/NoteMode";
 import { CSSReset} from "./styles/CSS-Reset";
+import { NotePackageProvider } from "./contexts/NoteContext";
+
 
 
 export default function App() {
@@ -12,19 +14,23 @@ export default function App() {
     return (
         <>  
             <CSSReset />
-            { toggleMode ? '' : (
-                 <Editor setToggleMode={setToggleMode} />
-            ) }
-           
-            { toggleMode && 
-                <Note 
-                    setToggleMode={setToggleMode}
-                /> 
-            }
-            
+            <NotePackageProvider>
+                { toggleMode ? '' : (
+                    <EditMode 
+                        setToggleMode={setToggleMode}
+                    />
+                ) }
+
+                { toggleMode && 
+                    <NoteMode 
+                        setToggleMode={setToggleMode}
+                    /> 
+                }
+            </NotePackageProvider>
             <StyledFooter>
                 Copyright © 2023 L.Note 
             </StyledFooter>
+            
         </>
     );
 }

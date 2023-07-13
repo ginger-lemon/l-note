@@ -1,14 +1,15 @@
-import React, { useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import Button from "./button.js";
 import { StyledAsideContainer, StyledMainContainer } from "../styles/Styled-mainStrucutre.js";
-import { StyledArticle } from "../styles/Styled-edit-note";
+import { StyledArticle } from "../styles/Styled-edit-note.js";
 import Dialog from "./dialog.js";
 import { StyledDialogCustomDiv } from "../styles/Styled.Dialog.js";
 import { getPublishDate, getPublishTime } from "../library/getPublishData.js";
 import { app, database } from "../firebaseConfig.js"
 import { collection, addDoc } from "firebase/firestore";
+import { NotePackageContext } from "../contexts/NoteContext.js";
 
-export default function Editor({ setToggleMode }) {
+export default function EditMode({ setToggleMode }) {
     const [wantDelete, setWantDelete] = useState(false);
     const [showDeleteDialog, setShowDeleteDialog] = useState(false);
     const [title, setTitle] = useState('');
@@ -17,6 +18,12 @@ export default function Editor({ setToggleMode }) {
     const [availableDays, setAvailableDays] = useState(Infinity);
     const [date, setDate] = useState("2023-07-11");
     const [timeStamp, setTimeStamp] = useState('');
+
+    // 接收 notePackage 
+    const { notePackage } = useContext(NotePackageContext);
+    const noteTitle = notePackage.title;
+    const noteAuthor = notePackage.author;
+    const noteTexts = notePackage.texts;
  
     // ＝＝＝＝ 以下處理將資料儲存到 fireStore ＝＝＝＝
     async function sentNoteDataToDatabase() {
@@ -28,7 +35,7 @@ export default function Editor({ setToggleMode }) {
                 texts: texts,
                 isdelete: wantDelete,
                 availableDays: availableDays,
-                noteUrl: "https://l.note/" + title + date,
+                noteUrl: "https://l.note/" + title + "/" + date,
                 timeStamp: timeStamp,
             });
             console.log("Document written with ID: ", docRef.id);
@@ -44,10 +51,6 @@ export default function Editor({ setToggleMode }) {
         console.log('關閉對話框');
         console.log('取得預計刪除的時間：' + availableDays + "天");
     }
-
-    // function getNoteData() {
-    //     console.log('取得 note 資料');
-    // }
 
     function getDeleteTime(e) {
         const days = e.target.value;
@@ -84,47 +87,57 @@ export default function Editor({ setToggleMode }) {
     return (
         <StyledMainContainer>
             <StyledArticle>
-                <input 
-                    text="text" 
-                    className="header" 
-                    placeholder="Title"
-                    onChange={(e) => {
-                        setTitle(e.target.value);
-                    }}
+                <form
+                    id="editForm" 
+                    onSubmit={handlePublish}
                 >
-                </input>
-                <input 
-                    text="text" 
-                    className="author" 
-                    placeholder="Author"
-                    onChange={(e) => {
-                        setAuthor(e.target.value);
-                    }}
-                >
-                </input>
-                    <textarea 
-                    // TODO: 要讓 textarea 的高度跟著文字數量自動增加
-                        id="textarea"
-                        type="textarea" 
-                        placeholder="Your content."
-                        onChange={(e) => {
-                            setTexts(e.target.value);
-                        }}
-                    >
-                    </textarea>
-                <div>
                     <input 
-                        type="checkbox" 
-                        id="checkDelete"
-                        onClick={handleShowDeleteDialog}
+                        text="text" 
+                        className="header" 
+                        placeholder="Title"
+                        onChange={(e) => {
+                            setTitle(e.target.value);
+                        }}
+                        required
+                        defaultValue={noteTitle}
                     >
                     </input>
-                    <label>Enable the feature to delete notes in the future? (default by 7 days).</label>
-                </div>
+                    <input 
+                        text="text" 
+                        className="author" 
+                        placeholder="Author"
+                        onChange={(e) => {
+                            setAuthor(e.target.value);
+                        }}
+                        defaultValue={noteAuthor}
+                    >
+                    </input>
+                        <textarea 
+                        // TODO: 要讓 textarea 的高度跟著文字數量自動增加
+                            className="textarea"
+                            type="textarea" 
+                            placeholder="Your content."
+                            onChange={(e) => {
+                                setTexts(e.target.value);
+                            }}
+                            defaultValue={noteTexts}
+                        >
+                        </textarea>
+                    <div>
+                        <input 
+                            type="checkbox" 
+                            id="checkDelete"
+                            onClick={handleShowDeleteDialog}
+                        >
+                        </input>
+                        <label>Enable the feature to delete notes in the future? (default by 7 days).</label>
+                    </div>
+                </form>
             </StyledArticle>
             <StyledAsideContainer>
                 <Button 
                     type="submit"
+                    form="noteForm"
                     btnName="Publish"
                     onClick={handlePublish}
                 />

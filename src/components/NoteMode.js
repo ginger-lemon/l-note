@@ -1,72 +1,56 @@
-import React, { useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import { StyledMainContainer, StyledAsideContainer } from "../styles/Styled-mainStrucutre";
 import { StyledArticle } from "../styles/Styled-edit-note";
 import Button from "./button";
 import Dialog from "./dialog";
 import copyUrlIcon from "../img/copy-icon.svg";
 import { app, database } from "../firebaseConfig"
-import { connectFirestoreEmulator, doc, getDoc } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
+import { NotePackageContext } from "../contexts/NoteContext";
 
-
-export default function Note({ setToggleMode }) {
+export default function NoteMode({ setToggleMode }) {
     const [wantShare, setWantShare] = useState(false);
-    const [noteData, setNoteData] = useState({});
+    // const [noteData, setNoteData] = useState({});
+    // const { title, author, date, texts, noteUrl } = noteData;
 
-    const { title, author, date, texts } = noteData;
-    
-    // const note = {
-    //     date: "2023-07-11",
-    //     title: "This is title",
-    //     author: "Apple",
-    //     texts: "This is texts!",
-    //     isdelete: false,
-    //     deleteTime: "7",
-    //     noteUrl: "https://l.note/" + title + date,
-    // };
+    // 取得 context 共享的 notePackage, setNotePackage 
+    const { notePackage, setNotePackage }  = useContext(NotePackageContext);
 
-    // let { date, title, author, texts, noteUrl } = note;
+    const {title, date, author, texts} = notePackage;
+
+    console.log(notePackage)
 
     // ＝＝＝＝ 以下處理從 firestore 讀取 snapshot ＝＝＝＝
-    async function getNoteDataFromDatabase() {
-        try {
-            const docRef = doc(database, "notes", "cpYTwVexYQ3o0NNnt8vQ");
-            const docSnap = await getDoc(docRef);
+    // async function getNoteDataFromDatabase() {
+    //     try {
+    //         const docRef = doc(database, "notes", "cpYTwVexYQ3o0NNnt8vQ");
+    //         const docSnap = await getDoc(docRef);
 
-            if (docSnap.exists()) {
-                return setNoteData(docSnap.data());
-            }
+    //         if (docSnap.exists()) {
+    //             return setNotePackage(docSnap.data());
+    //         }
 
-        } catch (e) {
-            console.error(e);
-            return null;
-        }
-
-        // const docRef = doc(database, "notes", "cpYTwVexYQ3o0NNnt8vQ");
-        // const docSnap = await getDoc(docRef);
-
-        // if (docSnap.exists()) {
-        //     // console.log("Document data:");
-        //     return docSnap.data();
-        // } else {
-        // // docSnap.data() will be undefined in this case
-        //     console.log("No such document!");
-        //     return null;
-        // }
-    }
+    //     } catch (e) {
+    //         console.error(e);
+    //         return null;
+    //     }
+    // }
     // ＝＝＝＝ 以上處理從 firestore 讀取 snapshot ＝＝＝＝
 
-    // 當切換到 note 模式連線到 firestore 將資料抓下來
-    useEffect(() => {
-        let isSubsrcibed = true;
+    // ＝＝＝＝ 以下：當切換到 note 模式連線到 firestore 將資料抓下來 ＝＝＝＝
+    // useEffect(() => {
+    //     let isSubsrcibed = true;
 
-        getNoteDataFromDatabase();
+    //     getNoteDataFromDatabase();
+    //     console.log('抓完資料了')
 
-        return () => {
-            isSubsrcibed = false;
-            setNoteData({});
-        }
+    //     return () => {
+    //         isSubsrcibed = false;
+    //         setNoteData({});
+    //     }
 
-    },[setToggleMode ]);
+    // },[setIsEditMode]);
+    // ＝＝＝＝ 以上：當切換到 note 模式連線到 firestore 將資料抓下來 ＝＝＝＝
 
     function toggleToEditMode() {
         setToggleMode(false);
@@ -91,9 +75,9 @@ export default function Note({ setToggleMode }) {
     return (
         <StyledMainContainer>
             <StyledArticle>
-                <h1>{title}</h1>
-                <p>{author + " ・ " + date}</p>
-                <p>{texts}</p>
+                <h1 className="header">{title}</h1>
+                <p className="author">{author + " ・ " + date}</p>
+                <p className="textarea">{texts}</p>
             </StyledArticle>
             <StyledAsideContainer>
                 <Button 
