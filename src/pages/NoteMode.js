@@ -7,16 +7,16 @@ import { app, database } from "../firebaseConfig"
 import { doc, getDoc } from "firebase/firestore";
 import { NotePackageContext } from "../contexts/NoteContext";
 import Note from "../components/note-mode/Note";
+import { useNavigate } from "react-router-dom";
 
-export default function NoteMode({ setToggleMode }) {
+export default function NoteMode() {
     const [wantShare, setWantShare] = useState(false);
-    // const [noteData, setNoteData] = useState({});
-    // const { title, author, date, texts, noteUrl } = noteData;
+    const navigate = useNavigate();
 
     // 取得 context 共享的 notePackage, setNotePackage 
     const { notePackage, setNotePackage }  = useContext(NotePackageContext);
 
-    const {title, date, author, texts} = notePackage;
+    const {title, date, author, texts, noteUrl} = notePackage;
 
     console.log(notePackage)
 
@@ -53,7 +53,9 @@ export default function NoteMode({ setToggleMode }) {
     // ＝＝＝＝ 以上：當切換到 note 模式連線到 firestore 將資料抓下來 ＝＝＝＝
 
     function toggleToEditMode() {
-        setToggleMode(false);
+        console.log('將模式切換到 NoteMode ');
+        // TO DO: 之後要處理切換到編輯模式但是網址不變
+        navigate("/");
     }
 
     function showShareDialog() {

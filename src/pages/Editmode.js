@@ -8,8 +8,9 @@ import { collection, addDoc } from "firebase/firestore";
 import { NotePackageContext } from "../contexts/NoteContext.js";
 import DeleteDialog from "../components/edit-mode/DeleteDialog.js";
 import Editor from "../components/edit-mode/Editor.js";
+import { useNavigate } from "react-router-dom";
 
-export default function EditMode({ setToggleMode }) {
+export default function EditMode() {
     const [wantDelete, setWantDelete] = useState(false);
     const [showDeleteDialog, setShowDeleteDialog] = useState(false);
     const [title, setTitle] = useState('');
@@ -18,6 +19,7 @@ export default function EditMode({ setToggleMode }) {
     const [availableDays, setAvailableDays] = useState(Infinity);
     const [date, setDate] = useState("2023-07-11");
     const [timeStamp, setTimeStamp] = useState('');
+    const navigate = useNavigate()
 
     // 接收 notePackage 
     const { notePackage } = useContext(NotePackageContext);
@@ -26,23 +28,23 @@ export default function EditMode({ setToggleMode }) {
     const noteTexts = notePackage.texts;
  
     // ＝＝＝＝ 以下處理將資料儲存到 fireStore ＝＝＝＝
-    async function sentNoteDataToDatabase() {
-        try {
-            const docRef = await addDoc(collection(database, "notes"), {
-                date: date,
-                title: title,
-                author: author,
-                texts: texts,
-                isdelete: wantDelete,
-                availableDays: availableDays,
-                noteUrl: "https://l.note/" + title + "/" + date,
-                timeStamp: timeStamp,
-            });
-            console.log("Document written with ID: ", docRef.id);
-        } catch (e) {
-            console.error('Error adding document: ', e);
-        }
-    }
+    // async function sentNoteDataToDatabase() {
+    //     try {
+    //         const docRef = await addDoc(collection(database, "notes"), {
+    //             date: date,
+    //             title: title,
+    //             author: author,
+    //             texts: texts,
+    //             isdelete: wantDelete,
+    //             availableDays: availableDays,
+    //             noteUrl: "https://l.note/" + title + "/" + date,
+    //             timeStamp: timeStamp,
+    //         });
+    //         console.log("Document written with ID: ", docRef.id);
+    //     } catch (e) {
+    //         console.error('Error adding document: ', e);
+    //     }
+    // }
     // ＝＝＝＝ 以上處理將資料儲存到 fireStore ＝＝＝＝
 
     function giveDoneButtonMission() {
@@ -69,7 +71,9 @@ export default function EditMode({ setToggleMode }) {
     } 
 
     function toggleToNoteMode() {
-        setToggleMode(true);
+        console.log('切換到 NoteMode ');
+        // testNote 之後會切換成 noteID 
+        navigate("/testNote");   
     }
 
     function handlePublish (e) {

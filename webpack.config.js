@@ -17,6 +17,7 @@ module.exports = {
     devServer: {
         static: './dist',
         https: false,
+        historyApiFallback: true,
     },
 
     module: {
