@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { StyledFooter } from "./styles/Styled-footer";
-import EditMode from "./components/Editmode";
-import NoteMode from "./components/NoteMode";
+import EditMode from "./pages/Editmode";
+import NoteMode from "./pages/NoteMode";
 import { CSSReset} from "./styles/CSS-Reset";
 import { NotePackageProvider } from "./contexts/NoteContext";
 

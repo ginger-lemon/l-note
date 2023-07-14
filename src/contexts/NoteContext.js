@@ -32,8 +32,6 @@ export const NotePackageProvider = ({ children }) => {
     //     }
     // }
 
-
-
     useEffect(() => {
         let isSubsrcibed = true;
 

@@ -1,13 +1,13 @@
-import React, { useContext, useRef, useState } from "react";
-import Button from "./button.js";
+import React, { useContext, useState } from "react";
+import Button from "../components/button.js";
 import { StyledAsideContainer, StyledMainContainer } from "../styles/Styled-mainStrucutre.js";
 import { StyledArticle } from "../styles/Styled-edit-note.js";
-import Dialog from "./dialog.js";
-import { StyledDialogCustomDiv } from "../styles/Styled.Dialog.js";
 import { getPublishDate, getPublishTime } from "../library/getPublishData.js";
-import { app, database } from "../firebaseConfig.js"
+import { database } from "../firebaseConfig.js"
 import { collection, addDoc } from "firebase/firestore";
 import { NotePackageContext } from "../contexts/NoteContext.js";
+import DeleteDialog from "../components/edit-mode/DeleteDialog.js";
+import Editor from "../components/edit-mode/Editor.js";
 
 export default function EditMode({ setToggleMode }) {
     const [wantDelete, setWantDelete] = useState(false);
@@ -87,52 +87,16 @@ export default function EditMode({ setToggleMode }) {
     return (
         <StyledMainContainer>
             <StyledArticle>
-                <form
-                    id="editForm" 
-                    onSubmit={handlePublish}
-                >
-                    <input 
-                        text="text" 
-                        className="header" 
-                        placeholder="Title"
-                        onChange={(e) => {
-                            setTitle(e.target.value);
-                        }}
-                        required
-                        defaultValue={noteTitle}
-                    >
-                    </input>
-                    <input 
-                        text="text" 
-                        className="author" 
-                        placeholder="Author"
-                        onChange={(e) => {
-                            setAuthor(e.target.value);
-                        }}
-                        defaultValue={noteAuthor}
-                    >
-                    </input>
-                        <textarea 
-                        // TODO: 要讓 textarea 的高度跟著文字數量自動增加
-                            className="textarea"
-                            type="textarea" 
-                            placeholder="Your content."
-                            onChange={(e) => {
-                                setTexts(e.target.value);
-                            }}
-                            defaultValue={noteTexts}
-                        >
-                        </textarea>
-                    <div>
-                        <input 
-                            type="checkbox" 
-                            id="checkDelete"
-                            onClick={handleShowDeleteDialog}
-                        >
-                        </input>
-                        <label>Enable the feature to delete notes in the future? (default by 7 days).</label>
-                    </div>
-                </form>
+                <Editor 
+                    handlePublish={handlePublish}
+                    setTitle={setTitle}
+                    setAuthor={setAuthor}
+                    setTexts={setTexts}
+                    noteTitle={noteTitle}
+                    noteAuthor={noteAuthor}
+                    noteTexts={noteTexts}
+                    handleShowDeleteDialog={handleShowDeleteDialog}
+                />
             </StyledArticle>
             <StyledAsideContainer>
                 <Button 
@@ -151,32 +115,4 @@ export default function EditMode({ setToggleMode }) {
         </StyledMainContainer>
         
     ); 
-}
-
-function DeleteDialog({ showDeleteDialog, getDeleteTime, doneButtonMission }) {
-    return (
-        <Dialog 
-            style={{ display: showDeleteDialog ? 'block' : 'none' }}
-            dialogTitle="How long is this note available?"
-            dialogDescribe="Delete time: (default: 7 days)"
-            doneButtonMission={doneButtonMission}
-        >
-            <StyledDialogCustomDiv
-                style= {{ margin: "10px 0 0 0" }}
-            >
-                <input
-                    type="number"
-                    id="deleteTime"
-                    defaultValue={7}
-                    min="3"
-                    max="100"
-                    style={{
-                        width: "250px",
-                    }}
-                    onChange={getDeleteTime}
-                >
-                </input>
-            </StyledDialogCustomDiv>
-        </Dialog>
-    );
 }

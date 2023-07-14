@@ -1,12 +1,12 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { StyledMainContainer, StyledAsideContainer } from "../styles/Styled-mainStrucutre";
 import { StyledArticle } from "../styles/Styled-edit-note";
-import Button from "./button";
-import Dialog from "./dialog";
-import copyUrlIcon from "../img/copy-icon.svg";
+import Button from "../components/button";
+import ShareDialog from "../components/note-mode/ShareDialog";
 import { app, database } from "../firebaseConfig"
 import { doc, getDoc } from "firebase/firestore";
 import { NotePackageContext } from "../contexts/NoteContext";
+import Note from "../components/note-mode/Note";
 
 export default function NoteMode({ setToggleMode }) {
     const [wantShare, setWantShare] = useState(false);
@@ -75,9 +75,13 @@ export default function NoteMode({ setToggleMode }) {
     return (
         <StyledMainContainer>
             <StyledArticle>
-                <h1 className="header">{title}</h1>
-                <p className="author">{author + " ・ " + date}</p>
-                <p className="textarea">{texts}</p>
+                <Note 
+                    title={title}
+                    author={author}
+                    texts={texts}
+                    date={date}
+                />
+
             </StyledArticle>
             <StyledAsideContainer>
                 <Button 
@@ -99,31 +103,5 @@ export default function NoteMode({ setToggleMode }) {
                 />
             }
         </StyledMainContainer>
-    );
-}
-
-
-function ShareDialog({ wantShare, copyNoteUrl, doneButtonMission, noteUrl }) {
-    return (
-        <Dialog 
-            style={{ display: wantShare ? 'block' : 'none' }}
-            dialogTitle="Share URL of this note"
-            dialogDescribe="URL copied."
-            doneButtonMission={doneButtonMission}
-        >
-                <input
-                    style={{ width: "250px" }}
-                    readOnly
-                    value={noteUrl}
-                >
-                </input>
-                {/* 未複製網址時：You can copy the URL */}
-                {/* 按下複製時： URL copied.  */}
-                <img 
-                    height="48px"
-                    src={copyUrlIcon}
-                    onClick={copyNoteUrl}
-                />
-        </Dialog>
     );
 }
