@@ -3,8 +3,6 @@ import { StyledMainContainer, StyledAsideContainer } from "../styles/Styled-main
 import { StyledArticle } from "../styles/Styled-edit-note";
 import Button from "../components/button";
 import ShareDialog from "../components/note-mode/ShareDialog";
-import { app, database } from "../firebaseConfig"
-import { doc, getDoc } from "firebase/firestore";
 import { NotePackageContext } from "../contexts/NoteContext";
 import Note from "../components/note-mode/Note";
 import { useNavigate } from "react-router-dom";
@@ -20,22 +18,7 @@ export default function NoteMode() {
 
     console.log(notePackage)
 
-    // ＝＝＝＝ 以下處理從 firestore 讀取 snapshot ＝＝＝＝
-    // async function getNoteDataFromDatabase() {
-    //     try {
-    //         const docRef = doc(database, "notes", "cpYTwVexYQ3o0NNnt8vQ");
-    //         const docSnap = await getDoc(docRef);
 
-    //         if (docSnap.exists()) {
-    //             return setNotePackage(docSnap.data());
-    //         }
-
-    //     } catch (e) {
-    //         console.error(e);
-    //         return null;
-    //     }
-    // }
-    // ＝＝＝＝ 以上處理從 firestore 讀取 snapshot ＝＝＝＝
 
     // ＝＝＝＝ 以下：當切換到 note 模式連線到 firestore 將資料抓下來 ＝＝＝＝
     // useEffect(() => {

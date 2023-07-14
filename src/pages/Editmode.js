@@ -3,8 +3,6 @@ import Button from "../components/button.js";
 import { StyledAsideContainer, StyledMainContainer } from "../styles/Styled-mainStrucutre.js";
 import { StyledArticle } from "../styles/Styled-edit-note.js";
 import { getPublishDate, getPublishTime } from "../library/getPublishData.js";
-import { database } from "../firebaseConfig.js"
-import { collection, addDoc } from "firebase/firestore";
 import { NotePackageContext } from "../contexts/NoteContext.js";
 import DeleteDialog from "../components/edit-mode/DeleteDialog.js";
 import Editor from "../components/edit-mode/Editor.js";
@@ -26,26 +24,23 @@ export default function EditMode() {
     const noteTitle = notePackage.title;
     const noteAuthor = notePackage.author;
     const noteTexts = notePackage.texts;
- 
-    // ＝＝＝＝ 以下處理將資料儲存到 fireStore ＝＝＝＝
-    // async function sentNoteDataToDatabase() {
-    //     try {
-    //         const docRef = await addDoc(collection(database, "notes"), {
-    //             date: date,
-    //             title: title,
-    //             author: author,
-    //             texts: texts,
-    //             isdelete: wantDelete,
-    //             availableDays: availableDays,
-    //             noteUrl: "https://l.note/" + title + "/" + date,
-    //             timeStamp: timeStamp,
-    //         });
-    //         console.log("Document written with ID: ", docRef.id);
-    //     } catch (e) {
-    //         console.error('Error adding document: ', e);
-    //     }
-    // }
-    // ＝＝＝＝ 以上處理將資料儲存到 fireStore ＝＝＝＝
+    const noteDate = notePackage.Date;
+
+    // ＝＝＝＝處理會放在網址的 noteID 部分(現在先放假資料)＝＝＝＝
+    // 之後可能會需要使用 context 傳
+    const fakeNoteID = {
+        fakeTitle: "Fake NoteID",
+        fakeDate: "2023-07-14",
+    };
+
+    const { fakeTitle, fakeDate } = fakeNoteID;
+
+    function getFakeNoteID(title, date){
+        const resultID = title.replace(/\s/g, "-") + "-" + date;
+        return resultID;
+    }
+    // ＝＝＝＝ 以上處理 noteID ＝＝＝＝ 
+
 
     function giveDoneButtonMission() {
         console.log('按到刪除對話框的 Done 按鈕 ')
