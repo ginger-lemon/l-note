@@ -5,9 +5,9 @@ export function getPublishDate() {
     let month = newDate.getMonth() + 1;
     let year = newDate.getFullYear();
 
-    const pubishDate = year + "-" + month + "-" + date;
+    const pubishedDate = year + "-" + month + "-" + date;
 
-    return pubishDate;
+    return pubishedDate;
 }
 
 export function getPublishTime() {

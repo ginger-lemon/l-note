@@ -3,42 +3,20 @@ import { StyledMainContainer, StyledAsideContainer } from "../styles/Styled-main
 import { StyledArticle } from "../styles/Styled-edit-note";
 import Button from "../components/button";
 import ShareDialog from "../components/note-mode/ShareDialog";
-import { NotePackageContext } from "../contexts/NoteContext";
+
 import Note from "../components/note-mode/Note";
 import { useNavigate } from "react-router-dom";
+import { useNoteData } from "../Hooks/NoteContext";
 
 export default function NoteMode() {
     const [wantShare, setWantShare] = useState(false);
     const navigate = useNavigate();
 
-    // 取得 context 共享的 notePackage, setNotePackage 
-    const { notePackage, setNotePackage }  = useContext(NotePackageContext);
-
-    const {title, date, author, texts, noteUrl} = notePackage;
-
-    console.log(notePackage)
-
-
-
-    // ＝＝＝＝ 以下：當切換到 note 模式連線到 firestore 將資料抓下來 ＝＝＝＝
-    // useEffect(() => {
-    //     let isSubsrcibed = true;
-
-    //     getNoteDataFromDatabase();
-    //     console.log('抓完資料了')
-
-    //     return () => {
-    //         isSubsrcibed = false;
-    //         setNoteData({});
-    //     }
-
-    // },[setIsEditMode]);
-    // ＝＝＝＝ 以上：當切換到 note 模式連線到 firestore 將資料抓下來 ＝＝＝＝
-
     function toggleToEditMode() {
         console.log('將模式切換到 NoteMode ');
         // TO DO: 之後要處理切換到編輯模式但是網址不變
         navigate("/");
+        // 讓網址保留
     }
 
     function showShareDialog() {
@@ -51,22 +29,14 @@ export default function NoteMode() {
         console.log('網址：' + noteUrl);
     }
 
-    function giveDoneButtonMission() {
-        console.log('按到刪除對話框的 Done 按鈕 ')
+    function closeShareDialog() {
         setWantShare(false);
-        console.log('關閉對話框');
     }
     
     return (
         <StyledMainContainer>
             <StyledArticle>
-                <Note 
-                    title={title}
-                    author={author}
-                    texts={texts}
-                    date={date}
-                />
-
+                <Note />
             </StyledArticle>
             <StyledAsideContainer>
                 <Button 
@@ -82,9 +52,8 @@ export default function NoteMode() {
             </StyledAsideContainer>
             { wantShare && 
                 <ShareDialog 
-                    doneButtonMission={giveDoneButtonMission}
+                    doneButtonMission={closeShareDialog}
                     copyNoteUrl={copyNoteUrl}
-                    noteUrl={noteUrl}
                 />
             }
         </StyledMainContainer>

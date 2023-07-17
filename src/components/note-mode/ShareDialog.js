@@ -1,8 +1,11 @@
 import React from "react";
 import Dialog from "../dialog";
 import copyUrlIcon from "../../img/copy-icon.svg"
+import { useNoteData } from "../../Hooks/NoteContext";
 
-export default function ShareDialog({ wantShare, copyNoteUrl, doneButtonMission, noteUrl }) {
+export default function ShareDialog({ wantShare, copyNoteUrl, doneButtonMission }) {
+    const { noteID } = useNoteData();
+    const noteUrl = "https://l.note" + "/" + noteID;
     return (
         <Dialog 
             style={{ display: wantShare ? 'block' : 'none' }}
@@ -21,7 +24,7 @@ export default function ShareDialog({ wantShare, copyNoteUrl, doneButtonMission,
                 <img 
                     height="48px"
                     src={copyUrlIcon}
-                    onClick={copyNoteUrl}
+                    onClick={(e) => console.log(noteUrl)}
                 />
         </Dialog>
     );

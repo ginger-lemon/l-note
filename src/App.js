@@ -3,22 +3,22 @@ import { StyledFooter } from "./styles/Styled-footer";
 import EditMode from "./pages/Editmode";
 import NoteMode from "./pages/NoteMode";
 import { CSSReset} from "./styles/CSS-Reset";
-import { NotePackageProvider } from "./contexts/NoteContext";
 import { Route, Routes, useParams } from "react-router-dom";
+import { NoteDataContextProvider } from "./Hooks/NoteContext";
 
 export default function App() {
     // TO DO: 處理 noteID 的問題，先用 testNote 當測試路徑
-    let { noteID } = useParams();
+    const id = useParams();
 
     return (
         <>  
             <CSSReset />
-            <NotePackageProvider>
+            <NoteDataContextProvider>
             <Routes>
                 <Route path="/" element={<EditMode />}/>
-                <Route path="/testNote" element={<NoteMode/>}/>
+                <Route path="/:id" element={<NoteMode/>}/>
             </Routes>
-            </NotePackageProvider>
+            </NoteDataContextProvider>
             <StyledFooter>
                 Copyright © 2023 L.Note 
             </StyledFooter>

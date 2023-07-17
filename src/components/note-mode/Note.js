@@ -1,6 +1,9 @@
 import React from "react";
+import { useNoteData } from "../../Hooks/NoteContext";
 
-export default function Note({ title, author, texts, date }) {
+export default function Note() {
+    const { title, author, date, texts } = useNoteData();
+
     return(
         <>
             <h1 className="header">{title}</h1>

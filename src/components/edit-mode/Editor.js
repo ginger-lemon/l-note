@@ -1,6 +1,16 @@
 import React from "react";
+import { useNoteData } from "../../Hooks/NoteContext";
 
-export default function Editor({ handlePublish, setTitle, setAuthor, setTexts, noteTitle, noteAuthor, noteTexts, handleShowDeleteDialog }) {
+// { handlePublish, setTitle, setAuthor, setTexts, noteTitle, noteAuthor, noteTexts, handleShowDeleteDialog }
+
+export default function Editor({ handleShowDeleteDialog, handlePublish }) {
+
+    const { 
+        title, setTitle,
+        author, setAuthor, 
+        texts, setTexts
+     } = useNoteData();
+
     return (
         <form
         id="editForm" 
@@ -14,7 +24,7 @@ export default function Editor({ handlePublish, setTitle, setAuthor, setTexts, n
                 setTitle(e.target.value);
             }}
             required
-            defaultValue={noteTitle}
+            defaultValue={title}
         >
         </input>
         <input 
@@ -24,7 +34,7 @@ export default function Editor({ handlePublish, setTitle, setAuthor, setTexts, n
             onChange={(e) => {
                 setAuthor(e.target.value);
             }}
-            defaultValue={noteAuthor}
+            defaultValue={author}
         >
         </input>
             <textarea 
@@ -35,7 +45,7 @@ export default function Editor({ handlePublish, setTitle, setAuthor, setTexts, n
                 onChange={(e) => {
                     setTexts(e.target.value);
                 }}
-                defaultValue={noteTexts}
+                defaultValue={texts}
             >
             </textarea>
         <div>
