@@ -9,20 +9,21 @@ import Editor from "../components/edit-mode/Editor.js";
 import { useNavigate } from "react-router-dom";
 
 export default function EditMode() {
-    const { setDate, noteID } = useNoteData();
+    const { 
+        timeStamp, setTimeStamp,
+        setDate, noteID
+    } = useNoteData();
 
     // 管理對話框的動態
-    const [wantDelete, setWantDelete] = useState(false);
     const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
     // 管理生存時間（ for TTL ）相關
     const [availableDays, setAvailableDays] = useState(Infinity);
-    const [timeStamp, setTimeStamp] = useState('');
 
     // 切換頁面網址
     const navigate = useNavigate();
 
-    // giveDoneButtonMission
+
     function closeDeleteDialog() {
         setShowDeleteDialog(false);
         console.log('取得預計刪除的時間：' + availableDays + "天");
@@ -36,10 +37,8 @@ export default function EditMode() {
     function handleShowDeleteDialog(e) {
         if (e.target.checked !== false) {
             setShowDeleteDialog(true);
-            setWantDelete(true);
         } else {
             setShowDeleteDialog(false);
-            setWantDelete(false);
             setAvailableDays(Infinity);
         }
     } 
@@ -48,19 +47,25 @@ export default function EditMode() {
         console.log('切換到 NoteMode ');
         // testNote 之後會切換成 noteID 
         console.log(noteID);
-        navigate("/`${noteID}`");   
+        navigate(`/${noteID}`);   
     }
 
     function handlePublish (e) {
         e.preventDefault();
-        // 取得日期、發送準確時間、將資料送到
-        setDate(getPublishDate());
-        setTimeStamp(getPublishTime());
-        // console.log(getPublishTime());
-        console.log('將資料送到 firestore ');
-        // 取得時間
-        // sentNoteDataToDatabase();
-        toggleToNoteMode()
+        // 如果 timestamp === undefined => 資料庫無資料， set
+        // 如果 timestamp !== undefined => 曾經發送資料， update
+        if (timeStamp === undefined) {
+            setDate(getPublishDate());
+            setTimeStamp(getPublishTime());
+            console.log(timeStamp);
+            console.log('使用 set 新增資料');
+            toggleToNoteMode()
+
+        } else {
+            console.log(timeStamp);
+            console.log('使用 update 更新資料，不能更新到 title');
+            toggleToNoteMode();
+        }        
     }
     
     return (

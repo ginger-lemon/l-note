@@ -4,11 +4,11 @@ import EditMode from "./pages/Editmode";
 import NoteMode from "./pages/NoteMode";
 import { CSSReset} from "./styles/CSS-Reset";
 import { Route, Routes, useParams } from "react-router-dom";
-import { NoteDataContextProvider } from "./Hooks/NoteContext";
+import { NoteDataContextProvider, useNoteData } from "./Hooks/NoteContext";
 
 export default function App() {
     // TO DO: 處理 noteID 的問題，先用 testNote 當測試路徑
-    const id = useParams();
+    const { noteID } = useParams();
 
     return (
         <>  
@@ -16,7 +16,7 @@ export default function App() {
             <NoteDataContextProvider>
             <Routes>
                 <Route path="/" element={<EditMode />}/>
-                <Route path="/:id" element={<NoteMode/>}/>
+                <Route path="/:noteID" element={<NoteMode/>}/>
             </Routes>
             </NoteDataContextProvider>
             <StyledFooter>

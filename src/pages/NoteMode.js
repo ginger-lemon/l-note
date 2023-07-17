@@ -9,24 +9,23 @@ import { useNavigate } from "react-router-dom";
 import { useNoteData } from "../Hooks/NoteContext";
 
 export default function NoteMode() {
+    const { noteID } = useNoteData();
     const [wantShare, setWantShare] = useState(false);
     const navigate = useNavigate();
 
     function toggleToEditMode() {
-        console.log('將模式切換到 NoteMode ');
         // TO DO: 之後要處理切換到編輯模式但是網址不變
         navigate("/");
         // 讓網址保留
     }
 
     function showShareDialog() {
-        console.log('我要複製網址');
         setWantShare(!wantShare);
     }
 
     function copyNoteUrl() {
-        console.log('getUrl');
-        console.log('網址：' + noteUrl);
+        const url = "https://l.note" + "/" + noteID;
+        console.log('網址：' + url);
     }
 
     function closeShareDialog() {

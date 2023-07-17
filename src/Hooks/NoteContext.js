@@ -1,14 +1,4 @@
-import React, { children, createContext, useContext, useState, useEffect } from "react";
-
-// Note, Edit mode 共享 notePackage 與 setNotePackage
-
-// const fakeTestNote = {
-//     title: 'Test Fake Data',
-//     author: 'Lemon',
-//     date: '2023-07-13',
-//     texts: 'This is fake data, preventing fetch to firestore too many times.',
-//     noteUrl: "https://l.note/Test-Fake-Data-2023-07-13"
-// }
+import React, { children, createContext, useContext, useState } from "react";
 
 export const NoteDataContext = createContext();
 
@@ -17,9 +7,9 @@ export const NoteDataContextProvider = ({ children }) => {
     const [title, setTitle] = useState('untitle');
     const [author, setAuthor] = useState('Unknow');
     const [texts, setTexts] = useState('A secret.');
-    const [date, setDate] = useState('');
+    const [date, setDate] = useState('2023-07-17');
+    const [timeStamp, setTimeStamp] = useState(undefined);
     const noteID = generateNoteID(title, date);
-
 
     function generateNoteID(title, date) {
         const id = 
@@ -34,6 +24,7 @@ export const NoteDataContextProvider = ({ children }) => {
                 author, setAuthor,
                 texts, setTexts,
                 date, setDate,
+                timeStamp, setTimeStamp,
                 noteID
             }}
         >
@@ -48,6 +39,7 @@ export function useNoteData() {
         author, setAuthor,
         texts, setTexts,
         date, setDate,
+        timeStamp, setTimeStamp,
         noteID
     } = useContext(NoteDataContext);
 
@@ -56,6 +48,7 @@ export function useNoteData() {
         author, setAuthor,
         texts, setTexts,
         date, setDate,
+        timeStamp, setTimeStamp,
         noteID
     };
 }

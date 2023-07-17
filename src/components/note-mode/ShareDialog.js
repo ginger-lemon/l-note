@@ -24,7 +24,7 @@ export default function ShareDialog({ wantShare, copyNoteUrl, doneButtonMission 
                 <img 
                     height="48px"
                     src={copyUrlIcon}
-                    onClick={(e) => console.log(noteUrl)}
+                    onClick={copyNoteUrl}
                 />
         </Dialog>
     );
