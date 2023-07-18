@@ -1,8 +1,17 @@
-import React from "react";
+import React, { useRef } from "react";
 import Dialog from "../dialog";
 import { StyledDialogCustomDiv } from "../../styles/Styled.Dialog";
+import { useNoteData } from "../../Hooks/NoteContext";
 
-export default function DeleteDialog({ showDeleteDialog, getDeleteTime, doneButtonMission }) {
+export default function DeleteDialog({ showDeleteDialog, doneButtonMission }) {
+    const { setAvailableDays } = useNoteData();
+    const inputRef = useRef(7);
+
+    function handleChange() {
+        const inputValue = inputRef.current.value;
+        setAvailableDays(inputValue);
+    }
+
     return (
         <Dialog 
             style={{ display: showDeleteDialog ? 'block' : 'none' }}
@@ -16,13 +25,14 @@ export default function DeleteDialog({ showDeleteDialog, getDeleteTime, doneButt
                 <input
                     type="number"
                     id="deleteTime"
-                    defaultValue={7}
+                    ref={inputRef}
+                    defaultValue="7"
                     min="3"
                     max="100"
                     style={{
                         width: "250px",
                     }}
-                    onChange={getDeleteTime}
+                    onChange={handleChange}
                 >
                 </input>
             </StyledDialogCustomDiv>

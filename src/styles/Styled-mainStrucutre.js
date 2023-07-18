@@ -8,7 +8,7 @@ export const StyledMainContainer = styled.main`
     align-items: flex-start;
 
 
-    @media (max-width: 700px) {
+    @media (max-width: 850px) {
         margin: 60px 20px 30px;
         gap: 30px;
         justify-content: left;
@@ -22,7 +22,7 @@ export const StyledAsideContainer = styled.aside`
     display: flex;
     flex-direction: column;
 
-    @media (max-width: 700px) {
+    @media (max-width: 850px) {
         flex-direction: row;
     }
 `;

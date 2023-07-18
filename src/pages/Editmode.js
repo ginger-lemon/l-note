@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Button from "../components/button.js";
 import { StyledAsideContainer, StyledMainContainer } from "../styles/Styled-mainStrucutre.js";
 import { StyledArticle } from "../styles/Styled-edit-note.js";
@@ -11,33 +11,29 @@ import { useNavigate } from "react-router-dom";
 export default function EditMode() {
     const { 
         timeStamp, setTimeStamp,
+        // wantDelete, setWantDelete,
+        availableDays, setAvailableDays,
         setDate, noteID
     } = useNoteData();
 
     // 管理對話框的動態
     const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
-    // 管理生存時間（ for TTL ）相關
-    const [availableDays, setAvailableDays] = useState(Infinity);
-
     // 切換頁面網址
     const navigate = useNavigate();
-
 
     function closeDeleteDialog() {
         setShowDeleteDialog(false);
         console.log('取得預計刪除的時間：' + availableDays + "天");
     }
 
-    function getDeleteTime(e) {
-        const days = e.target.value;
-        setAvailableDays(days);
-    }
-
     function handleShowDeleteDialog(e) {
         if (e.target.checked !== false) {
+            setAvailableDays(7);
+            // setWantDelete(!wantDelete);
             setShowDeleteDialog(true);
         } else {
+            // setWantDelete(false);
             setShowDeleteDialog(false);
             setAvailableDays(Infinity);
         }
@@ -50,10 +46,11 @@ export default function EditMode() {
         navigate(`/${noteID}`);   
     }
 
+    // 如果 timestamp === undefined => 資料庫無資料， set
+    // 如果 timestamp !== undefined => 曾經發送資料， update
     function handlePublish (e) {
         e.preventDefault();
-        // 如果 timestamp === undefined => 資料庫無資料， set
-        // 如果 timestamp !== undefined => 曾經發送資料， update
+
         if (timeStamp === undefined) {
             setDate(getPublishDate());
             setTimeStamp(getPublishTime());
@@ -86,7 +83,7 @@ export default function EditMode() {
             </StyledAsideContainer>
             { showDeleteDialog  && 
                 <DeleteDialog 
-                    getDeleteTime={getDeleteTime} 
+                    // getDeleteTime={getDeleteTime} 
                     doneButtonMission={closeDeleteDialog}
                 /> 
             }

@@ -4,12 +4,12 @@ import { useNoteData } from "../../Hooks/NoteContext";
 // { handlePublish, setTitle, setAuthor, setTexts, noteTitle, noteAuthor, noteTexts, handleShowDeleteDialog }
 
 export default function Editor({ handleShowDeleteDialog, handlePublish }) {
-
     const { 
         title, setTitle,
         author, setAuthor, 
-        texts, setTexts
-     } = useNoteData();
+        texts, setTexts,
+    } = useNoteData();
+
 
     return (
         <form

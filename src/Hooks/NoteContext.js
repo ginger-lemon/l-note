@@ -8,6 +8,11 @@ export const NoteDataContextProvider = ({ children }) => {
     const [author, setAuthor] = useState('Unknow');
     const [texts, setTexts] = useState('A secret.');
     const [date, setDate] = useState('2023-07-17');
+    // -------------- 功能未追加 ------------------
+    const [password, setPassword] = useState('');
+    // --------------------------------
+    // const [wantDelete, setWantDelete] = useState(false);
+    const [availableDays, setAvailableDays] = useState(Infinity);
     const [timeStamp, setTimeStamp] = useState(undefined);
     const noteID = generateNoteID(title, date);
 
@@ -24,6 +29,8 @@ export const NoteDataContextProvider = ({ children }) => {
                 author, setAuthor,
                 texts, setTexts,
                 date, setDate,
+                // wantDelete, setWantDelete,
+                availableDays, setAvailableDays,
                 timeStamp, setTimeStamp,
                 noteID
             }}
@@ -39,6 +46,8 @@ export function useNoteData() {
         author, setAuthor,
         texts, setTexts,
         date, setDate,
+        // wantDelete, setWantDelete,
+        availableDays, setAvailableDays,
         timeStamp, setTimeStamp,
         noteID
     } = useContext(NoteDataContext);
@@ -48,6 +57,8 @@ export function useNoteData() {
         author, setAuthor,
         texts, setTexts,
         date, setDate,
+        // wantDelete, setWantDelete,
+        availableDays, setAvailableDays,
         timeStamp, setTimeStamp,
         noteID
     };
