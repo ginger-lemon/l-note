@@ -8,6 +8,7 @@ import DeleteDialog from "../components/edit-mode/DeleteDialog.js";
 import Editor from "../components/edit-mode/Editor.js";
 import { useNavigate } from "react-router-dom";
 import { setNoteToDatabase, updateNoteToDatabase} from "../library/fetchToFirestore.js";
+import SetPasswordDialog from "../components/edit-mode/SetPasswordDialog.js";
 
 export default function EditMode() {
     const { 
@@ -19,26 +20,37 @@ export default function EditMode() {
 
     // 管理對話框的動態
     const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+    const [showSetPasswordDialog, setShowSetPasswordDialog] = useState(false);
 
     // 切換頁面網址
     const navigate = useNavigate();
 
-    function closeDeleteDialog() {
-        setShowDeleteDialog(false);
-        console.log('取得預計刪除的時間：' + availableDays + "天");
+
+
+    // 處理顯示設定密碼的對話框
+    function handleShowSetPasswordDialog(e) {
+        if (e.target.checked !== false) {
+            setShowSetPasswordDialog(true);
+        } else {
+            setShowSetPasswordDialog(false);
+        }
     }
 
+    // 處理顯示設定刪除時間的對話框
     function handleShowDeleteDialog(e) {
         if (e.target.checked !== false) {
-            setAvailableDays(7);
-            // setWantDelete(!wantDelete);
             setShowDeleteDialog(true);
+            setAvailableDays(7);
         } else {
-            // setWantDelete(false);
             setShowDeleteDialog(false);
             setAvailableDays(Infinity);
         }
     } 
+
+    // // 處理關閉刪除時間對話框
+    // function closeDeleteDialog() {
+    //     setShowDeleteDialog(false);
+    // }
 
     function toggleToNoteMode() {
         console.log('切換到 NoteMode ');
@@ -59,29 +71,29 @@ export default function EditMode() {
             console.log('使用 set 新增資料');
 
             // 使用 set 新增資料
-            setNoteToDatabase(noteID, {
-                noteID,
-                title, 
-                author,
-                date,
-                texts,
-                availableDays,
-                password,
-                timeStamp,
-            });
+            // setNoteToDatabase(noteID, {
+            //     noteID,
+            //     title, 
+            //     author,
+            //     date,
+            //     texts,
+            //     availableDays,
+            //     password,
+            //     timeStamp,
+            // });
             
             toggleToNoteMode();
 
         } else {
             console.log('使用 update 更新資料，不能更新到 title');
             // 使用 update 更新資料
-            updateNoteToDatabase(noteID, {
-                title, 
-                author,
-                texts,
-                availableDays,
-                password,
-            });
+            // updateNoteToDatabase(noteID, {
+            //     title, 
+            //     author,
+            //     texts,
+            //     availableDays,
+            //     password,
+            // });
 
             toggleToNoteMode();
         }        
@@ -93,6 +105,7 @@ export default function EditMode() {
                 <Editor 
                     handlePublish={handlePublish}
                     handleShowDeleteDialog={handleShowDeleteDialog}
+                    handleShowSetPasswordDialog={handleShowSetPasswordDialog}
                 />
             </StyledArticle>
             <StyledAsideContainer>
@@ -103,13 +116,17 @@ export default function EditMode() {
                     onClick={handlePublish}
                 />
             </StyledAsideContainer>
-            { showDeleteDialog  && 
-                <DeleteDialog 
-                    // getDeleteTime={getDeleteTime} 
-                    doneButtonMission={closeDeleteDialog}
-                /> 
-            }
+                { showDeleteDialog && (
+                    <DeleteDialog 
+                        setShowDeleteDialog={setShowDeleteDialog}
+                    /> 
+                )}
+                { showSetPasswordDialog && (
+                    <SetPasswordDialog 
+                        showSetPasswordDialog={showSetPasswordDialog}
+                        setShowSetPasswordDialog={setShowSetPasswordDialog}
+                />
+                ) }
         </StyledMainContainer>
-        
     ); 
 }

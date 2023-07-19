@@ -1,15 +1,14 @@
 import React from "react";
 import { useNoteData } from "../../Hooks/NoteContext";
 
-// { handlePublish, setTitle, setAuthor, setTexts, noteTitle, noteAuthor, noteTexts, handleShowDeleteDialog }
-
-export default function Editor({ handleShowDeleteDialog, handlePublish }) {
+export default function Editor({ handleShowDeleteDialog, handleShowSetPasswordDialog, handlePublish }) {
     const { 
         title, setTitle,
         author, setAuthor, 
         texts, setTexts,
     } = useNoteData();
 
+    
 
     return (
         <form
@@ -49,13 +48,23 @@ export default function Editor({ handleShowDeleteDialog, handlePublish }) {
             >
             </textarea>
         <div>
+            {/* 設定刪除時間 */}
             <input 
                 type="checkbox" 
                 id="checkDelete"
                 onClick={handleShowDeleteDialog}
             >
             </input>
-            <label>Enable the feature to delete notes in the future? (default by 7 days).</label>
+            <label>Enable the feature to delete this note in the future? (default by 7 days).</label>
+            <br />
+            {/* 設定密碼 */}
+            <input
+                type="checkbox"
+                id="checkSetPassword"
+                onClick={handleShowSetPasswordDialog}
+            >
+            </input>
+            <label>Enable the option to set a password for editing this note in the future?</label>
         </div>
     </form>
     );

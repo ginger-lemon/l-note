@@ -43,13 +43,13 @@ export const StyledDialog = styled.div`
 
 
 export const StyledDialogCustomDiv = styled.div`
-    /* height: 48px; */
+    width: auto;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     /* align-items: center; */
     gap: 15px;
-    margin: 0 20px 20px;
+    margin: 0 30px 20px;
 
     @media (max-width: 700px) {
         display: flex;

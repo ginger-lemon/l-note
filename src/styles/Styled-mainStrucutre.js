@@ -7,7 +7,6 @@ export const StyledMainContainer = styled.main`
     justify-content: center;
     align-items: flex-start;
 
-
     @media (max-width: 850px) {
         margin: 60px 20px 30px;
         gap: 30px;

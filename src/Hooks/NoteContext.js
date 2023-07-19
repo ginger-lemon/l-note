@@ -29,7 +29,7 @@ export const NoteDataContextProvider = ({ children }) => {
                 author, setAuthor,
                 texts, setTexts,
                 date, setDate,
-                // wantDelete, setWantDelete,
+                password, setPassword,
                 availableDays, setAvailableDays,
                 timeStamp, setTimeStamp,
                 noteID
@@ -46,7 +46,7 @@ export function useNoteData() {
         author, setAuthor,
         texts, setTexts,
         date, setDate,
-        // wantDelete, setWantDelete,
+        password, setPassword,
         availableDays, setAvailableDays,
         timeStamp, setTimeStamp,
         noteID
@@ -57,7 +57,7 @@ export function useNoteData() {
         author, setAuthor,
         texts, setTexts,
         date, setDate,
-        // wantDelete, setWantDelete,
+        password, setPassword,
         availableDays, setAvailableDays,
         timeStamp, setTimeStamp,
         noteID

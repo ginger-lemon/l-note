@@ -3,24 +3,35 @@ import Dialog from "../dialog";
 import { StyledDialogCustomDiv } from "../../styles/Styled.Dialog";
 import { useNoteData } from "../../Hooks/NoteContext";
 
-export default function DeleteDialog({ showDeleteDialog, doneButtonMission }) {
+export default function DeleteDialog({ setShowDeleteDialog }) {
     const { setAvailableDays } = useNoteData();
     const inputRef = useRef(7);
 
+    function closeDeleteDialog() {
+        setShowDeleteDialog(false);
+    }
+
     function handleChange() {
         const inputValue = inputRef.current.value;
-        setAvailableDays(inputValue);
+
+        if ( inputValue >= 3 && inputValue <= 100) {
+            setAvailableDays(inputValue);
+        } else {
+            alert("number should between 3 and 100");
+            inputRef.current.valueOf = 7;
+        }
+        
+
     }
 
     return (
         <Dialog 
-            style={{ display: showDeleteDialog ? 'block' : 'none' }}
             dialogTitle="How long is this note available?"
             dialogDescribe="Delete time: (default: 7 days)"
-            doneButtonMission={doneButtonMission}
+            doneButtonMission={closeDeleteDialog}
         >
             <StyledDialogCustomDiv
-                style= {{ margin: "10px 0 0 0" }}
+                style= {{ margin: "10px 40px 0" }}
             >
                 <input
                     type="number"
