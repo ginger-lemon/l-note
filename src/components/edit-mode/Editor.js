@@ -3,48 +3,50 @@ import { useNoteData } from "../../Hooks/NoteContext";
 
 export default function Editor({ handleShowDeleteDialog, handleShowSetPasswordDialog, handlePublish }) {
     const { 
-        title, setTitle,
-        author, setAuthor, 
-        texts, setTexts,
+        noteTitle, setNoteTitle,
+        noteAuthor, setNoteAuthor, 
+        noteTexts, setNoteTexts,
     } = useNoteData();
 
-    
 
     return (
         <form
-        id="editForm" 
-        onSubmit={handlePublish}
-    >
-        <input 
-            text="text" 
-            className="header" 
-            placeholder="Title"
-            onChange={(e) => {
-                setTitle(e.target.value);
-            }}
-            required
-            defaultValue={title}
+            id="editForm" 
+            onSubmit={handlePublish}
         >
-        </input>
-        <input 
-            text="text" 
-            className="author" 
-            placeholder="Author"
-            onChange={(e) => {
-                setAuthor(e.target.value);
-            }}
-            defaultValue={author}
-        >
-        </input>
+            {/* <header> */}
+                <input 
+                style={{ width:"700px" }}
+                text="text" 
+                className="header" 
+                placeholder="Title"
+                onChange={(e) => {
+                    setNoteTitle(e.target.value);
+                }}
+                required
+                defaultValue={noteTitle}
+                >
+                </input>
+            {/* </header> */}
+            <input 
+                text="text" 
+                className="author" 
+                placeholder="Author"
+                onChange={(e) => {
+                    setNoteAuthor(e.target.value);
+                }}
+                defaultValue={noteAuthor}
+            >
+            </input>
             <textarea 
             // TODO: 要讓 textarea 的高度跟著文字數量自動增加
                 className="textarea"
                 type="textarea" 
                 placeholder="Your content."
                 onChange={(e) => {
-                    setTexts(e.target.value);
+                    setNoteTexts(e.target.value);
                 }}
-                defaultValue={texts}
+                defaultValue={noteTexts}
             >
             </textarea>
         <div>

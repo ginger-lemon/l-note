@@ -5,49 +5,53 @@ import { database } from "../firebaseConfig";
 // ＝＝＝＝ 初始化資料庫的資料格式 ＝＝＝＝//
 class Note{
     constructor (
-        id,
+        // id,
         title, 
         author, 
         date, 
         texts, 
         availableDays, 
         password,
+        timeStamp,
     ) {
-        this.id = id;
+        // this.id = id;
         this.title = title;
         this.author = author;
         this.date = date;
         this.texts = texts;
         this.availableDays = availableDays;
         this.password = password;
+        this.timeStamp = timeStamp;
     }
 }
 
 // Firestore data converter
-const noteConverter = {
+export const noteConverter = {
     // js => firestore
     toFirestore: (note) => {
         return {
-            id: note.id,
+            // id: note.id,
             title: note.title,
             author: note.author,
             date: note.date, 
             texts: note.texts, 
             availableDays: note.availableDays,
-            password: note.password
+            password: note.password,
+            timeStamp: note.timeStamp,
         };
     },
     // firestore => js
     fromFireStore: (snapshot, options) => {
-        const data = snapshot.date(options);
+        const data = snapshot.data(options);
         return new Note(
-            data.id,
+            // data.id,
             data.title,
             data.author,
             data.date, 
             data.texts,
             data.availableDays,
-            data.password
+            data.password,
+            data.timeStamp,
         );
     }
 }
@@ -61,31 +65,36 @@ const noteConverter = {
 
    // 使用 custom class 增加資料，可能要放參數在 () 內
     export async function setNoteToDatabase(noteID, {
-        id, 
-        title, 
-        author, 
-        date, 
-        texts, 
+        // id, 
+        noteTitle, 
+        noteAuthor, 
+        noteDate, 
+        noteTexts, 
         availableDays, 
-        password,
-        timeStamp,
+        notePassword,
+        noteTimeStamp,
     }) {
         try {
             const ref = doc(database, "notes", noteID).withConverter(noteConverter);
+
+            console.log(noteTitle);
             // TO DO: 確認整包資料、 noteID 的傳入方式
             // 整個 id.... 應該可以直接放在一個物件直接代入
-            await setDoc(ref, new Note({
-                id, 
-                title, 
-                author, 
-                date, 
-                texts, 
+            await setDoc(ref, new Note(
+                // id,
+                noteTitle, 
+                noteAuthor, 
+                noteDate, 
+                noteTexts, 
                 availableDays, 
-                password,
-                timeStamp
-            }))
+                notePassword,
+                noteTimeStamp,
+            ))
+           
+
             // await setDoc(doc(database, "notes", noteID), data);
         } catch (error) {
+            console.log('id.noteTitle: ', noteTitle)
             console.error("Error: ", error);
         }
     }

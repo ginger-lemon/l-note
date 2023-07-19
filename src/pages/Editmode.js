@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import Button from "../components/button.js";
 import { StyledAsideContainer, StyledMainContainer } from "../styles/Styled-mainStrucutre.js";
 import { StyledArticle } from "../styles/Styled-edit-note.js";
-import { getPublishDate, getPublishTime } from "../library/getPublishData.js";
 import { useNoteData } from "../Hooks/NoteContext.js";
 import DeleteDialog from "../components/edit-mode/DeleteDialog.js";
 import Editor from "../components/edit-mode/Editor.js";
@@ -11,11 +10,11 @@ import { setNoteToDatabase, updateNoteToDatabase} from "../library/fetchToFirest
 import SetPasswordDialog from "../components/edit-mode/SetPasswordDialog.js";
 
 export default function EditMode() {
-    const { 
-        title, author, date, texts, password,
-        timeStamp, setTimeStamp,
+    let { 
+        noteTitle, noteAuthor, noteTexts, notePassword, noteDate,
+        noteTimeStamp, 
         availableDays, setAvailableDays,
-        setDate, noteID
+        noteID
     } = useNoteData();
 
     // 管理對話框的動態
@@ -24,8 +23,6 @@ export default function EditMode() {
 
     // 切換頁面網址
     const navigate = useNavigate();
-
-
 
     // 處理顯示設定密碼的對話框
     function handleShowSetPasswordDialog(e) {
@@ -47,10 +44,6 @@ export default function EditMode() {
         }
     } 
 
-    // // 處理關閉刪除時間對話框
-    // function closeDeleteDialog() {
-    //     setShowDeleteDialog(false);
-    // }
 
     function toggleToNoteMode() {
         console.log('切換到 NoteMode ');
@@ -59,41 +52,71 @@ export default function EditMode() {
         navigate(`/${noteID}`);   
     }
 
+    // 取得發佈時間戳記
+    function getTimeStamp() {
+        const time = new Date();
+        const timeStamp = time.getTime();
+        return timeStamp;
+    }
+
+    // 取得發佈時間（年月日）
+    function getPublishedDate() {
+        const newDate = new Date();
+        const date = newDate.getDate();
+        const month = newDate.getMonth() + 1;
+        const year = newDate.getFullYear();
+        const publishDate = year + "-" + month + "-" + date;
+        return publishDate;
+    }
+
+    function generateNoteID(noteTitle, noteDate) {
+        const id = 
+        noteTitle.replace(/\s/g, "-") + "-" + noteDate;
+        return id;
+    }
+
     // 如果 timestamp === undefined => 資料庫無資料， set
     // 如果 timestamp !== undefined => 曾經發送資料， update
     function handlePublish (e) {
         e.preventDefault();
-
+       
         // 處理資料新增/更新
-        if (timeStamp === undefined) {
-            setDate(getPublishDate());
-            setTimeStamp(getPublishTime());
-            console.log('使用 set 新增資料');
+        if (noteTimeStamp === undefined) {
+            noteDate = getPublishedDate();
+            noteTimeStamp = getTimeStamp();
+    
+            noteID =  generateNoteID(noteTitle, noteDate);
+    
+            console.log(noteDate);
+            console.log(noteTimeStamp);
+            console.log(noteID);
 
             // 使用 set 新增資料
-            // setNoteToDatabase(noteID, {
-            //     noteID,
-            //     title, 
-            //     author,
-            //     date,
-            //     texts,
-            //     availableDays,
-            //     password,
-            //     timeStamp,
-            // });
+            setNoteToDatabase(noteID, {
+                // noteID,
+                noteTitle, 
+                noteAuthor,
+                noteDate,
+                noteTexts,
+                availableDays,
+                notePassword,
+                noteTimeStamp,
+            });
             
             toggleToNoteMode();
+
+            return {noteDate, noteTimeStamp, noteID};
 
         } else {
             console.log('使用 update 更新資料，不能更新到 title');
             // 使用 update 更新資料
-            // updateNoteToDatabase(noteID, {
-            //     title, 
-            //     author,
-            //     texts,
-            //     availableDays,
-            //     password,
-            // });
+            updateNoteToDatabase(noteID, {
+                noteTitle, 
+                noteAuthor,
+                noteTexts,
+                availableDays,
+                notePassword,
+            });
 
             toggleToNoteMode();
         }        

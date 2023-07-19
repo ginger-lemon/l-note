@@ -31,7 +31,6 @@ export default function NoteMode() {
     function getDataFromDatabaseAndSetDatas(noteID) {
         // 解構取得的資料
         const { 
-            dataNoteID,
             dataTitle,
             dataAuthor, 
             dataDate,
@@ -44,12 +43,12 @@ export default function NoteMode() {
         getNoteFromDatabase(noteID);
 
         // 將取得的資料更新到變數中
-        setTitle(dataTitle);
-        setAuthor(dataAuthor);
-        setDate(dataDate);
-        setTexts(dataTexts);
-        setAvailableDays(dataAvailableDays);
-        setPassword(dataPassword);
+        setNoteTitle(dataTitle);
+        setNoteAuthor(dataAuthor);
+        setNoteDate(dataDate);
+        setNoteTexts(dataTexts);
+        setNoteAvailableDays(dataAvailableDays);
+        setNotePassword(dataPassword);
     }
 
     // 按下 Edit 按鈕：驗證密碼 > 正確即可進入編輯模式

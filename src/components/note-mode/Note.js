@@ -2,13 +2,13 @@ import React from "react";
 import { useNoteData } from "../../Hooks/NoteContext";
 
 export default function Note() {
-    const { title, author, date, texts } = useNoteData();
+    const { noteTitle, noteAuthor, noteDate, noteTexts } = useNoteData();
 
     return(
         <>
-            <h1 className="header">{title}</h1>
-            <p className="author">{author + " ・ " + date}</p>
-            <p className="textarea">{texts}</p>
+            <h1 className="header">{noteTitle}</h1>
+            <p className="author">{noteAuthor + " ・ " + noteDate}</p>
+            <p className="textarea">{noteTexts}</p>
         </>
     );
 }

@@ -6,7 +6,7 @@ import unshowPWDIcon from "../../img/unshow-PWD-icon.svg";
 import { useNoteData } from "../../Hooks/NoteContext";
 
 export default function SetPasswordDialog({ setShowSetPasswordDialog }) {
-    const { password, setPassword } = useNoteData();
+    const { notePassword, setNotePassword } = useNoteData();
     const [showPassword, setShowPassword] = useState(false);
     const inputRef = useRef();
     const [inputError, setInputError] = useState(false);
@@ -23,14 +23,14 @@ export default function SetPasswordDialog({ setShowSetPasswordDialog }) {
             inputRef.current.value = '';
         }  else {
             setInputError(false);
-            setPassword(inputValue);
+            setNotePassword(inputValue);
         }
     }
 
     // 關閉刪除對話框（關閉前確認密碼是否符合格式，否則重新設定）
     function closeDeleteDialog() {
         setInputError(false);
-        if ( password.length >=6 && password.length <=12 ) {
+        if ( notePassword.length >=6 && notePassword.length <=12 ) {
             setShowSetPasswordDialog(false);
         } else {
             setInputError(true);

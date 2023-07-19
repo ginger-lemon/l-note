@@ -28,6 +28,7 @@ export const StyledArticle = styled.article`
     }
 
     .header {
+        width: inherit;
         font-size: 32px;
         font-weight: 700;
     }
