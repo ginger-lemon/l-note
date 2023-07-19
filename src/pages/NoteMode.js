@@ -6,33 +6,50 @@ import ShareDialog from "../components/note-mode/ShareDialog";
 import Note from "../components/note-mode/Note";
 import { useNavigate } from "react-router-dom";
 import { useNoteData } from "../Hooks/NoteContext";
-import { fakeNote } from "../data/fakeData";
+import { getNoteFromDatabase, getNoteFromFirestore } from "../library/fetchToFirestore";
 
 export default function NoteMode() {
     const { 
         setTitle,
         setAuthor,
         setTexts,
+        setDate,
         setAvailableDays,
+        setPassword
     } = useNoteData();
     
     const [wantShare, setWantShare] = useState(false);
     const navigate = useNavigate();
 
     // 當 NoteMode mount 時 get 資料庫資料且將值設定到變數中
-    useEffect(() => {
+    useEffect(() => {        
+        getDataFromDatabaseAndSetDatas(noteID)
+    }, []);
+
+    function getDataFromDatabaseAndSetDatas(noteID) {
+        // 解構取得的資料
         const { 
+            dataNoteID,
             dataTitle,
             dataAuthor, 
+            dataDate,
             dataTexts,
             dataAvailableDays,
-        } = fakeNote;
+            dataPassword,
+        } = getNoteFromFirestore(noteID);
 
+        // 從資料庫 get 資料
+        getNoteFromDatabase(noteID);
+
+        // 將取得的資料更新到變數中
         setTitle(dataTitle);
         setAuthor(dataAuthor);
+        setDate(dataDate);
         setTexts(dataTexts);
         setAvailableDays(dataAvailableDays);
-    }, []);
+        setPassword(dataPassword);
+    }
+
 
     function toggleToEditMode() {
         // TO DO: 之後要處理切換到編輯模式但是網址不變

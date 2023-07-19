@@ -1,5 +1,6 @@
-import { collection, deleteDoc, getDoc, getDocs, setDoc, updateDoc } from "firebase/firestore";
-import { database, doc, setDoc, updateDoc, deleteDoc  } from "../firebaseConfig";
+import React from "react";
+import { collection, doc, deleteDoc, getDoc, getDocs, setDoc, updateDoc } from "firebase/firestore";
+import { database } from "../firebaseConfig";
 
 // ＝＝＝＝ 初始化資料庫的資料格式 ＝＝＝＝//
 class Note{
@@ -59,20 +60,30 @@ const noteConverter = {
     // merge: 是否覆蓋修改的資料？ true:避免原有資料整筆被覆蓋或刪除，類似 update
 
    // 使用 custom class 增加資料，可能要放參數在 () 內
-    export async function setNoteToFirestore(noteID, notePackage) {
+    export async function setNoteToDatabase(noteID, {
+        id, 
+        title, 
+        author, 
+        date, 
+        texts, 
+        availableDays, 
+        password,
+        timeStamp,
+    }) {
         try {
-            const noteRef = doc(database, "notes". noteID).withConverter(noteConverter);
+            const ref = doc(database, "notes", noteID).withConverter(noteConverter);
             // TO DO: 確認整包資料、 noteID 的傳入方式
             // 整個 id.... 應該可以直接放在一個物件直接代入
-            await setDoc(noteRef, new Note(
-                id,
+            await setDoc(ref, new Note({
+                id, 
                 title, 
                 author, 
                 date, 
                 texts, 
                 availableDays, 
                 password,
-            ))
+                timeStamp
+            }))
             // await setDoc(doc(database, "notes", noteID), data);
         } catch (error) {
             console.error("Error: ", error);
@@ -84,11 +95,23 @@ const noteConverter = {
 // ＝＝＝＝ 使用 update 更新資料庫指定資料 ＝＝＝＝
 
     // 設定指定欄位的資料
-    export async function updateNoteToFirestore(fieldName, updataDatas) {
+    export async function updateNoteToDatabase(noteID, {
+        title, 
+        author,
+        texts,
+        availableDays,
+        password,
+    }) {
         try {
             // TO DO: filedName 到時候可能要替換成樣板 `${variable}` 去抓名字
-            const noteIDRef = doc(database, "notes", fieldName);
-            await updateDoc(noteIDRef, updataDatas);
+            const ref = doc(database, "notes", noteID);
+            await updateDoc(ref, {
+                title, 
+                author,
+                texts,
+                availableDays,
+                password,
+            });
 
         } catch (error) {
             console.error("Error: ", error);
@@ -99,7 +122,7 @@ const noteConverter = {
 
 // ＝＝＝＝ 使用 delete 更新資料庫指定資料 ＝＝＝＝
 
-    export async function deleteNoteOnFirestore(noteID) {
+    export async function deleteNoteOnDatabase(noteID) {
         // 刪除 noteID 的 doc
         await deleteDoc(doc(database, "notes", noteID));
     }
@@ -121,7 +144,7 @@ const noteConverter = {
 
 // ＝＝＝＝ 使用 get 更新資料庫指定資料 ＝＝＝＝
 
-    export async function getNoteFromFirestore(noteID) {
+    export async function getNoteFromDatabase(noteID) {
         const ref = doc(database, "note", noteID).withConverter(noteConverter);
         const docSnap = await getDoc(ref);
         if (docSnap.exists()) {
@@ -143,7 +166,7 @@ const noteConverter = {
 
     // 主要用於查詢密碼欄位：先找到對應的 doc 、再去找密碼對不對
     // TO DO: 可能 collection 要改成 doc 
-    export async function SearchNotePasswordInFirestore(noteID, password) {
+    export async function SearchNotePasswordInDatabase(noteID, password) {
         // 建立指定資料的參考
         const notesRef = doc(database, "notes", noteID);
         // 建立查詢集合的查詢（ password 是使用者設定的密碼）ㄤ

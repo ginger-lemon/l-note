@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useState } from "react";
 import Button from "../components/button.js";
 import { StyledAsideContainer, StyledMainContainer } from "../styles/Styled-mainStrucutre.js";
 import { StyledArticle } from "../styles/Styled-edit-note.js";
@@ -7,11 +7,12 @@ import { useNoteData } from "../Hooks/NoteContext.js";
 import DeleteDialog from "../components/edit-mode/DeleteDialog.js";
 import Editor from "../components/edit-mode/Editor.js";
 import { useNavigate } from "react-router-dom";
+import { setNoteToDatabase, updateNoteToDatabase} from "../library/fetchToFirestore.js";
 
 export default function EditMode() {
     const { 
+        title, author, date, texts, password,
         timeStamp, setTimeStamp,
-        // wantDelete, setWantDelete,
         availableDays, setAvailableDays,
         setDate, noteID
     } = useNoteData();
@@ -51,16 +52,37 @@ export default function EditMode() {
     function handlePublish (e) {
         e.preventDefault();
 
+        // 處理資料新增/更新
         if (timeStamp === undefined) {
             setDate(getPublishDate());
             setTimeStamp(getPublishTime());
-            console.log(timeStamp);
             console.log('使用 set 新增資料');
-            toggleToNoteMode()
+
+            // 使用 set 新增資料
+            setNoteToDatabase(noteID, {
+                noteID,
+                title, 
+                author,
+                date,
+                texts,
+                availableDays,
+                password,
+                timeStamp,
+            });
+            
+            toggleToNoteMode();
 
         } else {
-            console.log(timeStamp);
             console.log('使用 update 更新資料，不能更新到 title');
+            // 使用 update 更新資料
+            updateNoteToDatabase(noteID, {
+                title, 
+                author,
+                texts,
+                availableDays,
+                password,
+            });
+
             toggleToNoteMode();
         }        
     }
