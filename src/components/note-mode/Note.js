@@ -2,7 +2,7 @@ import React from "react";
 import { useNoteData } from "../../Hooks/NoteContext";
 
 export default function Note() {
-    const { noteTitle, noteAuthor, noteDate, noteTexts } = useNoteData();
+    let { noteTitle, noteAuthor, noteDate, noteTexts } = useNoteData();
 
     return(
         <>

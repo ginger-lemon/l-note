@@ -41,7 +41,7 @@ export const noteConverter = {
         };
     },
     // firestore => js
-    fromFireStore: (snapshot, options) => {
+    fromFirestore: (snapshot, options) => {
         const data = snapshot.data(options);
         return new Note(
             // data.id,
@@ -75,7 +75,7 @@ export const noteConverter = {
         noteTimeStamp,
     }) {
         try {
-            const ref = doc(database, "notes", noteID).withConverter(noteConverter);
+            const ref = doc(database, "note", noteID).withConverter(noteConverter);
 
             console.log(noteTitle);
             // TO DO: 確認整包資料、 noteID 的傳入方式
@@ -105,21 +105,21 @@ export const noteConverter = {
 
     // 設定指定欄位的資料
     export async function updateNoteToDatabase(noteID, {
-        title, 
-        author,
-        texts,
+        noteTitle, 
+        noteAuthor,
+        noteTexts,
         availableDays,
-        password,
+        notePassword,
     }) {
         try {
             // TO DO: filedName 到時候可能要替換成樣板 `${variable}` 去抓名字
-            const ref = doc(database, "notes", noteID);
+            const ref = doc(database, "note", noteID);
             await updateDoc(ref, {
-                title, 
-                author,
-                texts,
-                availableDays,
-                password,
+                title: noteTitle, 
+                author: noteAuthor,
+                texts: noteTexts,
+                availableDays: availableDays,
+                password: notePassword,
             });
 
         } catch (error) {
@@ -139,7 +139,7 @@ export const noteConverter = {
     // 刪除特定欄位
     // TO DO: 確定是否可以只刪除某個 doc 下的欄位
     export async function deleteOneFieldInNote(field) {
-        const ref = doc(database, "notes", field);
+        const ref = doc(database, "note", field);
         // 從文擋中移除指定的欄位
         await updateDoc(ref, { 
             field: deleteField()
@@ -154,14 +154,23 @@ export const noteConverter = {
 // ＝＝＝＝ 使用 get 更新資料庫指定資料 ＝＝＝＝
 
     export async function getNoteFromDatabase(noteID) {
+        console.log('noteID: ' ,noteID);
         const ref = doc(database, "note", noteID).withConverter(noteConverter);
+        console.log('ref: ');
+        console.log(ref)
         const docSnap = await getDoc(ref);
+        console.log('docSnap: ');
+        console.log(docSnap)
         if (docSnap.exists()) {
             // Convert to Note Object
+            console.log(docSnap.exists());
             const note = docSnap.data();
+            console.log(docSnap.data());
+            return note;
             // If there has some instance method
         } else {
             console.log('No such document!');
+            return null;
         }
     }
 
@@ -177,7 +186,7 @@ export const noteConverter = {
     // TO DO: 可能 collection 要改成 doc 
     export async function SearchNotePasswordInDatabase(noteID, password) {
         // 建立指定資料的參考
-        const notesRef = doc(database, "notes", noteID);
+        const notesRef = doc(database, "note", noteID);
         // 建立查詢集合的查詢（ password 是使用者設定的密碼）ㄤ
         const q = query(notesRef. where ("password", "==", password));
 

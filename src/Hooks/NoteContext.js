@@ -7,33 +7,25 @@ export const NoteDataContextProvider = ({ children }) => {
     const [noteTitle, setNoteTitle] = useState('untitle');
     const [noteAuthor, setNoteAuthor] = useState('Unknow');
     const [noteTexts, setNoteTexts] = useState('A secret.');
-    // const [date, setDate] = useState('2023-07-17');
-    // -------------- 功能未追加 ------------------
     const [notePassword, setNotePassword] = useState('');
-    // --------------------------------
-    // const [wantDelete, setWantDelete] = useState(false);
-    let noteDate, noteTimeStamp, noteID;
     const [availableDays, setAvailableDays] = useState(Infinity);
-    // const [timeStamp, setTimeStamp] = useState(undefined);
-    // const noteID = generateNoteID(title, date);
+    const [noteDate, setNoteDate] = useState(undefined);
+    const [noteTimeStamp, setNoteTimeStamp] = useState(undefined);
+    const [noteID, setNoteID] = useState(undefined); 
 
-    // function generateNoteID(title, date) {
-    //     const id = 
-    //         title.replace(/\s/g, "-") + "-" + date;
-    //     return id;
-    // }
- 
+    // let noteDate, noteTimeStamp, noteID;
+
     return (
         <NoteDataContext.Provider
             value = {{
                 noteTitle, setNoteTitle,
                 noteAuthor, setNoteAuthor,
                 noteTexts, setNoteTexts,
-                noteDate,
+                noteDate, setNoteDate,
                 notePassword, setNotePassword,
                 availableDays, setAvailableDays,
-                noteTimeStamp,
-                noteID
+                noteTimeStamp, setNoteTimeStamp,
+                noteID, setNoteID,
             }}
         >
             {children}
@@ -46,22 +38,22 @@ export function useNoteData() {
         noteTitle, setNoteTitle,
         noteAuthor, setNoteAuthor,
         noteTexts, setNoteTexts,
-        noteDate,
+        noteDate, setNoteDate,
         notePassword, setNotePassword,
         availableDays, setAvailableDays,
-        noteTimeStamp,
-        noteID
+        noteTimeStamp, setNoteTimeStamp,
+        noteID, setNoteID,
     } = useContext(NoteDataContext);
 
     return {
         noteTitle, setNoteTitle,
         noteAuthor, setNoteAuthor,
         noteTexts, setNoteTexts,
-        noteDate, 
+        noteDate, setNoteDate,
         notePassword, setNotePassword,
         availableDays, setAvailableDays,
-        noteTimeStamp,
-        noteID
+        noteTimeStamp, setNoteTimeStamp,
+        noteID, setNoteID,
     };
 }
 

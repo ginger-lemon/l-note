@@ -11,10 +11,10 @@ import SetPasswordDialog from "../components/edit-mode/SetPasswordDialog.js";
 
 export default function EditMode() {
     let { 
-        noteTitle, noteAuthor, noteTexts, notePassword, noteDate,
-        noteTimeStamp, 
+        noteTitle, noteAuthor, noteTexts, notePassword, noteDate, setNoteDate,
+        noteTimeStamp, setNoteTimeStamp,
         availableDays, setAvailableDays,
-        noteID
+        noteID, setNoteID
     } = useNoteData();
 
     // 管理對話框的動態
@@ -75,6 +75,12 @@ export default function EditMode() {
         return id;
     }
 
+    function getPunlishedTimes() {
+        setNoteDate(getPublishedDate());
+        setNoteTimeStamp(getTimeStamp());
+    }
+    
+
     // 如果 timestamp === undefined => 資料庫無資料， set
     // 如果 timestamp !== undefined => 曾經發送資料， update
     function handlePublish (e) {
@@ -84,7 +90,7 @@ export default function EditMode() {
         if (noteTimeStamp === undefined) {
             noteDate = getPublishedDate();
             noteTimeStamp = getTimeStamp();
-    
+
             noteID =  generateNoteID(noteTitle, noteDate);
     
             console.log(noteDate);
@@ -102,6 +108,11 @@ export default function EditMode() {
                 notePassword,
                 noteTimeStamp,
             });
+
+            setNoteDate(noteDate);
+            setNoteTimeStamp(noteTimeStamp);
+            setNoteID(noteID);
+            console.log('測試發送資料時 noteID 有被值' ,noteID)
             
             toggleToNoteMode();
 
