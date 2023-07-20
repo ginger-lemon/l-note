@@ -10,11 +10,11 @@ import { setNoteToDatabase, updateNoteToDatabase} from "../library/fetchToFirest
 import SetPasswordDialog from "../components/edit-mode/SetPasswordDialog.js";
 
 export default function EditMode() {
-    let { 
-        noteTitle, noteAuthor, noteTexts, notePassword, noteDate, setNoteDate,
-        noteTimeStamp, setNoteTimeStamp,
+    const { 
+        noteTitle, noteAuthor, noteTexts, notePassword,
         availableDays, setAvailableDays,
-        noteID, setNoteID
+        setNoteID, setNoteDate,
+        noteTimeStamp, setNoteTimeStamp,
     } = useNoteData();
 
     // 管理對話框的動態
@@ -38,18 +38,20 @@ export default function EditMode() {
         if (e.target.checked !== false) {
             setShowDeleteDialog(true);
             setAvailableDays(7);
+            console.log(availableDays);
         } else {
             setShowDeleteDialog(false);
             setAvailableDays(Infinity);
+            console.log(availableDays);
         }
     } 
 
-
-    function toggleToNoteMode() {
+    function toggleToNoteMode(noteID) {
         console.log('切換到 NoteMode ');
+        console.log('noteID: ', noteID)
         // testNote 之後會切換成 noteID 
-        console.log(noteID);
         navigate(`/${noteID}`);   
+        console.log('好像切換的部分有問題＠＠但之前都沒問題ㄉ說⋯⋯')
     }
 
     // 取得發佈時間戳記
@@ -69,37 +71,35 @@ export default function EditMode() {
         return publishDate;
     }
 
-    function generateNoteID(noteTitle, noteDate) {
+    function generateNoteID(title, date) {
         const id = 
-        noteTitle.replace(/\s/g, "-") + "-" + noteDate;
+        title.replace(/\s/g, "-") + "-" + date;
         return id;
     }
-
-    function getPunlishedTimes() {
-        setNoteDate(getPublishedDate());
-        setNoteTimeStamp(getTimeStamp());
-    }
-    
 
     // 如果 timestamp === undefined => 資料庫無資料， set
     // 如果 timestamp !== undefined => 曾經發送資料， update
     function handlePublish (e) {
         e.preventDefault();
+        let noteDate, noteTimeStamp, noteID, noteUID;
        
         // 處理資料新增/更新
         if (noteTimeStamp === undefined) {
             noteDate = getPublishedDate();
             noteTimeStamp = getTimeStamp();
 
-            noteID =  generateNoteID(noteTitle, noteDate);
-    
-            console.log(noteDate);
-            console.log(noteTimeStamp);
-            console.log(noteID);
+            console.log('noteDate: ' , noteDate);
+            console.log('noteTimeStamp: ', noteTimeStamp);
+
+            noteUID =  generateNoteID(noteTitle, noteDate);
+            noteID = noteUID;
+
+            console.log('在送出按鈕內的 noteUID: ', noteUID);
+            console.log('在送出按鈕內的 noteID: ', noteID)
+            console.log('availableDays: ', availableDays);
 
             // 使用 set 新增資料
-            setNoteToDatabase(noteID, {
-                // noteID,
+            setNoteToDatabase(noteUID, {
                 noteTitle, 
                 noteAuthor,
                 noteDate,
@@ -107,16 +107,18 @@ export default function EditMode() {
                 availableDays,
                 notePassword,
                 noteTimeStamp,
+                noteID,
             });
+
+            console.log('測試發送資料時 noteUID 有被值' ,noteUID)
 
             setNoteDate(noteDate);
             setNoteTimeStamp(noteTimeStamp);
             setNoteID(noteID);
-            console.log('測試發送資料時 noteID 有被值' ,noteID)
             
-            toggleToNoteMode();
-
-            return {noteDate, noteTimeStamp, noteID};
+            // 切換到 NoteMode
+            navigate(`/${noteID}`);   
+            // toggleToNoteMode(noteUID);
 
         } else {
             console.log('使用 update 更新資料，不能更新到 title');

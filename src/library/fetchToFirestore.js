@@ -5,7 +5,6 @@ import { database } from "../firebaseConfig";
 // ＝＝＝＝ 初始化資料庫的資料格式 ＝＝＝＝//
 class Note{
     constructor (
-        // id,
         title, 
         author, 
         date, 
@@ -13,8 +12,8 @@ class Note{
         availableDays, 
         password,
         timeStamp,
+        id,
     ) {
-        // this.id = id;
         this.title = title;
         this.author = author;
         this.date = date;
@@ -22,6 +21,7 @@ class Note{
         this.availableDays = availableDays;
         this.password = password;
         this.timeStamp = timeStamp;
+        this.id = id;
     }
 }
 
@@ -30,7 +30,6 @@ export const noteConverter = {
     // js => firestore
     toFirestore: (note) => {
         return {
-            // id: note.id,
             title: note.title,
             author: note.author,
             date: note.date, 
@@ -38,13 +37,13 @@ export const noteConverter = {
             availableDays: note.availableDays,
             password: note.password,
             timeStamp: note.timeStamp,
+            id: note.id,
         };
     },
     // firestore => js
     fromFirestore: (snapshot, options) => {
         const data = snapshot.data(options);
         return new Note(
-            // data.id,
             data.title,
             data.author,
             data.date, 
@@ -52,6 +51,7 @@ export const noteConverter = {
             data.availableDays,
             data.password,
             data.timeStamp,
+            data.id,
         );
     }
 }
@@ -64,8 +64,7 @@ export const noteConverter = {
     // merge: 是否覆蓋修改的資料？ true:避免原有資料整筆被覆蓋或刪除，類似 update
 
    // 使用 custom class 增加資料，可能要放參數在 () 內
-    export async function setNoteToDatabase(noteID, {
-        // id, 
+    export async function setNoteToDatabase(noteUID, {
         noteTitle, 
         noteAuthor, 
         noteDate, 
@@ -73,15 +72,16 @@ export const noteConverter = {
         availableDays, 
         notePassword,
         noteTimeStamp,
+        noteID,
     }) {
         try {
-            const ref = doc(database, "note", noteID).withConverter(noteConverter);
+            const ref = doc(database, "note", noteUID).withConverter(noteConverter);
 
-            console.log(noteTitle);
+            console.log('noteUID:' ,noteUID);
+
             // TO DO: 確認整包資料、 noteID 的傳入方式
             // 整個 id.... 應該可以直接放在一個物件直接代入
             await setDoc(ref, new Note(
-                // id,
                 noteTitle, 
                 noteAuthor, 
                 noteDate, 
@@ -89,10 +89,8 @@ export const noteConverter = {
                 availableDays, 
                 notePassword,
                 noteTimeStamp,
+                noteID,
             ))
-           
-
-            // await setDoc(doc(database, "notes", noteID), data);
         } catch (error) {
             console.log('id.noteTitle: ', noteTitle)
             console.error("Error: ", error);
@@ -131,9 +129,9 @@ export const noteConverter = {
 
 // ＝＝＝＝ 使用 delete 更新資料庫指定資料 ＝＝＝＝
 
-    export async function deleteNoteOnDatabase(noteID) {
+    export async function deleteNoteOnDatabase(noteUID) {
         // 刪除 noteID 的 doc
-        await deleteDoc(doc(database, "notes", noteID));
+        await deleteDoc(doc(database, "notes", noteUID));
     }
 
     // 刪除特定欄位
@@ -154,18 +152,11 @@ export const noteConverter = {
 // ＝＝＝＝ 使用 get 更新資料庫指定資料 ＝＝＝＝
 
     export async function getNoteFromDatabase(noteID) {
-        console.log('noteID: ' ,noteID);
         const ref = doc(database, "note", noteID).withConverter(noteConverter);
-        console.log('ref: ');
-        console.log(ref)
         const docSnap = await getDoc(ref);
-        console.log('docSnap: ');
-        console.log(docSnap)
         if (docSnap.exists()) {
             // Convert to Note Object
-            console.log(docSnap.exists());
             const note = docSnap.data();
-            console.log(docSnap.data());
             return note;
             // If there has some instance method
         } else {
@@ -184,9 +175,9 @@ export const noteConverter = {
 
     // 主要用於查詢密碼欄位：先找到對應的 doc 、再去找密碼對不對
     // TO DO: 可能 collection 要改成 doc 
-    export async function SearchNotePasswordInDatabase(noteID, password) {
+    export async function SearchNotePasswordInDatabase(noteUID, password) {
         // 建立指定資料的參考
-        const notesRef = doc(database, "note", noteID);
+        const notesRef = doc(database, "note", noteUID);
         // 建立查詢集合的查詢（ password 是使用者設定的密碼）ㄤ
         const q = query(notesRef. where ("password", "==", password));
 
