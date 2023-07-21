@@ -61,7 +61,9 @@ export default function SetPasswordDialog({ setShowSetPasswordDialog }) {
                     src={ showPassword ? showPWDIcon : unshowPWDIcon }
                     onClick={() => setShowPassword(!showPassword)}
                 />
-                {inputError && (<p style={{color: "red"}}>{inputErrorMessage}</p>)}
+                {inputError && (
+                    <p style={{color: "red"}}>{inputErrorMessage}</p>
+                )}
                 
             </StyledDialogCustomDiv>
         </Dialog>

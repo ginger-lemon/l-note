@@ -1,15 +1,38 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Dialog from "../dialog";
 import { StyledDialogCustomDiv } from "../../styles/Styled.Dialog";
 import showPWDIcon from "../../img/show-PWD-icon.svg";
 import unshowPWDIcon from "../../img/unshow-PWD-icon.svg";
+import { useNoteData } from "../../Hooks/NoteContext";
+import { useNavigate } from "react-router-dom";
 
 export default function VarifyDialog({ setShowVarifyDialog }) {
+    const { notePassword } = useNoteData();
     const [showPassword, setShowPassword] = useState(false);
+    const [inputPassword, setInputPassword] = useState();
+    const inputRef = useRef();
 
-    // 關閉驗證對話框
+    const navigate = useNavigate();
+   
+    function handleInputPassword(e) {
+        const inputValue = inputRef.current.value;
+        setInputPassword(inputValue);
+    }
+
+    function checkPassword() {
+        if (inputPassword !== notePassword) {
+            alert('Password error!');
+            setShowPassword(false);
+        } else {
+            alert('Success!')
+            navigate("/");
+        }
+    }
+ 
+    // 關閉驗證對話框、比對密碼是否正確
     function closeVarifyDialog() {
-        setShowVarifyDialog(false)
+        checkPassword();
+        setShowVarifyDialog(false);
     } 
 
     return (
@@ -22,6 +45,8 @@ export default function VarifyDialog({ setShowVarifyDialog }) {
                 <input
                     style={{ width: "250px" }}
                     type={showPassword ? 'text' : 'password'}
+                    ref={inputRef}
+                    onChange={handleInputPassword}
                 >
                 </input>
                 <img 

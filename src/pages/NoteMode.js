@@ -11,7 +11,7 @@ import VarifyDialog from "../components/note-mode/EditVarifyDialog";
 
 export default function NoteMode() {
     const { 
-        noteID,
+        password,
         setNoteID,
         setNoteTitle,
         setNoteAuthor,
@@ -30,7 +30,6 @@ export default function NoteMode() {
     const { urlNoteID } = useParams(); // 取得 url 後的自訂片段
 
     const [isLoading, setIsLoading] = useState(false);
-    
 
     // TO DO: 解決閃爍問題
     useEffect(() => {     
@@ -68,12 +67,14 @@ export default function NoteMode() {
     function toggleToEditMode() {
         // TO DO: 之後要處理切換到編輯模式但是網址不變
         handleAccessProgress();
+        // navigate("/");
     }
 
     function handleAccessProgress() {
         // TO DO: 處理可開啟編輯模式的密碼驗證 
         console.log("開啟驗證密碼對話框");
         setShowVarifyDialog(true);
+        
     }
     
     return (
@@ -85,13 +86,11 @@ export default function NoteMode() {
                 <Button 
                     btnName="Edit"
                     onClick={toggleToEditMode}
-                >
-                </Button>
+                />
                 <Button 
                     btnName="Share"
                     onClick={() => {setShowShareDialog(!showShareDialog)}}
-                >
-                </Button>
+                />
             </StyledAsideContainer>
             { showShareDialog && 
                 <ShareDialog 
