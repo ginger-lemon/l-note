@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Button from "../components/button.js";
-import { StyledAsideContainer, StyledMainContainer } from "../styles/Styled-mainStrucutre.js";
-import { StyledArticle } from "../styles/Styled-edit-note.js";
+import { StyledAsideContainer, StyledMainContainer } from "../styles/Styled-Main-Aside.js";
+import { StyledArticle } from "../styles/Styled-Article.js";
 import { useNoteData } from "../Hooks/NoteContext.js";
 import DeleteDialog from "../components/edit-mode/DeleteDialog.js";
 import Editor from "../components/edit-mode/Editor.js";

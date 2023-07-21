@@ -10,7 +10,7 @@ export const StyledFooter = styled.footer`
     text-align: center;
     padding: 10px;
 
-    /* 定位在最下方 */
-    /* position: fixed;
-    bottom: 0px; */
+    /* 定位在最下方 */ 
+    position: sticky;
+    bottom: 0px;
 `;

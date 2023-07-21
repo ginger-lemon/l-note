@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import Dialog from "../dialog";
 import { StyledDialogCustomDiv } from "../../styles/Styled.Dialog";
+import showPWDIcon from "../../img/show-PWD-icon.svg";
+import unshowPWDIcon from "../../img/unshow-PWD-icon.svg";
 
 export default function VarifyDialog({ setShowVarifyDialog }) {
     const [showPassword, setShowPassword] = useState(false);

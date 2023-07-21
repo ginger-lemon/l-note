@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { StyledMainContainer, StyledAsideContainer } from "../styles/Styled-mainStrucutre";
-import { StyledArticle } from "../styles/Styled-edit-note";
+import { StyledMainContainer, StyledAsideContainer } from "../styles/Styled-Main-Aside";
+import { StyledArticle } from "../styles/Styled-Article";
 import Button from "../components/button";
 import ShareDialog from "../components/note-mode/ShareDialog";
 import Note from "../components/note-mode/Note";
@@ -42,27 +42,32 @@ export default function NoteMode() {
     // 當 NoteMode mount/unmount 時取得 local sotrage 資料
     async function getDataFromDatabaseAndSetDatas(noteID) {
         // 從資料庫 get 資料
-        const note = await getNoteFromDatabase(noteID);
 
-        console.log('從資料庫 get 的 note: ');
-        console.log(note); // null
+        try {
+            const note = await getNoteFromDatabase(noteID);
+            console.log('從資料庫 get 的 note: ');
+            console.log(note); // null
 
-        // 將取得的資料更新到變數中
-        setNoteTitle(note.title);
-        setNoteAuthor(note.author);
-        setNoteDate(note.date)
-        setNoteTexts(note.texts);
-        setAvailableDays(note.availableDays);
-        setNotePassword(note.password);
-        setNoteTimeStamp(note.timeStamp);
-        setNoteID(note.id);
-        // console.log(note.noteID);
+            // 將取得的資料更新到變數中
+            setNoteTitle(note.title);
+            setNoteAuthor(note.author);
+            setNoteDate(note.date)
+            setNoteTexts(note.texts);
+            setAvailableDays(note.availableDays);
+            setNotePassword(note.password);
+            setNoteTimeStamp(note.timeStamp);
+            setNoteID(note.id);
+        } catch (error) {
+            console.log('404 not found')
+            navigate("/error");
+        }
+
     }
 
     // 按下 Edit 按鈕：驗證密碼 > 正確即可進入編輯模式
     function toggleToEditMode() {
         // TO DO: 之後要處理切換到編輯模式但是網址不變
-        navigate("/");
+        handleAccessProgress();
     }
 
     function handleAccessProgress() {
@@ -98,7 +103,6 @@ export default function NoteMode() {
                     setShowVarifyDialog={setShowVarifyDialog}
                 />
             }
-
         </StyledMainContainer>
     );
 }
