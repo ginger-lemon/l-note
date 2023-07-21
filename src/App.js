@@ -8,7 +8,7 @@ import { NoteDataContextProvider } from "./Hooks/NoteContext";
 
 export default function App() {
     // TO DO: 處理 noteID 的問題，先用 testNote 當測試路徑
-    const { noteID } = useParams();
+    const { urlNoteID } = useParams();
 
     return (
         <>  
@@ -16,7 +16,7 @@ export default function App() {
             <NoteDataContextProvider>
             <Routes>
                 <Route path="/" element={<EditMode />}/>
-                <Route path="/:noteID" element={<NoteMode/>}/>
+                <Route path="/:urlNoteID" element={<NoteMode/>}/>
             </Routes>
             </NoteDataContextProvider>
             <StyledFooter>

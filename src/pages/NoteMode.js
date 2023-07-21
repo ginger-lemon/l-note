@@ -4,7 +4,7 @@ import { StyledArticle } from "../styles/Styled-edit-note";
 import Button from "../components/button";
 import ShareDialog from "../components/note-mode/ShareDialog";
 import Note from "../components/note-mode/Note";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useNoteData } from "../Hooks/NoteContext";
 import { getNoteFromDatabase } from "../library/fetchToFirestore";
 import VarifyDialog from "../components/note-mode/EditVarifyDialog";
@@ -21,19 +21,25 @@ export default function NoteMode() {
         setNotePassword,
         setNoteTimeStamp,
     } = useNoteData();
+
     const [showShareDialog, setShowShareDialog] = useState(false);
     const [showVarifyDialog, setShowVarifyDialog] = useState(false);
-    const navigate = useNavigate();
 
-    // 當 noteID 改變時 時 get 資料庫資料且將值設定到變數中
-    useEffect(() => {        
-        console.log('測試 noteID 的值：' , noteID);
-        getDataFromDatabaseAndSetDatas(noteID);
-        // console.log('測試 noteID 的值：' , noteID);
-    }, [noteID]);
+    const navigate = useNavigate(); // 引入 useNavigate() 切換頁面（元件）
+
+    const { urlNoteID } = useParams(); // 取得 url 後的自訂片段
+
+    const [isLoading, setIsLoading] = useState(false);
+    
+
+    // TO DO: 解決閃爍問題
+    useEffect(() => {     
+            setIsLoading(true);
+            getDataFromDatabaseAndSetDatas(urlNoteID);
+            setIsLoading(false);
+    }, [urlNoteID]);
 
     // 當 NoteMode mount/unmount 時取得 local sotrage 資料
-
     async function getDataFromDatabaseAndSetDatas(noteID) {
         // 從資料庫 get 資料
         const note = await getNoteFromDatabase(noteID);
@@ -68,7 +74,7 @@ export default function NoteMode() {
     return (
         <StyledMainContainer>
             <StyledArticle>
-                <Note />
+                { isLoading ? null : ((<Note />)) }
             </StyledArticle>
             <StyledAsideContainer>
                 <Button 
