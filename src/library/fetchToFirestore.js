@@ -102,7 +102,7 @@ export const noteConverter = {
 // ＝＝＝＝ 使用 update 更新資料庫指定資料 ＝＝＝＝
 
     // 設定指定欄位的資料
-    export async function updateNoteToDatabase(noteID, {
+    export async function updateNoteToDatabase(noteUID, {
         noteTitle, 
         noteAuthor,
         noteTexts,
@@ -111,7 +111,7 @@ export const noteConverter = {
     }) {
         try {
             // TO DO: filedName 到時候可能要替換成樣板 `${variable}` 去抓名字
-            const ref = doc(database, "note", noteID);
+            const ref = doc(database, "note", noteUID);
             await updateDoc(ref, {
                 title: noteTitle, 
                 author: noteAuthor,

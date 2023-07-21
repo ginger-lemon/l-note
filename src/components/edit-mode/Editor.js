@@ -6,8 +6,8 @@ export default function Editor({ handleShowDeleteDialog, handleShowSetPasswordDi
         noteTitle, setNoteTitle,
         noteAuthor, setNoteAuthor, 
         noteTexts, setNoteTexts,
+        notePassword,
     } = useNoteData();
-
 
     return (
         <form

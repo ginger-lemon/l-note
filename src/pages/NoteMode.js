@@ -21,19 +21,18 @@ export default function NoteMode() {
         setNotePassword,
         setNoteTimeStamp,
     } = useNoteData();
-
-    // let { noteDate, noteTimeStamp, noteID } = useNoteData();
-
     const [showShareDialog, setShowShareDialog] = useState(false);
     const [showVarifyDialog, setShowVarifyDialog] = useState(false);
     const navigate = useNavigate();
 
-    // 當 NoteMode mount 時 get 資料庫資料且將值設定到變數中
+    // 當 noteID 改變時 時 get 資料庫資料且將值設定到變數中
     useEffect(() => {        
-        // console.log('測試 noteID 的值：' , noteID);
-        getDataFromDatabaseAndSetDatas(noteID);
         console.log('測試 noteID 的值：' , noteID);
-    }, []);
+        getDataFromDatabaseAndSetDatas(noteID);
+        // console.log('測試 noteID 的值：' , noteID);
+    }, [noteID]);
+
+    // 當 NoteMode mount/unmount 時取得 local sotrage 資料
 
     async function getDataFromDatabaseAndSetDatas(noteID) {
         // 從資料庫 get 資料
@@ -50,23 +49,8 @@ export default function NoteMode() {
         setAvailableDays(note.availableDays);
         setNotePassword(note.password);
         setNoteTimeStamp(note.timeStamp);
-        setNoteID(note.noteID);
-
-        console.log('noteID: ', noteID);
-
-        // 將資料儲存到 localStorage 中
-        // 將儲存的資料轉換成 JSON 儲存
-        const storedData = {
-            noteTitle: note.title,
-            noteAuthor: note.author,
-            noteTexts: note.texts,  
-            noteDate: note.date, 
-            notePassword: note.password,
-            availableDays: note.availableDays,
-            timeStamp: note.timeStamp,
-            noteID: note.noteID,
-        }; 
-        localStorage.setItem("localNoteState", JSON.stringify(storedData))
+        setNoteID(note.id);
+        // console.log(note.noteID);
     }
 
     // 按下 Edit 按鈕：驗證密碼 > 正確即可進入編輯模式

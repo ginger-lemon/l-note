@@ -14,7 +14,7 @@ export default function EditMode() {
         noteTitle, noteAuthor, noteTexts, notePassword,
         availableDays, setAvailableDays,
         setNoteID, setNoteDate,
-        noteTimeStamp, setNoteTimeStamp,
+        noteTimeStamp, setNoteTimeStamp, noteID
     } = useNoteData();
 
     // 管理對話框的動態
@@ -81,10 +81,13 @@ export default function EditMode() {
     // 如果 timestamp !== undefined => 曾經發送資料， update
     function handlePublish (e) {
         e.preventDefault();
-        let noteDate, noteTimeStamp, noteID, noteUID;
+        
        
         // 處理資料新增/更新
-        if (noteTimeStamp === undefined) {
+        // 如果 timeStamp 不等於初始值的 11111
+        if (noteTimeStamp === 11111) {
+            let noteDate, noteTimeStamp, noteID, noteUID;
+
             noteDate = getPublishedDate();
             noteTimeStamp = getTimeStamp();
 
@@ -110,20 +113,20 @@ export default function EditMode() {
                 noteID,
             });
 
-            console.log('測試發送資料時 noteUID 有被值' ,noteUID)
-
             setNoteDate(noteDate);
             setNoteTimeStamp(noteTimeStamp);
             setNoteID(noteID);
-            
-            // 切換到 NoteMode
+
+            console.log('測試發送資料時 noteUID 有被值' ,noteUID);
             navigate(`/${noteID}`);   
-            // toggleToNoteMode(noteUID);
+
+            // return noteDate, noteTimeStamp, noteID;
 
         } else {
+            let noteUID = noteID;
             console.log('使用 update 更新資料，不能更新到 title');
             // 使用 update 更新資料
-            updateNoteToDatabase(noteID, {
+            updateNoteToDatabase(noteUID, {
                 noteTitle, 
                 noteAuthor,
                 noteTexts,
@@ -131,8 +134,13 @@ export default function EditMode() {
                 notePassword,
             });
 
-            toggleToNoteMode();
+            navigate(`/${noteID}`); 
         }        
+
+        // setNoteDate(noteDate);
+        // setNoteTimeStamp(noteTimeStampimeStamp);
+        // setNoteID(noteID);
+   
     }
     
     return (
