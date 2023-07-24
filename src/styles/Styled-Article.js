@@ -59,12 +59,27 @@ export const StyledArticle = styled.article`
     }
 
     div {
-        /* border: 1px solid red; */
+
         label {
-            padding-left: 15px;
+            /* margin: 5px 0; */
+            padding-left: 10px;
             font-family: "Inter";
             font-weight: 100;
             font-size: 18px;
+            position: relative;
+            margin: 12px 0;
         }
+
+        img {
+            position: absolute;
+            margin-left: -38px;
+        }
+
+        input {
+            /* margin-left: 45px; */
+            border-bottom: 1px solid #A5A5A5;
+            border-radius: 10px;
+            }
+        
     }
 `;

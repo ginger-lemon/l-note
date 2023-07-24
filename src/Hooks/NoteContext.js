@@ -8,7 +8,7 @@ export const NoteDataContextProvider = ({ children }) => {
     const [noteTitle, setNoteTitle] = useLocalStorage("title", "Untitled");
     const [noteAuthor, setNoteAuthor] = useLocalStorage("author", "Unknow");
     const [noteTexts, setNoteTexts] = useLocalStorage("texts", "A note.");
-    const [notePassword, setNotePassword] = useState(1111);
+    const [notePassword, setNotePassword] = useState('');
     const [availableDays, setAvailableDays] = useState(Infinity);
     const [noteDate, setNoteDate] = useState('2023-07-21');
     const [noteTimeStamp, setNoteTimeStamp] = useLocalStorage("timeStamp", 11111);

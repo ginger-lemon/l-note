@@ -1,20 +1,63 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import { useNoteData } from "../../Hooks/NoteContext";
+import showPWDIcon from "../../img/show-PWD-icon.svg";
+import unshowPWDIcon from "../../img/unshow-PWD-icon.svg";
+
 
 export default function Editor({ handleShowDeleteDialog, handleShowSetPasswordDialog, handlePublish }) {
     const { 
         noteTitle, setNoteTitle,
         noteAuthor, setNoteAuthor, 
         noteTexts, setNoteTexts,
-        notePassword,
+        notePassword, setNotePassword
     } = useNoteData();
+
+    const [showPassword, setShowPassword] = useState(false);
+    const [passwordMessage, setPasswordMessage] = useState("Please set password for re-editing later.");
+    const passwordInputRef = useRef();
+    // let passwordCheck;
+
+    // function handleCheckPassword() {
+    //     if (notePassword === '') {
+    //         return passwordCheck = "Please set password";
+    //     }
+    //     else if (notePassword.length >=6 && notePassword.length <=12) {
+    //         return 
+    //         ;
+    //     } else {
+
+    //     }
+    // }
+    
+
+    function handleShowPassword() {
+        setShowPassword(!showPassword);
+    }
+
+
+    function handleSetPassword() {
+        const passwordInputValue = passwordInputRef.current.value;
+
+        if (!/^[a-zA-Z0-9]+$/.test(passwordInputValue)) {
+            console.log(passwordInputRef.current.value);
+            setPasswordMessage('Number and English letters only');
+            
+        } else if (passwordInputValue.length >=6 && passwordInputValue.length <=12) {
+            setNotePassword(passwordInputValue);
+            setPasswordMessage("Password done.");
+
+        } else {
+            setNotePassword(passwordInputValue);
+            setPasswordMessage("Password should be 6-12 characters.");
+        }
+
+    }
 
     return (
         <form
             id="editForm" 
             onSubmit={handlePublish}
         >
-            {/* <header> */}
                 <input 
                 style={{ width:"700px" }}
                 text="text" 
@@ -27,7 +70,6 @@ export default function Editor({ handleShowDeleteDialog, handleShowSetPasswordDi
                 defaultValue={noteTitle}
                 >
                 </input>
-            {/* </header> */}
             <input 
                 text="text" 
                 className="author" 
@@ -49,25 +91,27 @@ export default function Editor({ handleShowDeleteDialog, handleShowSetPasswordDi
                 defaultValue={noteTexts}
             >
             </textarea>
-        <div>
-            {/* 設定刪除時間 */}
-            <input 
-                type="checkbox" 
-                id="checkDelete"
-                onClick={handleShowDeleteDialog}
-            >
-            </input>
-            <label>Enable the feature to delete this note in the future? (default by 7 days).</label>
-            <br />
-            {/* 設定密碼 */}
-            <input
-                type="checkbox"
-                id="checkSetPassword"
-                onClick={handleShowSetPasswordDialog}
-            >
-            </input>
-            <label>Enable the option to set a password for editing this note in the future?</label>
-        </div>
+            <div>
+                <label>Password for note: </label>
+                <input
+                    className="input-password"
+                    style={{width: "300px"}}
+                    type={showPassword ? 'text' : 'password'}
+                    ref={passwordInputRef}
+                    placeholder="6-12 letters and numbers"
+                    onChange={handleSetPassword}
+
+                >
+                </input>
+                <img 
+                    src={showPassword ? showPWDIcon : unshowPWDIcon}
+                    height="30px"
+                    onClick={handleShowPassword}
+                />
+                <br />
+                <label>Check password: </label><span>{passwordMessage}</span>
+
+            </div>
     </form>
     );
 }

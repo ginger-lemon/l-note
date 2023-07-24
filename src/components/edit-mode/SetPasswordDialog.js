@@ -5,7 +5,7 @@ import showPWDIcon from "../../img/show-PWD-icon.svg";
 import unshowPWDIcon from "../../img/unshow-PWD-icon.svg";
 import { useNoteData } from "../../Hooks/NoteContext";
 
-export default function SetPasswordDialog({ setShowSetPasswordDialog }) {
+export default function SetPasswordDialog({ setShowSetPasswordDialog,  }) {
     const { notePassword, setNotePassword } = useNoteData();
     const [showPassword, setShowPassword] = useState(false);
     const inputRef = useRef();

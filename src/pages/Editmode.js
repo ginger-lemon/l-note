@@ -13,7 +13,7 @@ export default function EditMode() {
     const { 
         noteTitle, noteAuthor, noteTexts, notePassword,
         availableDays, setAvailableDays,
-        setNoteID, setNoteDate,
+        setNoteID, setNoteDate, timeStamp,
         noteTimeStamp, setNoteTimeStamp, noteID
     } = useNoteData();
 
@@ -25,12 +25,14 @@ export default function EditMode() {
     const navigate = useNavigate();
 
     // 處理顯示設定密碼的對話框
-    function handleShowSetPasswordDialog(e) {
-        if (e.target.checked !== false) {
-            setShowSetPasswordDialog(true);
-        } else {
-            setShowSetPasswordDialog(false);
-        }
+    function handleShowSetPasswordDialog() {
+        setShowSetPasswordDialog(true);
+        console.log("顯示密碼對話框");
+        // if (e.target.checked !== false) {
+        //     setShowSetPasswordDialog(true);
+        // } else {
+        //     setShowSetPasswordDialog(false);
+        // }
     }
 
     // 處理顯示設定刪除時間的對話框
@@ -81,65 +83,77 @@ export default function EditMode() {
     // 如果 timestamp !== undefined => 曾經發送資料， update
     function handlePublish (e) {
         e.preventDefault();
+        console.log('notePassword: ', notePassword);
         
-       
-        // 處理資料新增/更新
-        // 如果 timeStamp 不等於初始值的 11111
+        if (notePassword === '') {
+            alert('Password is not set. Please set up password.');
+        }
+
+        // 修改：按下按鈕切換到密碼對話框取得密碼後送出
+        // 確認密碼是否已經完成填寫
+        // 顯示設定密碼對話框設定資料
+        
         if (noteTimeStamp === 11111) {
             let noteDate, noteTimeStamp, noteID, noteUID;
-
-            noteDate = getPublishedDate();
-            noteTimeStamp = getTimeStamp();
-
-            console.log('noteDate: ' , noteDate);
-            console.log('noteTimeStamp: ', noteTimeStamp);
-
-            noteUID =  generateNoteID(noteTitle, noteDate);
-            noteID = noteUID;
-
-            console.log('在送出按鈕內的 noteUID: ', noteUID);
-            console.log('在送出按鈕內的 noteID: ', noteID)
-            console.log('availableDays: ', availableDays);
-
-            // 使用 set 新增資料
-            setNoteToDatabase(noteUID, {
-                noteTitle, 
-                noteAuthor,
-                noteDate,
-                noteTexts,
-                availableDays,
-                notePassword,
-                noteTimeStamp,
-                noteID,
-            });
-
-            setNoteDate(noteDate);
-            setNoteTimeStamp(noteTimeStamp);
-            setNoteID(noteID);
-
-            console.log('測試發送資料時 noteUID 有被值' ,noteUID);
-            navigate(`/${noteID}`);   
-
-            // return noteDate, noteTimeStamp, noteID;
+            console.log("setDoc 直接更新");
+            console.log('notePassword: ', notePassword);
 
         } else {
-            let noteUID = noteID;
-            console.log('使用 update 更新資料，不能更新到 title');
-            // 使用 update 更新資料
-            updateNoteToDatabase(noteUID, {
-                noteTitle, 
-                noteAuthor,
-                noteTexts,
-                availableDays,
-                notePassword,
-            });
+            console.log('選擇是否重新設定密碼');
+        }
+ 
+        // 處理資料新增/更新
+        // 如果 timeStamp 不等於初始值的 11111
+        // if (noteTimeStamp === 11111) {
+        //     let noteDate, noteTimeStamp, noteID, noteUID;
 
-            navigate(`/${noteID}`); 
-        }        
+        //     noteDate = getPublishedDate();
+        //     noteTimeStamp = getTimeStamp();
 
-        // setNoteDate(noteDate);
-        // setNoteTimeStamp(noteTimeStampimeStamp);
-        // setNoteID(noteID);
+        //     console.log('noteDate: ' , noteDate);
+        //     console.log('noteTimeStamp: ', noteTimeStamp);
+
+        //     noteUID =  generateNoteID(noteTitle, noteDate);
+        //     noteID = noteUID;
+        
+        //     console.log('在送出按鈕內的 noteUID: ', noteUID);
+        //     console.log('在送出按鈕內的 noteID: ', noteID)
+        //     console.log('availableDays: ', availableDays);
+
+            // 使用 set 新增資料
+            // setNoteToDatabase(noteUID, {
+            //     noteTitle, 
+            //     noteAuthor,
+            //     noteDate,
+            //     noteTexts,
+            //     availableDays,
+            //     notePassword,
+            //     noteTimeStamp,
+            //     noteID,
+            // });
+
+        //     setNoteDate(noteDate);
+        //     setNoteTimeStamp(noteTimeStamp);
+        //     setNoteID(noteID);
+
+        //     console.log('測試發送資料時 noteUID 有被值' ,noteUID);
+        //     navigate(`/${noteID}`);   
+
+        // } else {
+        //     let noteUID = noteID;
+        //     console.log('使用 update 更新資料，不能更新到 title');
+        //     // 使用 update 更新資料
+        //     updateNoteToDatabase(noteUID, {
+        //         noteTitle, 
+        //         noteAuthor,
+        //         noteTexts,
+        //         availableDays,
+        //         notePassword,
+        //     });
+
+        //     navigate(`/${noteID}`); 
+        // }        
+
    
     }
     
@@ -159,10 +173,20 @@ export default function EditMode() {
                     btnName="Publish"
                     onClick={handlePublish}
                 />
+                { timeStamp !== 11111 ? (
+                    <Button 
+                        type="submit"
+                        form="noteForm"
+                        btnName="Delete"
+                        onClick={(e) => console.log('刪除檔案')}
+                    />
+                    ) : null } 
+                
             </StyledAsideContainer>
                 { showDeleteDialog && (
                     <DeleteDialog 
                         setShowDeleteDialog={setShowDeleteDialog}
+                        doneButtonMission={closeDeleteDialog}
                     /> 
                 )}
                 { showSetPasswordDialog && (
