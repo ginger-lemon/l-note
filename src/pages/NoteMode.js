@@ -11,23 +11,27 @@ import VarifyDialog from "../components/note-mode/EditVarifyDialog";
 
 export default function NoteMode() {
     const { 
-        password,
+        noteID,
         setNoteID,
         setNoteTitle,
         setNoteAuthor,
         setNoteDate,
         setNoteTexts,
-        setAvailableDays,
         setNotePassword,
         setNoteTimeStamp,
+        setAvailableDays,
+
+        showVarifyDialog, setShowVarifyDialog
     } = useNoteData();
 
     const [showShareDialog, setShowShareDialog] = useState(false);
-    const [showVarifyDialog, setShowVarifyDialog] = useState(false);
+    // const [showVarifyDialog, setShowVarifyDialog] = useState(false);
 
-    const navigate = useNavigate(); // 引入 useNavigate() 切換頁面（元件）
+    // 引入 useNavigate() 切換頁面（元件）
+    const navigate = useNavigate(); 
 
-    const { urlNoteID } = useParams(); // 取得 url 後的自訂片段
+    // 取得 url 後的自訂片段
+    const { urlNoteID } = useParams(); 
 
     const [isLoading, setIsLoading] = useState(false);
 

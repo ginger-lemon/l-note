@@ -72,11 +72,11 @@ export const StyledArticle = styled.article`
 
         img {
             position: absolute;
-            margin-left: -38px;
+            margin-left: -42px;
         }
 
         input {
-            /* margin-left: 45px; */
+            margin-left: 6px;
             border-bottom: 1px solid #A5A5A5;
             border-radius: 10px;
             }

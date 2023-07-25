@@ -4,16 +4,25 @@ import { useLocalStorage } from "./useLocalStorage";
 export const NoteDataContext = createContext();
 
 export const NoteDataContextProvider = ({ children }) => {
-    // general-used state
+    // 控制 app 使用主要的 state  
+
+    // ＝＝＝＝ data should store in the local storage ＝＝＝＝ 
     const [noteTitle, setNoteTitle] = useLocalStorage("title", "Untitled");
     const [noteAuthor, setNoteAuthor] = useLocalStorage("author", "Unknow");
     const [noteTexts, setNoteTexts] = useLocalStorage("texts", "A note.");
+    const [noteTimeStamp, setNoteTimeStamp] = useLocalStorage("timeStamp", 11111);
+    const [noteID, setNoteID] = useLocalStorage("id", ""); 
+
+    // ＝＝＝＝ related with setDoc/updateDoc/deleteDoc ＝＝＝＝
     const [notePassword, setNotePassword] = useState('');
     const [availableDays, setAvailableDays] = useState(Infinity);
     const [noteDate, setNoteDate] = useState('2023-07-21');
-    const [noteTimeStamp, setNoteTimeStamp] = useLocalStorage("timeStamp", 11111);
-    const [noteID, setNoteID] = useLocalStorage("id", "");    
 
+    // ＝＝＝＝ control dialogs ＝＝＝＝
+    // 控制輸入密碼驗證的對話框、輸入的密碼比對
+    const [showVarifyDialog, setShowVarifyDialog] = useState(false); 
+    const [inputPassword, setInputPassword] = useState('');
+ 
     return (
         <NoteDataContext.Provider
             value = {{
@@ -21,10 +30,14 @@ export const NoteDataContextProvider = ({ children }) => {
                 noteAuthor, setNoteAuthor,
                 noteDate, setNoteDate,
                 noteTexts, setNoteTexts,
+                noteID, setNoteID,
+
                 notePassword, setNotePassword,
                 availableDays, setAvailableDays,
                 noteTimeStamp, setNoteTimeStamp,
-                noteID, setNoteID,
+
+                showVarifyDialog, setShowVarifyDialog,
+                inputPassword, setInputPassword
             }}
         >
             {children}
@@ -38,21 +51,29 @@ export function useNoteData() {
         noteAuthor, setNoteAuthor,
         noteDate, setNoteDate,
         noteTexts, setNoteTexts,
+        noteID, setNoteID,
+
         notePassword, setNotePassword,
         availableDays, setAvailableDays,
         noteTimeStamp, setNoteTimeStamp,
-        noteID, setNoteID,
+
+        showVarifyDialog, setShowVarifyDialog,
+        inputPassword, setInputPassword
     } = useContext(NoteDataContext);
 
     return {
         noteTitle, setNoteTitle,
         noteAuthor, setNoteAuthor,
-        noteTexts, setNoteTexts,
         noteDate, setNoteDate,
+        noteTexts, setNoteTexts,
+        noteID, setNoteID,
+
         notePassword, setNotePassword,
         availableDays, setAvailableDays,
         noteTimeStamp, setNoteTimeStamp,
-        noteID, setNoteID,
+
+        showVarifyDialog, setShowVarifyDialog,
+        inputPassword, setInputPassword
     };
 }
 

@@ -7,9 +7,13 @@ import { useNoteData } from "../../Hooks/NoteContext";
 import { useNavigate } from "react-router-dom";
 
 export default function VarifyDialog({ setShowVarifyDialog }) {
-    const { notePassword } = useNoteData();
+    const { 
+        notePassword,
+        inputPassword, setInputPassword,
+    } = useNoteData();
+
     const [showPassword, setShowPassword] = useState(false);
-    const [inputPassword, setInputPassword] = useState();
+    // const [inputPassword, setInputPassword] = useState();
     const inputRef = useRef();
 
     const navigate = useNavigate();
@@ -20,6 +24,9 @@ export default function VarifyDialog({ setShowVarifyDialog }) {
     }
 
     function checkPassword() {
+        // 取得密碼的資料
+        console.log('只抓 password')
+
         if (inputPassword !== notePassword) {
             alert('Password error!');
             setShowPassword(false);

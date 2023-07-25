@@ -3,57 +3,65 @@ import Button from "../components/button.js";
 import { StyledAsideContainer, StyledMainContainer } from "../styles/Styled-Main-Aside.js";
 import { StyledArticle } from "../styles/Styled-Article.js";
 import { useNoteData } from "../Hooks/NoteContext.js";
-import DeleteDialog from "../components/edit-mode/DeleteDialog.js";
 import Editor from "../components/edit-mode/Editor.js";
 import { useNavigate } from "react-router-dom";
-import { setNoteToDatabase, updateNoteToDatabase} from "../library/fetchToFirestore.js";
-import SetPasswordDialog from "../components/edit-mode/SetPasswordDialog.js";
+import { deleteNoteOnDatabase, setNoteToDatabase, updateNoteToDatabase} from "../library/fetchToFirestore.js";
+import VarifyDialog from "../components/note-mode/EditVarifyDialog.js";
 
 export default function EditMode() {
     const { 
-        noteTitle, noteAuthor, noteTexts, notePassword,
-        availableDays, setAvailableDays,
-        setNoteID, setNoteDate, timeStamp,
-        noteTimeStamp, setNoteTimeStamp, noteID
-    } = useNoteData();
+        noteTitle, 
+        noteAuthor, 
+        noteTexts,
+        noteID, 
+        notePassword,
+        availableDays,
+        setNoteID, 
+        setNoteDate, 
+        noteTimeStamp, setNoteTimeStamp,
 
-    // 管理對話框的動態
-    const [showDeleteDialog, setShowDeleteDialog] = useState(false);
-    const [showSetPasswordDialog, setShowSetPasswordDialog] = useState(false);
+        showVarifyDialog, setShowVarifyDialog,
+    } = useNoteData();
 
     // 切換頁面網址
     const navigate = useNavigate();
 
-    // 處理顯示設定密碼的對話框
-    function handleShowSetPasswordDialog() {
-        setShowSetPasswordDialog(true);
-        console.log("顯示密碼對話框");
-        // if (e.target.checked !== false) {
-        //     setShowSetPasswordDialog(true);
-        // } else {
-        //     setShowSetPasswordDialog(false);
-        // }
+    // 清除 local Storage 
+    function clearLoccalStorage() {
+        localStorage.removeItem("title");
+        localStorage.removeItem("texts");
+        localStorage.removeItem("author");
+        localStorage.removeItem("timeStamp");
+        localStorage.removeItem("id");
+        // 重新整理頁面
+        history.go(0);
+
     }
 
-    // 處理顯示設定刪除時間的對話框
-    function handleShowDeleteDialog(e) {
-        if (e.target.checked !== false) {
-            setShowDeleteDialog(true);
-            setAvailableDays(7);
-            console.log(availableDays);
-        } else {
-            setShowDeleteDialog(false);
-            setAvailableDays(Infinity);
-            console.log(availableDays);
-        }
-    } 
+    // 處理刪除資料
+    function handleDeleteNote() {
+        console.log('要開始刪除資料了');
+        console.log('輸入密碼才能刪除，要呼叫 EditVarifyDialog ');
+        console.log('notePassword: ', notePassword);
 
-    function toggleToNoteMode(noteID) {
-        console.log('切換到 NoteMode ');
-        console.log('noteID: ', noteID)
-        // testNote 之後會切換成 noteID 
-        navigate(`/${noteID}`);   
-        console.log('好像切換的部分有問題＠＠但之前都沒問題ㄉ說⋯⋯')
+        if (notePassword === '') {
+            alert('Please input the password for this note in the password filed.');
+            return;
+        }
+        
+        // confirm('Would you really want to delete this note?');
+        if (confirm('Would you really want to delete this note?') == false) {
+            console.log('取消刪除');
+            
+        } else {
+            // setShowVarifyDialog(true);
+            // 解決 run deleteDoc 會先出現的問題
+            console.log('run deleteDoc');
+            deleteNoteOnDatabase(noteID);
+            // 刪除時清空 local storage 
+            clearLoccalStorage();
+        }
+
     }
 
     // 取得發佈時間戳記
@@ -73,88 +81,66 @@ export default function EditMode() {
         return publishDate;
     }
 
+    // 產生 url 動態網址部分
     function generateNoteID(title, date) {
-        const id = 
-        title.replace(/\s/g, "-") + "-" + date;
+        const id = title.replace(/\s/g, "-") + "-" + date;
         return id;
     }
 
-    // 如果 timestamp === undefined => 資料庫無資料， set
-    // 如果 timestamp !== undefined => 曾經發送資料， update
+    // 處理發佈 note 
     function handlePublish (e) {
         e.preventDefault();
-        console.log('notePassword: ', notePassword);
-        
-        if (notePassword === '') {
-            alert('Password is not set. Please set up password.');
-        }
 
-        // 修改：按下按鈕切換到密碼對話框取得密碼後送出
-        // 確認密碼是否已經完成填寫
-        // 顯示設定密碼對話框設定資料
-        
+        if (notePassword === '') {
+            alert("Please set the password for this note in the password filed.");
+            return;
+        } 
+
+        // 如果 timestamp === undefined => 資料庫無資料， set
+        // 如果 timestamp !== undefined => 曾經發送資料， update
         if (noteTimeStamp === 11111) {
             let noteDate, noteTimeStamp, noteID, noteUID;
-            console.log("setDoc 直接更新");
-            console.log('notePassword: ', notePassword);
+
+            noteDate = getPublishedDate();
+            noteTimeStamp = getTimeStamp();
+
+            noteUID = generateNoteID(noteTitle, noteDate);
+            noteID = noteUID;
+
+            // setDoc
+            setNoteToDatabase(noteUID, {
+                noteTitle, 
+                noteAuthor,
+                noteDate,
+                noteTexts,
+                availableDays,
+                notePassword,
+                noteTimeStamp,
+                noteID,
+            });
+
+            // 賦值
+            setNoteDate(noteDate);
+            setNoteTimeStamp(noteTimeStamp);
+            setNoteID(noteID);
+
+            console.log('測試發送資料時 noteUID 有被值' ,noteUID);
+            navigate(`/${noteID}`);   
 
         } else {
-            console.log('選擇是否重新設定密碼');
-        }
- 
-        // 處理資料新增/更新
-        // 如果 timeStamp 不等於初始值的 11111
-        // if (noteTimeStamp === 11111) {
-        //     let noteDate, noteTimeStamp, noteID, noteUID;
+            let noteUID = noteID;
+            console.log('使用 update 更新資料，不能更新到 title');
+            // 使用 update 更新資料
+            updateNoteToDatabase(noteUID, {
+                noteTitle, 
+                noteAuthor,
+                noteTexts,
+                availableDays,
+                notePassword,
+            });
 
-        //     noteDate = getPublishedDate();
-        //     noteTimeStamp = getTimeStamp();
-
-        //     console.log('noteDate: ' , noteDate);
-        //     console.log('noteTimeStamp: ', noteTimeStamp);
-
-        //     noteUID =  generateNoteID(noteTitle, noteDate);
-        //     noteID = noteUID;
-        
-        //     console.log('在送出按鈕內的 noteUID: ', noteUID);
-        //     console.log('在送出按鈕內的 noteID: ', noteID)
-        //     console.log('availableDays: ', availableDays);
-
-            // 使用 set 新增資料
-            // setNoteToDatabase(noteUID, {
-            //     noteTitle, 
-            //     noteAuthor,
-            //     noteDate,
-            //     noteTexts,
-            //     availableDays,
-            //     notePassword,
-            //     noteTimeStamp,
-            //     noteID,
-            // });
-
-        //     setNoteDate(noteDate);
-        //     setNoteTimeStamp(noteTimeStamp);
-        //     setNoteID(noteID);
-
-        //     console.log('測試發送資料時 noteUID 有被值' ,noteUID);
-        //     navigate(`/${noteID}`);   
-
-        // } else {
-        //     let noteUID = noteID;
-        //     console.log('使用 update 更新資料，不能更新到 title');
-        //     // 使用 update 更新資料
-        //     updateNoteToDatabase(noteUID, {
-        //         noteTitle, 
-        //         noteAuthor,
-        //         noteTexts,
-        //         availableDays,
-        //         notePassword,
-        //     });
-
-        //     navigate(`/${noteID}`); 
-        // }        
-
-   
+            navigate(`/${noteID}`); 
+        }   
     }
     
     return (
@@ -162,8 +148,6 @@ export default function EditMode() {
             <StyledArticle>
                 <Editor 
                     handlePublish={handlePublish}
-                    handleShowDeleteDialog={handleShowDeleteDialog}
-                    handleShowSetPasswordDialog={handleShowSetPasswordDialog}
                 />
             </StyledArticle>
             <StyledAsideContainer>
@@ -173,28 +157,22 @@ export default function EditMode() {
                     btnName="Publish"
                     onClick={handlePublish}
                 />
-                { timeStamp !== 11111 ? (
+                { noteTimeStamp !== 11111 ? (
                     <Button 
                         type="submit"
                         form="noteForm"
                         btnName="Delete"
-                        onClick={(e) => console.log('刪除檔案')}
+                        onClick={handleDeleteNote}
                     />
                     ) : null } 
                 
             </StyledAsideContainer>
-                { showDeleteDialog && (
-                    <DeleteDialog 
-                        setShowDeleteDialog={setShowDeleteDialog}
-                        doneButtonMission={closeDeleteDialog}
-                    /> 
+                { showVarifyDialog && (
+                    <VarifyDialog 
+                        setShowVarifyDialog={setShowVarifyDialog}
+                    />
                 )}
-                { showSetPasswordDialog && (
-                    <SetPasswordDialog 
-                        showSetPasswordDialog={showSetPasswordDialog}
-                        setShowSetPasswordDialog={setShowSetPasswordDialog}
-                />
-                ) }
+                
         </StyledMainContainer>
     ); 
 }

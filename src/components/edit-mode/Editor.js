@@ -9,32 +9,19 @@ export default function Editor({ handleShowDeleteDialog, handleShowSetPasswordDi
         noteTitle, setNoteTitle,
         noteAuthor, setNoteAuthor, 
         noteTexts, setNoteTexts,
-        notePassword, setNotePassword
+        notePassword, setNotePassword,
+        noteTimeStamp,
     } = useNoteData();
 
     const [showPassword, setShowPassword] = useState(false);
     const [passwordMessage, setPasswordMessage] = useState("Please set password for re-editing later.");
     const passwordInputRef = useRef();
-    // let passwordCheck;
-
-    // function handleCheckPassword() {
-    //     if (notePassword === '') {
-    //         return passwordCheck = "Please set password";
-    //     }
-    //     else if (notePassword.length >=6 && notePassword.length <=12) {
-    //         return 
-    //         ;
-    //     } else {
-
-    //     }
-    // }
-    
 
     function handleShowPassword() {
         setShowPassword(!showPassword);
     }
 
-
+    // 處理密碼設定問題
     function handleSetPassword() {
         const passwordInputValue = passwordInputRef.current.value;
 
@@ -92,7 +79,9 @@ export default function Editor({ handleShowDeleteDialog, handleShowSetPasswordDi
             >
             </textarea>
             <div>
-                <label>Password for note: </label>
+                <label>
+                    { noteTimeStamp === 11111 ? "*Set password for this note:" : "*Input/Reset password for this note" }
+                </label>
                 <input
                     className="input-password"
                     style={{width: "300px"}}
