@@ -6,8 +6,8 @@ import ShareDialog from "../components/note-mode/ShareDialog";
 import Note from "../components/note-mode/Note";
 import { useNavigate, useParams } from "react-router-dom";
 import { useNoteData } from "../Hooks/NoteContext";
-import { getNoteFromDatabase } from "../library/fetchToFirestore";
-import VarifyDialog from "../components/note-mode/EditVarifyDialog";
+import { getNoteFromDatabase, getPasswordFromDatabase } from "../library/fetchToFirestore";
+import VarifyPasswordDialog from "../components/VarifyPasswordDialog";
 
 export default function NoteMode() {
     const { 
@@ -21,27 +21,26 @@ export default function NoteMode() {
         setNoteTimeStamp,
         setAvailableDays,
 
-        showVarifyDialog, setShowVarifyDialog
+        inputPassword, setInputPassword,
+        showVarifyDialog, setShowVarifyDialog,
+        inputError, setInputError,
+        inputErrorMessage, setInputErrorMessage,
     } = useNoteData();
 
     const [showShareDialog, setShowShareDialog] = useState(false);
-
-    // 引入 useNavigate() 切換頁面（元件）
-    const navigate = useNavigate(); 
-
-    // 取得 url 後的自訂片段
-    const { urlNoteID } = useParams(); 
-
     const [isLoading, setIsLoading] = useState(false);
 
-    // TO DO: 解決閃爍問題
+    // ＝＝＝＝＝ 切換到 NoteMode 時 getDoc ＝＝＝＝＝
+    const navigate = useNavigate(); 
+    const { urlNoteID } = useParams(); 
+    
     useEffect(() => {     
-            setIsLoading(true);
-            getDataFromDatabaseAndSetDatas(urlNoteID);
-            setIsLoading(false);
+        // TO DO: 解決閃爍問題
+        setIsLoading(true);
+        getDataFromDatabaseAndSetDatas(urlNoteID);
+        setIsLoading(false);
     }, [urlNoteID]);
 
-    // 當 NoteMode mount/unmount 時取得 local sotrage 資料
     async function getDataFromDatabaseAndSetDatas(noteID) {
         try {
             const note = await getNoteFromDatabase(noteID);
@@ -63,19 +62,43 @@ export default function NoteMode() {
         }
     }
 
-    // 按下 Edit 按鈕：驗證密碼 > 正確即可進入編輯模式
-    function toggleToEditMode() {
-        // TO DO: 之後要處理切換到編輯模式但是網址不變
-        handleAccessProgress();
-        // navigate("/");
+    // ＝＝＝＝＝ 處理按下 edit 按鈕切換到 Edit Mode ＝＝＝＝＝
+    function handleClickEditButton() {
+        setShowVarifyDialog(true);
     }
 
-    function handleAccessProgress() {
-        // TO DO: 處理可開啟編輯模式的密碼驗證 
-        console.log("開啟驗證密碼對話框");
-        setShowVarifyDialog(true);
-        
+    async function varifyDoneButtonMisson() {
+        console.log('開始驗證密碼');
+        console.log('inputPassword: ', inputPassword);
+        console.log('noteID: ', noteID);
+
+        const correctPassword = await getPasswordFromDatabase(noteID);
+        console.log('correctPassword: ', correctPassword);
+
+        if (inputPassword === correctPassword) {
+            console.log('inputPassword === correctPassword');
+            setShowVarifyDialog(false);
+            navigate("/");
+
+        } else {
+            setInputError(true);
+            setInputErrorMessage('Password is uncorrect!')
+        }
+
     }
+
+    // 按下 Edit 按鈕：驗證密碼 > 正確即可進入編輯模式
+    // function toggleToEditMode() {
+        // TO DO: 之後要處理切換到編輯模式但是網址不變
+        // handleAccessProgress();
+        // navigate("/");
+    // }
+
+    // function handleAccessProgress() {
+        // TO DO: 處理可開啟編輯模式的密碼驗證 
+    //     console.log("開啟驗證密碼對話框");
+    //     setShowVarifyDialog(true);
+    // }
     
     return (
         <StyledMainContainer>
@@ -85,7 +108,7 @@ export default function NoteMode() {
             <StyledAsideContainer>
                 <Button 
                     btnName="Edit"
-                    onClick={toggleToEditMode}
+                    onClick={handleClickEditButton}
                 />
                 <Button 
                     btnName="Share"
@@ -97,11 +120,11 @@ export default function NoteMode() {
                     setShowShareDialog={setShowShareDialog}
                 />
             }
-            { showVarifyDialog && 
-                <VarifyDialog 
-                    setShowVarifyDialog={setShowVarifyDialog}
+            { showVarifyDialog && (
+                <VarifyPasswordDialog 
+                    doneButtonMission={varifyDoneButtonMisson}
                 />
-            }
+            )}
         </StyledMainContainer>
     );
 }

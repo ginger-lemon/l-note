@@ -22,6 +22,8 @@ export const NoteDataContextProvider = ({ children }) => {
     // 控制輸入密碼驗證的對話框、輸入的密碼比對
     const [showVarifyDialog, setShowVarifyDialog] = useState(false); 
     const [inputPassword, setInputPassword] = useState('');
+    const [inputError, setInputError] = useState(false);
+    const [inputErrorMessage, setInputErrorMessage] = useState(null);
  
     return (
         <NoteDataContext.Provider
@@ -38,6 +40,8 @@ export const NoteDataContextProvider = ({ children }) => {
 
                 showVarifyDialog, setShowVarifyDialog,
                 inputPassword, setInputPassword,
+                inputError, setInputError,
+                inputErrorMessage, setInputErrorMessage,
             }}
         >
             {children}
@@ -59,6 +63,8 @@ export function useNoteData() {
 
         showVarifyDialog, setShowVarifyDialog,
         inputPassword, setInputPassword,
+        inputError, setInputError,
+        inputErrorMessage, setInputErrorMessage,
     } = useContext(NoteDataContext);
 
     return {
@@ -74,6 +80,8 @@ export function useNoteData() {
 
         showVarifyDialog, setShowVarifyDialog,
         inputPassword, setInputPassword,
+        inputError, setInputError,
+        inputErrorMessage, setInputErrorMessage,
     };
 }
 

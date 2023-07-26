@@ -22,14 +22,12 @@ export default function EditMode() {
         
         inputPassword, setInputPassword,
         showVarifyDialog, setShowVarifyDialog,
+        inputError, setInputError,
+        inputErrorMessage, setInputErrorMessage,
     } = useNoteData();
-
-    // 切換頁面網址
     const navigate = useNavigate();
 
-    
-
-    // 處理刪除資料
+    // ＝＝＝＝＝ 處理刪除資料 ＝＝＝＝＝
     // 按下刪除鍵 -> 跳出視窗選擇是否刪除資料 -> 是 -> 進入密碼驗證 -> 刪除資料並清除 local storage 資料
     // 按下刪除鍵 -> 跳出視窗選擇是否刪除資料 -> 否 -> 關閉對話框回到編輯頁面
     function handleClickDeleteButton() {
@@ -41,13 +39,14 @@ export default function EditMode() {
         }
     }
 
+    // ＝＝＝＝＝ 處理按下驗證對話框的按鈕後執行驗證與刪除 note ＝＝＝＝＝
     // 輸入密碼後需要驗證，沒問題送出刪除請求
     async function varifyDoneButtonMisson() { 
         console.log('開始驗證密碼');
         console.log('input password: ', inputPassword);
         console.log('noteID: ', noteID);
 
-        const correctPassword = await getPassword(noteID);
+        const correctPassword = await getPasswordFromDatabase(noteID);
         console.log('correctPassword: ', correctPassword);
         
         if (inputPassword === correctPassword) {
@@ -55,61 +54,41 @@ export default function EditMode() {
             deleteNoteOnDatabase(noteID);
             clearLoccalStorage();
         } else {
+            setInputError(true);
+            setInputErrorMessage('Password is uncorrect');
             return;
         }
         
         // get password
-        async function getPassword(noteID) {
-            try {
-                console.log('enter try');
-                const data = await getPasswordFromDatabase(noteID);
-                console.log('從資料庫 get 的 password: ');
-                console.log(data);
-                return data;
-            } catch (error) {
-                console.log('Password getting failed.');
-                alert('Password is uncorrect.');
-                setShowVarifyDialog(false);
-                return;
-            }
-        } 
-
-        // 清除 local Storage 
-        function clearLoccalStorage() {
-            localStorage.removeItem("title");
-            localStorage.removeItem("texts");
-            localStorage.removeItem("author");
-            localStorage.removeItem("timeStamp");
-            localStorage.removeItem("id");
-
-            history.go(0);
-        }
+        // async function getPassword(noteID) {
+        //     try {
+        //         console.log('enter try');
+        //         const data = await getPasswordFromDatabase(noteID);
+        //         console.log('從資料庫 get 的 password: ');
+        //         console.log(data);
+        //         return data;
+        //     } catch (error) {
+        //         console.log('Password getting failed.');
+        //         alert('Password is uncorrect.');
+        //         setShowVarifyDialog(false);
+        //         return;
+        //     }
+        // } 
     }
 
-    // 取得發佈時間戳記
-    function getTimeStamp() {
-        const time = new Date();
-        const timeStamp = time.getTime();
-        return timeStamp;
+    // 清除 local Storage 
+    function clearLoccalStorage() {
+        localStorage.removeItem("title");
+        localStorage.removeItem("texts");
+        localStorage.removeItem("author");
+        localStorage.removeItem("timeStamp");
+        localStorage.removeItem("id");
+
+        history.go(0);
     }
 
-    // 取得發佈時間（年月日）
-    function getPublishedDate() {
-        const newDate = new Date();
-        const date = newDate.getDate();
-        const month = newDate.getMonth() + 1;
-        const year = newDate.getFullYear();
-        const publishDate = year + "-" + month + "-" + date;
-        return publishDate;
-    }
 
-    // 產生 url 動態網址部分
-    function generateNoteID(title, date) {
-        const id = title.replace(/\s/g, "-") + "-" + date;
-        return id;
-    }
-
-    // 處理發佈 note 
+    // ＝＝＝＝＝ 處理發佈 note ＝＝＝＝＝
     function handlePublish (e) {
         e.preventDefault();
 
@@ -118,8 +97,6 @@ export default function EditMode() {
             return;
         } 
 
-        // 如果 timestamp === undefined => 資料庫無資料， set
-        // 如果 timestamp !== undefined => 曾經發送資料， update
         if (noteTimeStamp === 11111) {
             let noteDate, noteTimeStamp, noteID, noteUID;
 
@@ -162,7 +139,30 @@ export default function EditMode() {
             });
 
             navigate(`/${noteID}`); 
-        }   
+        }  
+    }
+
+    // 產生 url 動態網址部分
+    function generateNoteID(title, date) {
+        const id = title.replace(/\s/g, "-") + "-" + date;
+        return id;
+    }
+    
+    // 取得發佈時間戳記
+    function getTimeStamp() {
+        const time = new Date();
+        const timeStamp = time.getTime();
+        return timeStamp;
+    }
+        
+    // 取得發佈時間（年月日）
+    function getPublishedDate() {
+        const newDate = new Date();
+        const date = newDate.getDate();
+        const month = newDate.getMonth() + 1;
+        const year = newDate.getFullYear();
+        const publishDate = year + "-" + month + "-" + date;
+        return publishDate;
     }
     
     return (
@@ -187,14 +187,12 @@ export default function EditMode() {
                         onClick={handleClickDeleteButton}
                     />
                     ) : null } 
-                
             </StyledAsideContainer>
                 { showVarifyDialog && (
                     <VarifyPasswordDialog 
                         doneButtonMission={varifyDoneButtonMisson}
                     />
                 )}
-                
         </StyledMainContainer>
     ); 
 }

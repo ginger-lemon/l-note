@@ -139,7 +139,7 @@ export const noteConverter = {
 
         } catch (error) {
             console.error("Error: ", error);
-            console.log('更新資料時有問題');
+            alert('Password is uncorrect!');
         }
     }
 

@@ -8,11 +8,11 @@ import { useNoteData } from "../Hooks/NoteContext";
 export default function VarifyPasswordDialog({ doneButtonMission }) {
     const { 
         inputPassword, setInputPassword,
+        inputError, setInputError,
+        inputErrorMessage, setInputErrorMessage
     } = useNoteData();
 
     const inputRef = useRef();
-    const [inputError, setInputError] = useState(false);
-    const [inputErrorMessage, setInputErrorMessage] = useState(null);
     const [showPassword, setShowPassword] = useState(false);
 
     // 輸入密碼時直接確認密碼是否符合格式
@@ -44,7 +44,7 @@ export default function VarifyPasswordDialog({ doneButtonMission }) {
 
     return (
         <Dialog
-            dialogTitle="Use your note password"
+            dialogTitle="Enter the password for this note"
             dialogDescribe={ inputError && inputErrorMessage }
             doneButtonMission={doneButtonMission}
         >
