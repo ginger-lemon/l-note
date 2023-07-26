@@ -5,8 +5,8 @@ import { StyledArticle } from "../styles/Styled-Article.js";
 import { useNoteData } from "../Hooks/NoteContext.js";
 import Editor from "../components/edit-mode/Editor.js";
 import { useNavigate } from "react-router-dom";
-import { deleteNoteOnDatabase, setNoteToDatabase, updateNoteToDatabase} from "../library/fetchToFirestore.js";
-import VarifyDialog from "../components/note-mode/EditVarifyDialog.js";
+import { deleteNoteOnDatabase, setNoteToDatabase, updateNoteToDatabase, getPasswordFromDatabase } from "../library/fetchToFirestore.js";
+import VarifyPasswordDialog from "../components/VarifyPasswordDialog.js";
 
 export default function EditMode() {
     const { 
@@ -19,49 +19,71 @@ export default function EditMode() {
         setNoteID, 
         setNoteDate, 
         noteTimeStamp, setNoteTimeStamp,
-
+        
+        inputPassword, setInputPassword,
         showVarifyDialog, setShowVarifyDialog,
     } = useNoteData();
 
     // 切換頁面網址
     const navigate = useNavigate();
 
-    // 清除 local Storage 
-    function clearLoccalStorage() {
-        localStorage.removeItem("title");
-        localStorage.removeItem("texts");
-        localStorage.removeItem("author");
-        localStorage.removeItem("timeStamp");
-        localStorage.removeItem("id");
-        // 重新整理頁面
-        history.go(0);
-
-    }
+    
 
     // 處理刪除資料
-    function handleDeleteNote() {
-        console.log('要開始刪除資料了');
-        console.log('輸入密碼才能刪除，要呼叫 EditVarifyDialog ');
-        console.log('notePassword: ', notePassword);
+    // 按下刪除鍵 -> 跳出視窗選擇是否刪除資料 -> 是 -> 進入密碼驗證 -> 刪除資料並清除 local storage 資料
+    // 按下刪除鍵 -> 跳出視窗選擇是否刪除資料 -> 否 -> 關閉對話框回到編輯頁面
+    function handleClickDeleteButton() {
+        if (confirm('Do you really want to delete this note?')) {
+            setShowVarifyDialog(true);
+        } else {
+            setShowVarifyDialog(false);
+            return;
+        }
+    }
 
-        if (notePassword === '') {
-            alert('Please input the password for this note in the password filed.');
+    // 輸入密碼後需要驗證，沒問題送出刪除請求
+    async function varifyDoneButtonMisson() { 
+        console.log('開始驗證密碼');
+        console.log('input password: ', inputPassword);
+        console.log('noteID: ', noteID);
+
+        const correctPassword = await getPassword(noteID);
+        console.log('correctPassword: ', correctPassword);
+        
+        if (inputPassword === correctPassword) {
+            console.log('run compare password');
+            deleteNoteOnDatabase(noteID);
+            clearLoccalStorage();
+        } else {
             return;
         }
         
-        // confirm('Would you really want to delete this note?');
-        if (confirm('Would you really want to delete this note?') == false) {
-            console.log('取消刪除');
-            
-        } else {
-            // setShowVarifyDialog(true);
-            // 解決 run deleteDoc 會先出現的問題
-            console.log('run deleteDoc');
-            deleteNoteOnDatabase(noteID);
-            // 刪除時清空 local storage 
-            clearLoccalStorage();
-        }
+        // get password
+        async function getPassword(noteID) {
+            try {
+                console.log('enter try');
+                const data = await getPasswordFromDatabase(noteID);
+                console.log('從資料庫 get 的 password: ');
+                console.log(data);
+                return data;
+            } catch (error) {
+                console.log('Password getting failed.');
+                alert('Password is uncorrect.');
+                setShowVarifyDialog(false);
+                return;
+            }
+        } 
 
+        // 清除 local Storage 
+        function clearLoccalStorage() {
+            localStorage.removeItem("title");
+            localStorage.removeItem("texts");
+            localStorage.removeItem("author");
+            localStorage.removeItem("timeStamp");
+            localStorage.removeItem("id");
+
+            history.go(0);
+        }
     }
 
     // 取得發佈時間戳記
@@ -162,14 +184,14 @@ export default function EditMode() {
                         type="submit"
                         form="noteForm"
                         btnName="Delete"
-                        onClick={handleDeleteNote}
+                        onClick={handleClickDeleteButton}
                     />
                     ) : null } 
                 
             </StyledAsideContainer>
                 { showVarifyDialog && (
-                    <VarifyDialog 
-                        setShowVarifyDialog={setShowVarifyDialog}
+                    <VarifyPasswordDialog 
+                        doneButtonMission={varifyDoneButtonMisson}
                     />
                 )}
                 

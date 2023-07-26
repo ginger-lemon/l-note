@@ -5,13 +5,12 @@ import showPWDIcon from "../../img/show-PWD-icon.svg";
 import unshowPWDIcon from "../../img/unshow-PWD-icon.svg";
 import { useNoteData } from "../../Hooks/NoteContext";
 
-export default function SetPasswordDialog({ setShowSetPasswordDialog,  }) {
+export default function PasswordDialog({ setShowSetPasswordDialog,  }) {
     const { notePassword, setNotePassword } = useNoteData();
     const [showPassword, setShowPassword] = useState(false);
     const inputRef = useRef();
     const [inputError, setInputError] = useState(false);
     const [inputErrorMessage, setInputErrorMessage] = useState('');
-
 
     // 將輸入的密碼儲存到 password 變數中
     function handleSetPassword() {
@@ -41,8 +40,8 @@ export default function SetPasswordDialog({ setShowSetPasswordDialog,  }) {
 
     return (
         <Dialog
-            dialogTitle="Set the password for editing"
-            dialogDescribe="6-12 characters including numbers and letters"
+            dialogTitle="Please input the password"
+            dialogDescribe=""
             doneButtonMission={closeDeleteDialog}
         >
             <StyledDialogCustomDiv

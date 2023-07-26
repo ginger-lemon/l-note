@@ -37,7 +37,7 @@ export const NoteDataContextProvider = ({ children }) => {
                 noteTimeStamp, setNoteTimeStamp,
 
                 showVarifyDialog, setShowVarifyDialog,
-                inputPassword, setInputPassword
+                inputPassword, setInputPassword,
             }}
         >
             {children}
@@ -58,7 +58,7 @@ export function useNoteData() {
         noteTimeStamp, setNoteTimeStamp,
 
         showVarifyDialog, setShowVarifyDialog,
-        inputPassword, setInputPassword
+        inputPassword, setInputPassword,
     } = useContext(NoteDataContext);
 
     return {
@@ -73,7 +73,7 @@ export function useNoteData() {
         noteTimeStamp, setNoteTimeStamp,
 
         showVarifyDialog, setShowVarifyDialog,
-        inputPassword, setInputPassword
+        inputPassword, setInputPassword,
     };
 }
 

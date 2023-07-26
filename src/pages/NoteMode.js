@@ -25,7 +25,6 @@ export default function NoteMode() {
     } = useNoteData();
 
     const [showShareDialog, setShowShareDialog] = useState(false);
-    // const [showVarifyDialog, setShowVarifyDialog] = useState(false);
 
     // 引入 useNavigate() 切換頁面（元件）
     const navigate = useNavigate(); 
@@ -44,8 +43,6 @@ export default function NoteMode() {
 
     // 當 NoteMode mount/unmount 時取得 local sotrage 資料
     async function getDataFromDatabaseAndSetDatas(noteID) {
-        // 從資料庫 get 資料
-
         try {
             const note = await getNoteFromDatabase(noteID);
             console.log('從資料庫 get 的 note: ');
@@ -64,7 +61,6 @@ export default function NoteMode() {
             console.log('404 not found')
             navigate("/error");
         }
-
     }
 
     // 按下 Edit 按鈕：驗證密碼 > 正確即可進入編輯模式

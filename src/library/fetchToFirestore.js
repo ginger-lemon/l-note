@@ -125,19 +125,39 @@ export const noteConverter = {
             console.log('更新資料時有問題');
         }
     }
+
+    // 只更新密碼
+    export async function updatePasswordToDatabase(noteUID, {
+        notePassword,
+    }) {
+        try {
+            // TO DO: filedName 到時候可能要替換成樣板 `${variable}` 去抓名字
+            const ref = doc(database, "note", noteUID);
+            await updateDoc(ref, {
+                password: notePassword,
+            });
+
+        } catch (error) {
+            console.error("Error: ", error);
+            console.log('更新資料時有問題');
+        }
+    }
+
 // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝//
 
 // ＝＝＝＝ 使用 delete 更新資料庫指定資料 ＝＝＝＝
 
-    export async function deleteNoteOnDatabase(noteUID) {
+    export async function deleteNoteOnDatabase(noteID) {
         // 刪除 noteID 的 doc
-        await deleteDoc(doc(database, "notes", noteUID));
+        console.log('要準備來刪 noteID 了！')
+        await deleteDoc(doc(database, "note", noteID));
     }
 
     // 刪除特定欄位
     // TO DO: 確定是否可以只刪除某個 doc 下的欄位
     export async function deleteOneFieldInNote(field) {
         const ref = doc(database, "note", field);
+        
         // 從文擋中移除指定的欄位
         await updateDoc(ref, { 
             field: deleteField()
@@ -165,9 +185,22 @@ export const noteConverter = {
         }
     }
 
-    // 獲取即時的 docsnap
-    // 邏輯未加入，可能用不到
-
+    // 只取得密碼的資料
+    export async function getPasswordFromDatabase(noteID) {
+        const ref = doc(database, "note", noteID).withConverter(noteConverter);
+        console.log(ref);
+        const docSnap = await getDoc(ref);
+        
+        if (docSnap.exists()) {
+            // Convert to Note Object
+            const passwordData = docSnap.data().password;
+            return passwordData;
+            // If there has some instance method
+        } else {
+            console.log('No such document!');
+            return null;
+        }
+    }
 
 // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝//
 
