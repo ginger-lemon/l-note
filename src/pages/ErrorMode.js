@@ -3,8 +3,6 @@ import Button from "../components/button";
 import { useNavigate } from "react-router-dom";
 import { StyledErrorMode } from "../styles/Styled-ErrorMode";
 import { StyledMainContainer } from "../styles/Styled-Main-Aside";
-import { StyledArticle } from "../styles/Styled-Article";
-
 
 export default function ErrorMode() {
     const navigate = useNavigate();

@@ -45,8 +45,8 @@ export default function NoteMode() {
     async function getDataFromDatabaseAndSetDatas(noteID) {
         try {
             const note = await getNoteFromDatabase(noteID);
-            console.log('從資料庫 get 的 note: ');
-            console.log(note); // null
+            // console.log('從資料庫 get 的 note: ');
+            // console.log(note); // null
 
             // 將取得的資料更新到變數中
             setNoteTitle(note.title);
@@ -57,7 +57,7 @@ export default function NoteMode() {
             setNoteTimeStamp(note.timeStamp);
             setNoteID(note.id);
         } catch (error) {
-            console.log('404 not found')
+            // console.log('404 not found')
             navigate("/error");
             clearLoccalStorage();
         }
@@ -82,18 +82,18 @@ export default function NoteMode() {
         const correctPassword = await getPasswordFromDatabase(noteID);
         const encryptedInputPassword = SHA256(inputPassword).toString();
         
-        console.log('correctPassword: ', correctPassword);
-        console.log('encryptedInputPassword: ', encryptedInputPassword);
+        // console.log('correctPassword: ', correctPassword);
+        // console.log('encryptedInputPassword: ', encryptedInputPassword);
 
         // 處理密碼驗證
         if (encryptedInputPassword === correctPassword) {
-            console.log('inputPassword === correctPassword');
+            // console.log('inputPassword === correctPassword');
             setShowVarifyDialog(false);
             navigate("/");
 
         } else {
             setInputError(true);
-            setInputErrorMessage('Password is uncorrect!')
+            // setInputErrorMessage('Password is uncorrect!')
         }
 
     }

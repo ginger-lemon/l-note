@@ -43,17 +43,17 @@ export default function EditMode() {
     // ＝＝＝＝＝ 處理按下驗證對話框的按鈕後執行驗證與刪除 note ＝＝＝＝＝
     // 輸入密碼後需要驗證，沒問題送出刪除請求
     async function varifyDoneButtonMisson() { 
-        console.log('開始驗證密碼');
-        console.log('input password: ', inputPassword);
-        console.log('noteID: ', noteID);
+        // console.log('開始驗證密碼');
+        // console.log('input password: ', inputPassword);
+        // console.log('noteID: ', noteID);
 
         const correctPassword = await getPasswordFromDatabase(noteID);
         const encryptedInputPassword = SHA256(inputPassword).toString();
-        console.log('correctPassword: ', correctPassword);
-        console.log('encryptedInputPassword: ', encryptedInputPassword)
+        // console.log('correctPassword: ', correctPassword);
+        // console.log('encryptedInputPassword: ', encryptedInputPassword)
         
         if (encryptedInputPassword === correctPassword) {
-            console.log('encryptedInputPassword === correctPassword')
+            // console.log('encryptedInputPassword === correctPassword')
             deleteNoteOnDatabase(noteID);
             clearLoccalStorage();
         } else {
@@ -87,7 +87,7 @@ export default function EditMode() {
         if (noteTimeStamp === 11111) {
             let noteDate, noteTimeStamp, noteID, noteUID;
             const encryptedPassword = SHA256(notePassword).toString();
-            console.log(encryptedPassword);
+            // console.log(encryptedPassword);
 
             noteDate = getPublishedDate();
             noteTimeStamp = getTimeStamp();
@@ -112,13 +112,13 @@ export default function EditMode() {
             setNoteTimeStamp(noteTimeStamp);
             setNoteID(noteID);
 
-            console.log('測試發送資料時 noteUID 有被值' ,noteUID);
+            // console.log('測試發送資料時 noteUID 有被值' ,noteUID);
             navigate(`/${noteID}`);   
 
         } else {
             const encryptedPassword = SHA256(notePassword).toString();
             let noteUID = noteID;
-            console.log('使用 update 更新資料，不能更新到 title');
+            // console.log('使用 update 更新資料，不能更新到 title');
 
             // 使用 update 更新資料
             updateNoteToDatabase(noteUID, {

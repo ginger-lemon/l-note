@@ -77,7 +77,7 @@ export const noteConverter = {
         try {
             const ref = doc(database, "note", noteUID).withConverter(noteConverter);
 
-            console.log('noteUID:' ,noteUID);
+            // console.log('noteUID:' ,noteUID);
 
             // TO DO: 確認整包資料、 noteID 的傳入方式
             // 整個 id.... 應該可以直接放在一個物件直接代入
@@ -92,8 +92,9 @@ export const noteConverter = {
                 noteID,
             ))
         } catch (error) {
-            console.log('id.noteTitle: ', noteTitle)
+            // console.log('id.noteTitle: ', noteTitle)
             console.error("Error: ", error);
+
         }
     }
 
@@ -122,7 +123,7 @@ export const noteConverter = {
 
         } catch (error) {
             console.error("Error: ", error);
-            console.log('更新資料時有問題');
+            // console.log('更新資料時有問題');
         }
     }
 
@@ -149,7 +150,7 @@ export const noteConverter = {
 
     export async function deleteNoteOnDatabase(noteID) {
         // 刪除 noteID 的 doc
-        console.log('要準備來刪 noteID 了！')
+        // console.log('要準備來刪 noteID 了！')
         await deleteDoc(doc(database, "note", noteID));
     }
 
@@ -180,7 +181,7 @@ export const noteConverter = {
             return note;
             // If there has some instance method
         } else {
-            console.log('No such document!');
+            alert('No such document!');
             return null;
         }
     }
@@ -188,7 +189,7 @@ export const noteConverter = {
     // 只取得密碼的資料
     export async function getPasswordFromDatabase(noteID) {
         const ref = doc(database, "note", noteID).withConverter(noteConverter);
-        console.log(ref);
+        // console.log(ref);
         const docSnap = await getDoc(ref);
         
         if (docSnap.exists()) {
@@ -197,7 +198,7 @@ export const noteConverter = {
             return passwordData;
             // If there has some instance method
         } else {
-            console.log('No such document!');
+            alert('No such document!');
             return null;
         }
     }

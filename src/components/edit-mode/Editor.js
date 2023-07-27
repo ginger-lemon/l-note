@@ -21,7 +21,7 @@ export default function Editor({ handleShowDeleteDialog, handleShowSetPasswordDi
         const passwordInputValue = passwordInputRef.current.value; 
 
         if (!/^[a-zA-Z0-9]+$/.test(passwordInputValue)) {
-            console.log(passwordInputRef.current.value);
+            // console.log(passwordInputRef.current.value);
             setPasswordMessage('Number and English letters only');
             
         } else if (passwordInputValue.length >=6 && passwordInputValue.length <=12) {
@@ -79,7 +79,10 @@ export default function Editor({ handleShowDeleteDialog, handleShowSetPasswordDi
             </textarea>
             <div>
                 <label>
-                    { noteTimeStamp === 11111 ? "*Set password for this note:" : "*Input/Reset password for this note" }
+                    { noteTimeStamp === 11111 ? 
+                        "*Set password for this note: " : 
+                        "*Please enter the password again: " 
+                    }
                 </label>
                 <input
                     className="input-password"
