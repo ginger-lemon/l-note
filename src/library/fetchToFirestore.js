@@ -140,7 +140,7 @@ export const noteConverter = {
 
         } catch (error) {
             console.error("Error: ", error);
-            alert('Password is uncorrect!');
+            console.log('Password is uncorrect!');
         }
     }
 
@@ -181,7 +181,7 @@ export const noteConverter = {
             return note;
             // If there has some instance method
         } else {
-            alert('No such document!');
+            console.log('No such document!');
             return null;
         }
     }
@@ -198,7 +198,7 @@ export const noteConverter = {
             return passwordData;
             // If there has some instance method
         } else {
-            alert('No such document!');
+            console.log('No such document!');
             return null;
         }
     }

@@ -1,5 +1,6 @@
 import React from "react";
 import { useNoteData } from "../../Hooks/NoteContext";
+import ReactMarkdown from "react-markdown";
 
 export default function Note() {
     let { noteTitle, noteAuthor, noteDate, noteTexts } = useNoteData();
@@ -8,7 +9,11 @@ export default function Note() {
         <>
             <h1 className="header">{noteTitle}</h1>
             <p className="author">{noteAuthor + " ・ " + noteDate}</p>
-            <p className="textarea">{noteTexts}</p>
+            <div className="note-showMK">
+                <ReactMarkdown 
+                    children={noteTexts}
+                />
+            </div>
         </>
     );
 }

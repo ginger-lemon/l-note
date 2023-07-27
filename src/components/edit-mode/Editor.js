@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import { useNoteData } from "../../Hooks/NoteContext";
 import showPWDIcon from "../../img/show-PWD-icon.svg";
 import unshowPWDIcon from "../../img/unshow-PWD-icon.svg";
+import ReactMarkdown from "react-markdown";
 
 export default function Editor({ handleShowDeleteDialog, handleShowSetPasswordDialog, handlePublish }) {
     const { 
@@ -44,7 +45,7 @@ export default function Editor({ handleShowDeleteDialog, handleShowSetPasswordDi
             id="editForm" 
             onSubmit={handlePublish}
         >
-                <input 
+            <input 
                 style={{ width:"700px" }}
                 text="text" 
                 className="header" 
@@ -55,7 +56,7 @@ export default function Editor({ handleShowDeleteDialog, handleShowSetPasswordDi
                 required
                 defaultValue={noteTitle}
                 >
-                </input>
+            </input>
             <input 
                 text="text" 
                 className="author" 

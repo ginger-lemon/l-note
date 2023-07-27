@@ -59,6 +59,7 @@ export const StyledArticle = styled.article`
     }
 
     div {
+        padding:  0 20px 10px 20px;
 
         label {
             /* margin: 5px 0; */
@@ -79,7 +80,12 @@ export const StyledArticle = styled.article`
             margin-left: 6px;
             border-bottom: 1px solid #A5A5A5;
             border-radius: 10px;
-            }
+        }
+
+        .note-showMK {
+            border: 1px solid red;
+
+        }
         
     }
 `;
