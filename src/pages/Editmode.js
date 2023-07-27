@@ -7,7 +7,8 @@ import Editor from "../components/edit-mode/Editor.js";
 import { useNavigate } from "react-router-dom";
 import { deleteNoteOnDatabase, setNoteToDatabase, updateNoteToDatabase, getPasswordFromDatabase } from "../library/fetchToFirestore.js";
 import VarifyPasswordDialog from "../components/VarifyPasswordDialog.js";
-
+import { SHA256 } from "crypto-js";
+  
 export default function EditMode() {
     const { 
         noteTitle, 
@@ -47,10 +48,12 @@ export default function EditMode() {
         console.log('noteID: ', noteID);
 
         const correctPassword = await getPasswordFromDatabase(noteID);
+        const encryptedInputPassword = SHA256(inputPassword).toString();
         console.log('correctPassword: ', correctPassword);
+        console.log('encryptedInputPassword: ', encryptedInputPassword)
         
-        if (inputPassword === correctPassword) {
-            console.log('run compare password');
+        if (encryptedInputPassword === correctPassword) {
+            console.log('encryptedInputPassword === correctPassword')
             deleteNoteOnDatabase(noteID);
             clearLoccalStorage();
         } else {
@@ -58,22 +61,6 @@ export default function EditMode() {
             setInputErrorMessage('Password is uncorrect');
             return;
         }
-        
-        // get password
-        // async function getPassword(noteID) {
-        //     try {
-        //         console.log('enter try');
-        //         const data = await getPasswordFromDatabase(noteID);
-        //         console.log('從資料庫 get 的 password: ');
-        //         console.log(data);
-        //         return data;
-        //     } catch (error) {
-        //         console.log('Password getting failed.');
-        //         alert('Password is uncorrect.');
-        //         setShowVarifyDialog(false);
-        //         return;
-        //     }
-        // } 
     }
 
     // 清除 local Storage 
@@ -99,6 +86,8 @@ export default function EditMode() {
 
         if (noteTimeStamp === 11111) {
             let noteDate, noteTimeStamp, noteID, noteUID;
+            const encryptedPassword = SHA256(notePassword).toString();
+            console.log(encryptedPassword);
 
             noteDate = getPublishedDate();
             noteTimeStamp = getTimeStamp();
@@ -113,7 +102,7 @@ export default function EditMode() {
                 noteDate,
                 noteTexts,
                 availableDays,
-                notePassword,
+                encryptedPassword,
                 noteTimeStamp,
                 noteID,
             });
@@ -127,15 +116,17 @@ export default function EditMode() {
             navigate(`/${noteID}`);   
 
         } else {
+            const encryptedPassword = SHA256(notePassword).toString();
             let noteUID = noteID;
             console.log('使用 update 更新資料，不能更新到 title');
+
             // 使用 update 更新資料
             updateNoteToDatabase(noteUID, {
                 noteTitle, 
                 noteAuthor,
                 noteTexts,
                 availableDays,
-                notePassword,
+                encryptedPassword,
             });
 
             navigate(`/${noteID}`); 

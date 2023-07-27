@@ -22,6 +22,7 @@
     "webpack-dev-server": "^4.15.1"
   },
   "dependencies": {
+    "crypto-js": "^4.1.1",
     "firebase": "^10.0.0",
     "firebase-tools": "^12.4.3",
     "html-webpack-plugin": "^5.5.3",

@@ -3,7 +3,6 @@ import { useNoteData } from "../../Hooks/NoteContext";
 import showPWDIcon from "../../img/show-PWD-icon.svg";
 import unshowPWDIcon from "../../img/unshow-PWD-icon.svg";
 
-
 export default function Editor({ handleShowDeleteDialog, handleShowSetPasswordDialog, handlePublish }) {
     const { 
         noteTitle, setNoteTitle,
@@ -17,13 +16,9 @@ export default function Editor({ handleShowDeleteDialog, handleShowSetPasswordDi
     const [passwordMessage, setPasswordMessage] = useState("Please set password for re-editing later.");
     const passwordInputRef = useRef();
 
-    function handleShowPassword() {
-        setShowPassword(!showPassword);
-    }
-
-    // 處理密碼設定問題
+    // ＝＝＝＝＝ 處理密碼設定問題 ＝＝＝＝＝
     function handleSetPassword() {
-        const passwordInputValue = passwordInputRef.current.value;
+        const passwordInputValue = passwordInputRef.current.value; 
 
         if (!/^[a-zA-Z0-9]+$/.test(passwordInputValue)) {
             console.log(passwordInputRef.current.value);
@@ -37,7 +32,11 @@ export default function Editor({ handleShowDeleteDialog, handleShowSetPasswordDi
             setNotePassword(passwordInputValue);
             setPasswordMessage("Password should be 6-12 characters.");
         }
+    }
 
+    // ＝＝＝＝＝ 按眼睛 svg 切換是否顯示密碼 ＝＝＝＝＝
+    function handleShowPassword() {
+        setShowPassword(!showPassword);
     }
 
     return (

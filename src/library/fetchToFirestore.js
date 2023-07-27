@@ -70,7 +70,7 @@ export const noteConverter = {
         noteDate, 
         noteTexts, 
         availableDays, 
-        notePassword,
+        encryptedPassword,
         noteTimeStamp,
         noteID,
     }) {
@@ -87,7 +87,7 @@ export const noteConverter = {
                 noteDate, 
                 noteTexts, 
                 availableDays, 
-                notePassword,
+                encryptedPassword,
                 noteTimeStamp,
                 noteID,
             ))
@@ -107,7 +107,7 @@ export const noteConverter = {
         noteAuthor,
         noteTexts,
         availableDays,
-        notePassword,
+        encryptedPassword,
     }) {
         try {
             // TO DO: filedName 到時候可能要替換成樣板 `${variable}` 去抓名字
@@ -117,7 +117,7 @@ export const noteConverter = {
                 author: noteAuthor,
                 texts: noteTexts,
                 availableDays: availableDays,
-                password: notePassword,
+                password:  encryptedPassword,
             });
 
         } catch (error) {
