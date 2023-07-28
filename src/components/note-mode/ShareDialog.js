@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import Dialog from "../dialog";
 import copyUrlIcon from "../../img/copy-icon.svg"
 import { useNoteData } from "../../Hooks/NoteContext";
 
 export default function ShareDialog({ setShowShareDialog }) {
     const { noteID } = useNoteData();
+    const [isCopied, setIsCopied] = useState(false);
+    const copyUrlRef = useRef();
     const noteUrl = "https://l.note" + "/" + noteID;
 
     function closeShareDialog() {
@@ -12,20 +14,23 @@ export default function ShareDialog({ setShowShareDialog }) {
     }
 
     function copyNoteUrl() {
-        const url = "https://l.note" + "/" + noteID;
-        console.log('網址：' + url);
+        // select the field 
+        copyUrlRef.current.select();
+        setIsCopied(true);
+        navigator.clipboard.writeText(noteUrl);
     }
 
     return (
         <Dialog 
             dialogTitle="Share URL of this note"
-            dialogDescribe="URL copied."
+            dialogDescribe={isCopied && "Url copied."}
             doneButtonMission={closeShareDialog}
         >
             <input
                 style={{ width: "250px" }}
-                readOnly
+                ref={copyUrlRef}
                 value={noteUrl}
+                readOnly
             >
             </input>
             {/* 未複製網址時：You can copy the URL */}
