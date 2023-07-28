@@ -8,14 +8,14 @@ export const StyledArticle = styled.article`
         width: 100%;
     }
 
-    header, h1 {
+    header {
         font-family: "Noto Sans TC";
         font-size: 32px;
         font-weight: 700;
         padding: 0 20px 10px 20px;
     }
 
-    input, p {
+    input {
         width: inherit;
         padding: 0 20px 10px;
         border: none;
@@ -25,17 +25,6 @@ export const StyledArticle = styled.article`
         /* input 內的字 */
         font-family:  "Noto Sans TC";
         /* font-weight: 400; */
-    }
-
-    .header {
-        width: inherit;
-        font-size: 32px;
-        font-weight: 700;
-    }
-
-    .author {
-        font-size: 18px;
-        width: 100%;
     }
 
     textarea {
@@ -58,8 +47,23 @@ export const StyledArticle = styled.article`
         }
     }
 
+    /* 以下適用 Note */
+    .header {
+        width: inherit;
+        font-size: 32px;
+        font-weight: 700;
+        padding: 0 20px 10px 20px;
+    }
+
+    .author {
+        font-size: 18px;
+        width: 100%;
+        padding: 0 20px 10px 20px;
+    }
+
+
+
     div {
-        padding:  0 20px 10px 20px;
 
         label {
             /* margin: 5px 0; */
@@ -81,11 +85,5 @@ export const StyledArticle = styled.article`
             border-bottom: 1px solid #A5A5A5;
             border-radius: 10px;
         }
-
-        .note-showMK {
-            border: 1px solid red;
-
-        }
-        
     }
 `;

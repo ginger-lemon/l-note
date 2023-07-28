@@ -11,6 +11,6 @@ export const StyledFooter = styled.footer`
     padding: 10px;
 
     /* 定位在最下方 */ 
-    position: sticky;
+    position: fixed;
     bottom: 0px;
 `;
