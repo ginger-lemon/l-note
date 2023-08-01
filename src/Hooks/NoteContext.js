@@ -20,6 +20,7 @@ export const NoteDataContextProvider = ({ children }) => {
 
     // ＝＝＝＝ control dialogs ＝＝＝＝
     // 控制輸入密碼驗證的對話框、輸入的密碼比對
+    const [showDeleteAlert, setShowDeleteAlert] = useState(false);
     const [showVarifyDialog, setShowVarifyDialog] = useState(false); 
     const [inputPassword, setInputPassword] = useState('');
     const [inputError, setInputError] = useState(false);
@@ -38,6 +39,7 @@ export const NoteDataContextProvider = ({ children }) => {
                 availableDays, setAvailableDays,
                 noteTimeStamp, setNoteTimeStamp,
 
+                showDeleteAlert, setShowDeleteAlert,
                 showVarifyDialog, setShowVarifyDialog,
                 inputPassword, setInputPassword,
                 inputError, setInputError,
@@ -61,6 +63,7 @@ export function useNoteData() {
         availableDays, setAvailableDays,
         noteTimeStamp, setNoteTimeStamp,
 
+        showDeleteAlert, setShowDeleteAlert,
         showVarifyDialog, setShowVarifyDialog,
         inputPassword, setInputPassword,
         inputError, setInputError,
@@ -78,6 +81,7 @@ export function useNoteData() {
         availableDays, setAvailableDays,
         noteTimeStamp, setNoteTimeStamp,
 
+        showDeleteAlert, setShowDeleteAlert,
         showVarifyDialog, setShowVarifyDialog,
         inputPassword, setInputPassword,
         inputError, setInputError,

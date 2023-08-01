@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { deleteNoteOnDatabase, setNoteToDatabase, updateNoteToDatabase, getPasswordFromDatabase } from "../library/fetchToFirestore.js";
 import VarifyPasswordDialog from "../components/VarifyPasswordDialog.js";
 import { SHA256 } from "crypto-js";
+import EnsureDeleteAlert from "../components/edit-mode/EnsureDeleteAlert.js";
   
 export default function EditMode() {
     const { 
@@ -22,6 +23,7 @@ export default function EditMode() {
         noteTimeStamp, setNoteTimeStamp,
         
         inputPassword, setInputPassword,
+        showDeleteAlert, setShowDeleteAlert,
         showVarifyDialog, setShowVarifyDialog,
         inputError, setInputError,
         inputErrorMessage, setInputErrorMessage,
@@ -32,35 +34,25 @@ export default function EditMode() {
     // 按下刪除鍵 -> 跳出視窗選擇是否刪除資料 -> 是 -> 進入密碼驗證 -> 刪除資料並清除 local storage 資料
     // 按下刪除鍵 -> 跳出視窗選擇是否刪除資料 -> 否 -> 關閉對話框回到編輯頁面
     function handleClickDeleteButton() {
-        if (confirm('Do you really want to delete this note?')) {
-            setShowVarifyDialog(true);
-        } else {
-            setShowVarifyDialog(false);
-            return;
-        }
+        setShowDeleteAlert(true);
     }
 
     // ＝＝＝＝＝ 處理按下驗證對話框的按鈕後執行驗證與刪除 note ＝＝＝＝＝
     // 輸入密碼後需要驗證，沒問題送出刪除請求
     async function varifyDoneButtonMisson() { 
-        // console.log('開始驗證密碼');
-        // console.log('input password: ', inputPassword);
-        // console.log('noteID: ', noteID);
 
         const correctPassword = await getPasswordFromDatabase(noteID);
         const encryptedInputPassword = SHA256(inputPassword).toString();
-        // console.log('correctPassword: ', correctPassword);
-        // console.log('encryptedInputPassword: ', encryptedInputPassword)
         
         if (encryptedInputPassword === correctPassword) {
-            // console.log('encryptedInputPassword === correctPassword')
             deleteNoteOnDatabase(noteID);
-            clearLoccalStorage();
         } else {
             setInputError(true);
             setInputErrorMessage('Password is uncorrect');
             return;
         }
+
+        clearLoccalStorage();
     }
 
     // 清除 local Storage 
@@ -190,6 +182,9 @@ export default function EditMode() {
                         doneButtonMission={varifyDoneButtonMisson}
                     />
                 )}
+                { showDeleteAlert && (
+                    <EnsureDeleteAlert />
+                ) }
         </StyledMainContainer>
     ); 
 }
