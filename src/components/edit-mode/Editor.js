@@ -1,10 +1,9 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useNoteData } from "../../Hooks/NoteContext";
 import showPWDIcon from "../../img/show-PWD-icon.svg";
 import unshowPWDIcon from "../../img/unshow-PWD-icon.svg";
-import ReactMarkdown from "react-markdown";
 
-export default function Editor({ handleShowDeleteDialog, handleShowSetPasswordDialog, handlePublish }) {
+export default function Editor({ handlePublish }) {
     const { 
         noteTitle, setNoteTitle,
         noteAuthor, setNoteAuthor, 
@@ -15,7 +14,30 @@ export default function Editor({ handleShowDeleteDialog, handleShowSetPasswordDi
 
     const [showPassword, setShowPassword] = useState(false);
     const [passwordMessage, setPasswordMessage] = useState("Please set password for re-editing later.");
+    const titleInputRef= useRef();
+    const authorInputRef = useRef();
+    const textsInputRef = useRef();
     const passwordInputRef = useRef();
+    
+    // 處理 textArea 自動長高與縮短
+    useEffect(() => {
+        resizeTitleTextArea();
+    }, [noteTitle]);
+
+    useEffect(() => {
+        resizeTextsTextArea();
+    }, [noteTexts]);
+
+    function resizeTitleTextArea() {
+        titleInputRef.current.style.height = "auto";
+        titleInputRef.current.style.height = titleInputRef.current.scrollHeight + "px";
+    }
+
+    function resizeTextsTextArea() {
+        textsInputRef.current.style.height = "auto";
+        textsInputRef.current.style.height = textsInputRef.current.scrollHeight + "px";
+    }
+
 
     // ＝＝＝＝＝ 處理密碼設定問題 ＝＝＝＝＝
     function handleSetPassword() {
@@ -39,32 +61,42 @@ export default function Editor({ handleShowDeleteDialog, handleShowSetPasswordDi
     function handleShowPassword() {
         setShowPassword(!showPassword);
     }
+    
+    // ＝＝＝＝＝ input 事件處理函數 ＝＝＝＝＝
+    function handleChangeTitle(e) {
+        setNoteTitle(e.target.value);
+    }
+
+    function handleChangeAuthor(e) {
+        setNoteAuthor(e.target.value);
+    }
+
+    function handleChangeTexts(e) {
+        setNoteTexts(e.target.value);
+    }
 
     return (
         <form
             id="editForm" 
             onSubmit={handlePublish}
         >
-            <input 
-                style={{ width:"700px" }}
-                text="text" 
-                className="header" 
+            <textarea 
+                type="textarea" 
+                className="title" 
                 placeholder="Title"
-                onChange={(e) => {
-                    setNoteTitle(e.target.value);
-                }}
-                required
+                rows={1}
+                ref={titleInputRef}
                 defaultValue={noteTitle}
+                onChange={handleChangeTitle}
                 >
-            </input>
+            </textarea>
             <input 
                 text="text" 
                 className="author" 
                 placeholder="Author"
-                onChange={(e) => {
-                    setNoteAuthor(e.target.value);
-                }}
+                ref={authorInputRef}
                 defaultValue={noteAuthor}
+                onChange={handleChangeAuthor}
             >
             </input>
             <textarea 
@@ -72,10 +104,10 @@ export default function Editor({ handleShowDeleteDialog, handleShowSetPasswordDi
                 className="textarea"
                 type="textarea" 
                 placeholder="Your content."
-                onChange={(e) => {
-                    setNoteTexts(e.target.value);
-                }}
+                rows={15}
+                ref={textsInputRef}
                 defaultValue={noteTexts}
+                onChange={handleChangeTexts}
             >
             </textarea>
             <div>
@@ -92,7 +124,6 @@ export default function Editor({ handleShowDeleteDialog, handleShowSetPasswordDi
                     ref={passwordInputRef}
                     placeholder="6-12 letters and numbers"
                     onChange={handleSetPassword}
-
                 >
                 </input>
                 <img 

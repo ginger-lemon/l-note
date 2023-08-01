@@ -8,7 +8,7 @@ export default function Note() {
 
     return(
         <>
-            <h1 className="header">{noteTitle}</h1>
+            <h1 className="title">{noteTitle}</h1>
             <p className="author">{noteAuthor + " ・ " + noteDate}</p>
             <ReactMarkdown 
                 className="custom-markdown"

@@ -170,6 +170,12 @@ export default function EditMode() {
                     btnName="Publish"
                     onClick={handlePublish}
                 />
+                <Button 
+                    type="submit"
+                    form="noteForm"
+                    btnName="Reset"
+                    onClick={clearLoccalStorage}
+                />
                 { noteTimeStamp !== 11111 ? (
                     <Button 
                         type="submit"
