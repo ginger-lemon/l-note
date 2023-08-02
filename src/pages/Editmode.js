@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import Button from "../components/button.js";
 import { StyledAsideContainer, StyledMainContainer } from "../styles/Styled-Main-Aside.js";
 import { StyledArticle } from "../styles/Styled-Article.js";
@@ -27,7 +27,9 @@ export default function EditMode() {
         showVarifyDialog, setShowVarifyDialog,
         inputError, setInputError,
         inputErrorMessage, setInputErrorMessage,
+        isFocusPasswordInput, setIsFocusPasswordInput
     } = useNoteData();
+
     const navigate = useNavigate();
     const dialogWrapRef = useRef();
 
@@ -89,13 +91,13 @@ export default function EditMode() {
 
         if (notePassword === '') {
             alert("Please set the password for this note in the password filed.");
+            setIsFocusPasswordInput(true);
             return;
         } 
 
         if (noteTimeStamp === 11111) {
             let noteDate, noteTimeStamp, noteID, noteUID;
             const encryptedPassword = SHA256(notePassword).toString();
-            // console.log(encryptedPassword);
 
             noteDate = getPublishedDate();
             noteTimeStamp = getTimeStamp();

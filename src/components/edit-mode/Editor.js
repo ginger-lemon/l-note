@@ -10,14 +10,24 @@ export default function Editor({ handlePublish }) {
         noteTexts, setNoteTexts,
         notePassword, setNotePassword,
         noteTimeStamp,
+        isFocusPasswordInput, setIsFocusPasswordInput,
     } = useNoteData();
 
     const [showPassword, setShowPassword] = useState(false);
-    const [passwordMessage, setPasswordMessage] = useState("Please set password for re-editing later.");
+    const [passwordMessage, setPasswordMessage] = useState("Please set password for this note.");
     const titleInputRef= useRef();
     const authorInputRef = useRef();
     const textsInputRef = useRef();
     const passwordInputRef = useRef();
+
+    // 發佈時沒有取得密碼就 focus 對話框   
+    useEffect(() => {
+        passwordInputRef.current.focus();
+
+        return () => {
+            setIsFocusPasswordInput(false);
+        }
+    }, [isFocusPasswordInput === true]) 
     
     // 處理 textArea 自動長高與縮短
     useEffect(() => {
@@ -50,6 +60,8 @@ export default function Editor({ handlePublish }) {
         } else if (passwordInputValue.length >=6 && passwordInputValue.length <=12) {
             setNotePassword(passwordInputValue);
             setPasswordMessage("Password done.");
+
+        } else if (passwordInputValue.length > 12) {
 
         } else {
             setNotePassword(passwordInputValue);
@@ -100,7 +112,6 @@ export default function Editor({ handlePublish }) {
             >
             </input>
             <textarea 
-            // TODO: 要讓 textarea 的高度跟著文字數量自動增加
                 className="textarea"
                 type="textarea" 
                 placeholder="Your content."
@@ -124,6 +135,7 @@ export default function Editor({ handlePublish }) {
                     ref={passwordInputRef}
                     placeholder="6-12 letters and numbers"
                     onChange={handleSetPassword}
+                    maxLength={12}
                 >
                 </input>
                 <img 

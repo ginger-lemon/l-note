@@ -25,6 +25,7 @@ export const NoteDataContextProvider = ({ children }) => {
     const [inputPassword, setInputPassword] = useState('');
     const [inputError, setInputError] = useState(false);
     const [inputErrorMessage, setInputErrorMessage] = useState(null);
+    const [isFocusPasswordInput, setIsFocusPasswordInput] = useState(false); // 發佈時如果沒有密碼時 focus 輸入框
  
     return (
         <NoteDataContext.Provider
@@ -44,6 +45,7 @@ export const NoteDataContextProvider = ({ children }) => {
                 inputPassword, setInputPassword,
                 inputError, setInputError,
                 inputErrorMessage, setInputErrorMessage,
+                isFocusPasswordInput, setIsFocusPasswordInput,
             }}
         >
             {children}
@@ -68,6 +70,7 @@ export function useNoteData() {
         inputPassword, setInputPassword,
         inputError, setInputError,
         inputErrorMessage, setInputErrorMessage,
+        isFocusPasswordInput, setIsFocusPasswordInput
     } = useContext(NoteDataContext);
 
     return {
@@ -86,6 +89,7 @@ export function useNoteData() {
         inputPassword, setInputPassword,
         inputError, setInputError,
         inputErrorMessage, setInputErrorMessage,
+        isFocusPasswordInput, setIsFocusPasswordInput
     };
 }
 

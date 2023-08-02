@@ -23,23 +23,20 @@ const VarifyPasswordDialog = forwardRef(function VarifyPasswordDialog( props , r
         const inputValue = inputRef.current.value;
 
         if (!/^[a-zA-Z0-9]+$/.test(inputValue)) {
-
-            console.log(inputRef.current.value);
+            // console.log(inputRef.current.value);
             setInputError(true);
             setInputErrorMessage('Number and English letters only');
 
         } else if (inputValue.length >= 12 || inputValue.length <= 6) {
-            
-            console.log('密碼未滿足格式，繼續編輯或刪減');
+            // console.log('密碼未滿足格式，繼續編輯或刪減');
             setInputError(true);
             setInputErrorMessage('Password should be 6-12 characters.');
 
          } else {
-            
-            console.log('密碼符合規則');
+            // console.log('密碼符合規則');
             setInputError(false);
             setInputPassword(inputValue);
-            console.log('inputPassword: ', inputPassword);
+            // console.log('inputPassword: ', inputPassword);
             
         }
     }

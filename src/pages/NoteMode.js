@@ -113,7 +113,6 @@ export default function NoteMode() {
             setInputError(true);
             // setInputErrorMessage('Password is uncorrect!')
         }
-
     }
     
     return (

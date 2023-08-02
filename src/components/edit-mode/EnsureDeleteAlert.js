@@ -13,7 +13,6 @@ export default function EnsureDeleteAlert() {
     }
 
     function handleClickNoButton() {
-        console.log('不刪除');
         setShowDeleteAlert(false);
     }
 
