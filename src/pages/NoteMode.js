@@ -40,7 +40,7 @@ export default function NoteMode() {
     useEffect(() => {
         function clickOutsideToCloseDialog(e) {
             console.log(e);
-            if (e.target && !dialogWrapRef.current.contains(e.target)) {
+            if (dialogWrapRef.current && !dialogWrapRef.current.contains(e.target)) {
                 console.log('點在 dialog 外面');
                 setShowVarifyDialog(false);
             } else {
@@ -140,11 +140,10 @@ export default function NoteMode() {
                 />
             }
             { showVarifyDialog && (
-                <div ref={dialogWrapRef}>
-                    <VarifyPasswordDialog 
+                <VarifyPasswordDialog 
+                    ref={dialogWrapRef}
                     doneButtonMission={varifyDoneButtonMisson}
                 />
-                </div>
             )}
         </StyledMainContainer>
     );
