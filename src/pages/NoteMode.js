@@ -9,7 +9,6 @@ import { useNoteData } from "../Hooks/NoteContext";
 import { getNoteFromDatabase, getPasswordFromDatabase } from "../library/fetchToFirestore";
 import VarifyPasswordDialog from "../components/VarifyPasswordDialog";
 import { SHA256 } from "crypto-js";
-import CheckOutsideClick from "../components/CheckOutsideClick";
 
 export default function NoteMode() {
     const { 
@@ -39,9 +38,7 @@ export default function NoteMode() {
     // ＝＝＝＝＝ click outside to close dialog ＝＝＝＝＝
     useEffect(() => {
         function clickOutsideToCloseDialog(e) {
-            console.log(e);
             if (dialogWrapRef.current && !dialogWrapRef.current.contains(e.target)) {
-                console.log('點在 dialog 外面');
                 setShowVarifyDialog(false);
             } else {
                 return;

@@ -6,7 +6,8 @@ import { useNoteData } from "../../Hooks/NoteContext";
 export default function EnsureDeleteAlert() {
     const { setShowDeleteAlert, setShowVarifyDialog } = useNoteData();
 
-    function handleClickYesButton() {
+    function handleClickYesButton(e) {
+        e.stopPropagation();
         setShowVarifyDialog(true);
         setShowDeleteAlert(false);
     }
