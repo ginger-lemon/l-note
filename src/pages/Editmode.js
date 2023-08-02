@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import Button from "../components/button.js";
 import { StyledAsideContainer, StyledMainContainer } from "../styles/Styled-Main-Aside.js";
 import { StyledArticle } from "../styles/Styled-Article.js";
@@ -9,6 +9,7 @@ import { deleteNoteOnDatabase, setNoteToDatabase, updateNoteToDatabase, getPassw
 import VarifyPasswordDialog from "../components/VarifyPasswordDialog.js";
 import { SHA256 } from "crypto-js";
 import EnsureDeleteAlert from "../components/edit-mode/EnsureDeleteAlert.js";
+import CheckOutsideClick from "../components/CheckOutsideClick.js";
   
 export default function EditMode() {
     const { 
@@ -29,6 +30,9 @@ export default function EditMode() {
         inputErrorMessage, setInputErrorMessage,
     } = useNoteData();
     const navigate = useNavigate();
+    const dialogWrapRef = useRef();
+
+
 
     // ＝＝＝＝＝ 處理刪除資料 ＝＝＝＝＝
     // 按下刪除鍵 -> 跳出視窗選擇是否刪除資料 -> 是 -> 進入密碼驗證 -> 刪除資料並清除 local storage 資料
@@ -178,9 +182,11 @@ export default function EditMode() {
                     ) : null } 
             </StyledAsideContainer>
                 { showVarifyDialog && (
-                    <VarifyPasswordDialog 
-                        doneButtonMission={varifyDoneButtonMisson}
-                    />
+                    <div ref={dialogWrapRef}>
+                        <VarifyPasswordDialog 
+                            doneButtonMission={varifyDoneButtonMisson}
+                        />
+                    </div>
                 )}
                 { showDeleteAlert && (
                     <EnsureDeleteAlert />

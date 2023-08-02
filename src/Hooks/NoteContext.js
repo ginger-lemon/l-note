@@ -9,7 +9,7 @@ export const NoteDataContextProvider = ({ children }) => {
     // ＝＝＝＝ data should store in the local storage ＝＝＝＝ 
     const [noteTitle, setNoteTitle] = useLocalStorage("title", "Untitled");
     const [noteAuthor, setNoteAuthor] = useLocalStorage("author", "Unknow");
-    const [noteTexts, setNoteTexts] = useLocalStorage("texts", "A note.");
+    const [noteTexts, setNoteTexts] = useLocalStorage("texts", "A note. Available for easy markdown type.");
     const [noteTimeStamp, setNoteTimeStamp] = useLocalStorage("timeStamp", 11111);
     const [noteID, setNoteID] = useLocalStorage("id", ""); 
 

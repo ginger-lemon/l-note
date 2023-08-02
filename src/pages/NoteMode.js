@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { StyledMainContainer, StyledAsideContainer } from "../styles/Styled-Main-Aside";
 import { StyledArticle } from "../styles/Styled-Article";
 import Button from "../components/button";
@@ -9,6 +9,7 @@ import { useNoteData } from "../Hooks/NoteContext";
 import { getNoteFromDatabase, getPasswordFromDatabase } from "../library/fetchToFirestore";
 import VarifyPasswordDialog from "../components/VarifyPasswordDialog";
 import { SHA256 } from "crypto-js";
+import CheckOutsideClick from "../components/CheckOutsideClick";
 
 export default function NoteMode() {
     const { 
@@ -30,11 +31,30 @@ export default function NoteMode() {
 
     const [showShareDialog, setShowShareDialog] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const dialogWrapRef = useRef();
 
-    // ＝＝＝＝＝ 切換到 NoteMode 時 getDoc ＝＝＝＝＝
     const navigate = useNavigate(); 
     const { urlNoteID } = useParams(); 
     
+    // ＝＝＝＝＝ click outside to close dialog ＝＝＝＝＝
+    useEffect(() => {
+        function clickOutsideToCloseDialog(e) {
+            console.log(e);
+            if (e.target && !dialogWrapRef.current.contains(e.target)) {
+                console.log('點在 dialog 外面');
+                setShowVarifyDialog(false);
+            } else {
+                return;
+            }
+        }
+        document.addEventListener('click', clickOutsideToCloseDialog)
+
+        return () => {
+            document.removeEventListener('click', clickOutsideToCloseDialog);
+        }
+    }, [])
+
+    // ＝＝＝＝＝ 切換到 NoteMode 時 getDoc ＝＝＝＝＝
     useEffect(() => {     
         // TO DO: 解決閃爍問題
         setIsLoading(true);
@@ -74,7 +94,8 @@ export default function NoteMode() {
     }
 
     // ＝＝＝＝＝ 處理按下 edit 按鈕切換到 Edit Mode ＝＝＝＝＝
-    function handleClickEditButton() {
+    function handleClickEditButton(e) {
+        e.stopPropagation(); // 防止 document 偵測到底下的事件
         setShowVarifyDialog(true);
     }
 
@@ -119,9 +140,11 @@ export default function NoteMode() {
                 />
             }
             { showVarifyDialog && (
-                <VarifyPasswordDialog 
+                <div ref={dialogWrapRef}>
+                    <VarifyPasswordDialog 
                     doneButtonMission={varifyDoneButtonMisson}
                 />
+                </div>
             )}
         </StyledMainContainer>
     );
