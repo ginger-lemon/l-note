@@ -7,10 +7,8 @@ import { StyledMainContainer } from "../styles/Styled-Main-Aside";
 export default function ErrorMode() {
     const navigate = useNavigate();
 
-
     function reDirectToEditMode() {
         navigate('/');
-
     }
 
     return (

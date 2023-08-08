@@ -17,7 +17,6 @@ export default function EditMode() {
         noteTexts,
         noteID, 
         notePassword,
-        availableDays,
         setNoteID, 
         setNoteDate, 
         noteTimeStamp, setNoteTimeStamp,
@@ -111,7 +110,6 @@ export default function EditMode() {
                 noteAuthor,
                 noteDate,
                 noteTexts,
-                availableDays,
                 encryptedPassword,
                 noteTimeStamp,
                 noteID,
@@ -128,14 +126,12 @@ export default function EditMode() {
         } else {
             const encryptedPassword = SHA256(notePassword).toString();
             let noteUID = noteID;
-            // console.log('使用 update 更新資料，不能更新到 title');
 
             // 使用 update 更新資料
             updateNoteToDatabase(noteUID, {
                 noteTitle, 
                 noteAuthor,
                 noteTexts,
-                availableDays,
                 encryptedPassword,
             });
 

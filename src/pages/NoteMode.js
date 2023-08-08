@@ -20,7 +20,6 @@ export default function NoteMode() {
         setNoteTexts,
         setNotePassword,
         setNoteTimeStamp,
-        setAvailableDays,
 
         inputPassword, setInputPassword,
         showVarifyDialog, setShowVarifyDialog,
@@ -70,7 +69,6 @@ export default function NoteMode() {
             setNoteAuthor(note.author);
             setNoteDate(note.date)
             setNoteTexts(note.texts);
-            setAvailableDays(note.availableDays);
             setNoteTimeStamp(note.timeStamp);
             setNoteID(note.id);
         } catch (error) {
@@ -99,19 +97,14 @@ export default function NoteMode() {
     async function varifyDoneButtonMisson() {
         const correctPassword = await getPasswordFromDatabase(noteID);
         const encryptedInputPassword = SHA256(inputPassword).toString();
-        
-        // console.log('correctPassword: ', correctPassword);
-        // console.log('encryptedInputPassword: ', encryptedInputPassword);
 
         // 處理密碼驗證
         if (encryptedInputPassword === correctPassword) {
-            // console.log('inputPassword === correctPassword');
             setShowVarifyDialog(false);
             navigate("/");
 
         } else {
             setInputError(true);
-            // setInputErrorMessage('Password is uncorrect!')
         }
     }
     

@@ -122,13 +122,14 @@ export default function Editor({ handlePublish }) {
             >
             </textarea>
             <div>
-                <label>
+                <label htmlFor="passwordInput">
                     { noteTimeStamp === 11111 ? 
                         "*Set password for this note: " : 
                         "*Please enter the password again: " 
                     }
                 </label>
                 <input
+                    id="passwordInput"
                     className="input-password"
                     style={{width: "300px"}}
                     type={showPassword ? 'text' : 'password'}
