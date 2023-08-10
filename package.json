@@ -9,18 +9,20 @@
     "test": "jest"
   },
   "jest": {
-    "testEnvironment": "node",
+    "testEnvironment": "jsdom",
+    "version": "29",
     "setupTestFrameworkScriptFile": "<rootDir>/src/setupTest.js",
     "moduleNameMapper": {
-      "\\.(jpg|jpeg|png|gif|svg)$": "<rootDir>/src/img/",
-      "\\.(css|less)$": "<rootDir>/src/styles/"
+      "\\\\.(jpg|jpeg|png|gif|svg)$": "<rootDir>/src/img/",
+      "\\\\.(css|less)$": "<rootDir>/src/styles/"
     },
     "testPathIgnorePatterns": [
       "<rootDir>/node_modules/",
       "<rootDir>/src/styles/"
     ],
     "transform": {
-      "^.+\\.jsx?$": "babel-jest"
+      "^.+\\.jsx?$": "babel-jest",
+      "^.+\\.(jpg|jpeg|png|gif|svg)": "jest-file-loader"
     }
   },
   "keywords": [],
@@ -39,6 +41,8 @@
     "eslint-plugin-jest-dom": "^5.0.2",
     "eslint-plugin-testing-library": "^5.11.1",
     "jest": "^29.6.2",
+    "jest-environment-jsdom": "^29.6.2",
+    "jest-file-loader": "^1.0.3",
     "style-loader": "^3.3.3",
     "webpack": "^5.88.1",
     "webpack-cli": "^5.1.4",
@@ -49,6 +53,7 @@
     "firebase": "^10.0.0",
     "firebase-tools": "^12.4.3",
     "html-webpack-plugin": "^5.5.3",
+    "jsdom": "^22.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-markdown": "^8.0.7",

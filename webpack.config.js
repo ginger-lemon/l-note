@@ -42,6 +42,12 @@ module.exports = {
           }
         ],
     },
+    resolve: {
+      extensions: ['.js', '.jsx', '.jsx.html'],
+      modules: [
+        path.join(__dirname, 'node_modules'),
+      ],
+    },
 
     // optimization: {
     //     runtimeChunk: 'single',
