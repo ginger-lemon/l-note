@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useNoteData } from "../../Hooks/NoteContext";
 import showPWDIcon from "../../img/show-PWD-icon.svg";
 import unshowPWDIcon from "../../img/unshow-PWD-icon.svg";
+import useAutoResizeTextatea from "../../Hooks/useAutoResizeTextarea";
 
 export default function Editor({ handlePublish }) {
     const { 
@@ -15,9 +16,9 @@ export default function Editor({ handlePublish }) {
 
     const [showPassword, setShowPassword] = useState(false);
     const [passwordMessage, setPasswordMessage] = useState("Please set password for this note.");
-    const titleInputRef= useRef();
+    const titleInputRef= useAutoResizeTextatea(noteTitle);
     const authorInputRef = useRef();
-    const textsInputRef = useRef();
+    const textsInputRef = useAutoResizeTextatea(noteTexts);
     const passwordInputRef = useRef();
 
     // 發佈時沒有取得密碼就 focus 對話框   
@@ -28,26 +29,6 @@ export default function Editor({ handlePublish }) {
             setIsFocusPasswordInput(false);
         }
     }, [isFocusPasswordInput === true]) 
-    
-    // 處理 textArea 自動長高與縮短
-    useEffect(() => {
-        resizeTitleTextArea();
-    }, [noteTitle]);
-
-    useEffect(() => {
-        resizeTextsTextArea();
-    }, [noteTexts]);
-
-    function resizeTitleTextArea() {
-        titleInputRef.current.style.height = "auto";
-        titleInputRef.current.style.height = titleInputRef.current.scrollHeight + "px";
-    }
-
-    function resizeTextsTextArea() {
-        textsInputRef.current.style.height = "auto";
-        textsInputRef.current.style.height = textsInputRef.current.scrollHeight + "px";
-    }
-
 
     // ＝＝＝＝＝ 處理密碼設定問題 ＝＝＝＝＝
     function handleSetPassword() {
@@ -98,7 +79,7 @@ export default function Editor({ handlePublish }) {
                 placeholder="Title"
                 rows={1}
                 ref={titleInputRef}
-                defaultValue={noteTitle}
+                value={noteTitle}
                 onChange={handleChangeTitle}
                 >
             </textarea>
@@ -107,17 +88,17 @@ export default function Editor({ handlePublish }) {
                 className="author" 
                 placeholder="Author"
                 ref={authorInputRef}
-                defaultValue={noteAuthor}
+                value={noteAuthor}
                 onChange={handleChangeAuthor}
             >
             </input>
             <textarea 
                 className="textarea"
                 type="textarea" 
-                placeholder="Your content."
+                placeholder="Your note. Available for easy markdown type."
                 rows={15}
                 ref={textsInputRef}
-                defaultValue={noteTexts}
+                value={noteTexts}
                 onChange={handleChangeTexts}
             >
             </textarea>
