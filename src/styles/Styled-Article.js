@@ -65,7 +65,7 @@ export const StyledArticle = styled.article`
     div {
         margin: 12px 0 24px;
 
-        label {
+        label, span {
             /* margin: 5px 0; */
             padding-left: 10px;
             font-family: "Inter";
@@ -84,6 +84,10 @@ export const StyledArticle = styled.article`
             margin-left: 6px;
             border-bottom: 1px solid #A5A5A5;
             border-radius: 10px;
+        }
+
+        .password-hint {
+            font-weight: 400;
         }
 
         @media (max-width: 850px) {

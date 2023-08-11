@@ -126,7 +126,7 @@ export default function Editor({ handlePublish }) {
                     onClick={handleShowPassword}
                 />
                 <br />
-                <label>Check password: </label><span>{passwordMessage}</span>
+                <span>Password hint: </span><span className="password-hint">{passwordMessage}</span>
 
             </div>
     </form>
