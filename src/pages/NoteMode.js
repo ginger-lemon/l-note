@@ -26,7 +26,14 @@ export default function NoteMode() {
         inputError, setInputError,
         inputErrorMessage, setInputErrorMessage,
     } = useNoteData();
-
+    const [note, setNote] = useState({
+        title: '', 
+        author: '',
+        date: '',
+        texts: '',
+        timeStamp: '',
+        id: ''
+    });
     const [showShareDialog, setShowShareDialog] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const dialogWrapRef = useRef();
@@ -56,23 +63,22 @@ export default function NoteMode() {
         setIsLoading(true);
         getDataFromDatabaseAndSetDatas(urlNoteID);
         setIsLoading(false);
-    }, [urlNoteID]);
+    }, []);
 
     async function getDataFromDatabaseAndSetDatas(noteID) {
         try {
             const note = await getNoteFromDatabase(noteID);
-            // console.log('從資料庫 get 的 note: ');
-            // console.log(note); // null
-
-            // 將取得的資料更新到變數中
-            setNoteTitle(note.title);
-            setNoteAuthor(note.author);
-            setNoteDate(note.date)
-            setNoteTexts(note.texts);
-            setNoteTimeStamp(note.timeStamp);
-            setNoteID(note.id);
+        
+            setNote({
+                title: note.title, 
+                author: note.author,
+                date: note.date,
+                texts: note.texts,
+                timeStamp: note.timeStamp,
+                id: note.id,
+            });
+            
         } catch (error) {
-            // console.log('404 not found')
             navigate("/error");
             clearLoccalStorage();
         }
@@ -95,14 +101,21 @@ export default function NoteMode() {
     }
 
     async function varifyDoneButtonMisson() {
-        const correctPassword = await getPasswordFromDatabase(noteID);
+        const correctPassword = await getPasswordFromDatabase(note.id);
         const encryptedInputPassword = SHA256(inputPassword).toString();
 
         // 處理密碼驗證
         if (encryptedInputPassword === correctPassword) {
             setShowVarifyDialog(false);
-            navigate("/");
 
+            setNoteTitle(note.title);
+            setNoteAuthor(note.author);
+            setNoteDate(note.date)
+            setNoteTexts(note.texts);
+            setNoteTimeStamp(note.timeStamp);
+            setNoteID(note.id);
+
+            navigate("/");
         } else {
             setInputError(true);
         }
@@ -111,7 +124,9 @@ export default function NoteMode() {
     return (
         <StyledMainContainer>
             <StyledArticle>
-                { isLoading ? null : ((<Note />)) }
+                { isLoading 
+                    ? null 
+                    : ((<Note note={note}/>)) }
             </StyledArticle>
             <StyledAsideContainer>
                 <Button 
