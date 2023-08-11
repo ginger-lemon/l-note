@@ -127,7 +127,6 @@ export default function Editor({ handlePublish }) {
                 />
                 <br />
                 <span>Password hint: </span><span className="password-hint">{passwordMessage}</span>
-
             </div>
     </form>
     );
