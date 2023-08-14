@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect } from "react";
 import Button from "../components/button.js";
 import { StyledAsideContainer, StyledMainContainer } from "../styles/Styled-Main-Aside.js";
 import { StyledArticle } from "../styles/Styled-Article.js";
@@ -21,12 +21,12 @@ export default function EditMode() {
         setNoteDate, 
         noteTimeStamp, setNoteTimeStamp,
         
-        inputPassword, setInputPassword,
+        inputPassword, 
         showDeleteAlert, setShowDeleteAlert,
         showVarifyDialog, setShowVarifyDialog,
-        inputError, setInputError,
-        inputErrorMessage, setInputErrorMessage,
-        isFocusPasswordInput, setIsFocusPasswordInput
+        setInputError,
+        setInputErrorMessage,
+        setIsFocusPasswordInput
     } = useNoteData();
 
     const navigate = useNavigate();

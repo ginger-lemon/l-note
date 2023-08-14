@@ -1,5 +1,5 @@
 import React from "react";
-import { collection, doc, deleteDoc, getDoc, getDocs, setDoc, updateDoc } from "firebase/firestore";
+import { doc, deleteDoc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { database } from "../firebaseConfig";
 
 // ＝＝＝＝ 初始化資料庫的資料格式 ＝＝＝＝//
@@ -98,7 +98,6 @@ export const noteConverter = {
         noteTitle, 
         noteAuthor,
         noteTexts,
-        availableDays,
         encryptedPassword,
     }) {
         try {
@@ -116,24 +115,6 @@ export const noteConverter = {
             // console.log('更新資料時有問題');
         }
     }
-
-    // 只更新密碼
-    export async function updatePasswordToDatabase(noteUID, {
-        notePassword,
-    }) {
-        try {
-            // TO DO: filedName 到時候可能要替換成樣板 `${variable}` 去抓名字
-            const ref = doc(database, "note", noteUID);
-            await updateDoc(ref, {
-                password: notePassword,
-            });
-
-        } catch (error) {
-            console.error("Error: ", error);
-            console.log('Password is uncorrect!');
-        }
-    }
-
 // ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝//
 
 // ＝＝＝＝ 使用 delete 更新資料庫指定資料 ＝＝＝＝

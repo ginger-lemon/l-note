@@ -1,4 +1,4 @@
-import React, { children, createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useState } from "react";
 import { useLocalStorage } from "./useLocalStorage";
 
 export const NoteDataContext = createContext();

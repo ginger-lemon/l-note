@@ -8,7 +8,7 @@ import { useNoteData } from "../Hooks/NoteContext";
 
 const VarifyPasswordDialog = forwardRef(function VarifyPasswordDialog( props , ref ) {
     const { 
-        inputPassword, setInputPassword,
+        setInputPassword,
         inputError, setInputError,
         inputErrorMessage, setInputErrorMessage
     } = useNoteData();

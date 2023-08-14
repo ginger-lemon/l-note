@@ -12,19 +12,16 @@ import { SHA256 } from "crypto-js";
 
 export default function NoteMode() {
     const { 
-        noteID,
         setNoteID,
         setNoteTitle,
         setNoteAuthor,
         setNoteDate,
         setNoteTexts,
-        setNotePassword,
         setNoteTimeStamp,
 
-        inputPassword, setInputPassword,
+        inputPassword, 
         showVarifyDialog, setShowVarifyDialog,
-        inputError, setInputError,
-        inputErrorMessage, setInputErrorMessage,
+        setInputError,
     } = useNoteData();
     const [note, setNote] = useState({
         title: '', 

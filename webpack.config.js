@@ -1,9 +1,11 @@
 const path = require('path');
+const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const ImageMinizerPlugin = require('image-minimizer-webpack-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const Dotenv = require('dotenv-webpack');
 
 const modeEnv = process.env.NODE_ENV === "production" ? "production" : "development";
@@ -71,8 +73,14 @@ module.exports = {
         nodeEnv: "production",
         splitChunks: {
           chunks: 'all',
-          minSize: 50,
-          
+          minSize: 10,
+          cacheGroups: {
+            commons: {
+              test: /[\\/]node_modules[\\/]/,
+              name: 'vendors',
+              chunks: 'all'
+            }
+          }
         },
         minimize: true,
         minimizer: [
@@ -104,7 +112,18 @@ module.exports = {
                 plugins: ["svgo"]
               }
             }
-          })
+          }),
+          new webpack.IgnorePlugin({
+            resourceRegExp: /\/node_modules\/jest|\/__tests__\//,
+          }),
+          new webpack.optimize.LimitChunkCountPlugin({
+            maxChunks: 10
+          }),
+          new BundleAnalyzerPlugin(),
         ],
+    },
+
+    performance: {
+      hints: 'warning',
     },
 };

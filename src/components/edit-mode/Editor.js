@@ -9,7 +9,7 @@ export default function Editor({ handlePublish }) {
         noteTitle, setNoteTitle,
         noteAuthor, setNoteAuthor, 
         noteTexts, setNoteTexts,
-        notePassword, setNotePassword,
+        setNotePassword,
         noteTimeStamp,
         isFocusPasswordInput, setIsFocusPasswordInput,
     } = useNoteData();
