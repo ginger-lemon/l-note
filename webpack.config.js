@@ -1,10 +1,19 @@
 const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');const Dotenv = require('dotenv-webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const ImageMinizerPlugin = require('image-minimizer-webpack-plugin');
+const Dotenv = require('dotenv-webpack');
+
+const modeEnv = process.env.NODE_ENV === "production" ? "production" : "development";
+const isProduction = modeEnv === "production";
 
 module.exports = {
+    mode: modeEnv,
     entry: './src/index.js',
     output: {
-        filename: 'bundle.js',
+        filename: '[name].js',
         path: path.resolve(__dirname, 'dist'),
         clean: true,
     },
@@ -12,6 +21,8 @@ module.exports = {
         new HtmlWebpackPlugin({ 
             template: './src/index.html' 
         }),
+        new CssMinimizerPlugin(),
+        new MiniCssExtractPlugin(),
         new Dotenv(),
     ],
 
@@ -25,7 +36,10 @@ module.exports = {
         rules: [
           {
             test: /\.css$/i,
-            use: ['style-loader', 'css-loader'],
+            use: [
+              isProduction ? MiniCssExtractPlugin.loader : "style-loader", 
+              "css-loader"
+            , ],
           },
           {
             test: /\.(png|svg|jpg|jpeg|gif)$/i,
@@ -33,13 +47,16 @@ module.exports = {
           },
           {
             test: /\.(?:js|mjs|cjs|jsx)$/,
+            enforce: "pre",
             exclude: /node_modules/,
             use: {
-              loader: 'babel-loader',
-              // options: {
-              //   presets: ['@babel/preset-env', "@babel/preset-react"],
-              // }
+              loader: "babel-loader",
             }
+          },
+          {
+            test: /\.js$/,
+            enforce: "pre",
+            use: ["source-map-loader"],
           }
         ],
     },
@@ -50,7 +67,44 @@ module.exports = {
       ],
     },
 
-    // optimization: {
-    //     runtimeChunk: 'single',
-    // },
+    optimization: {
+        nodeEnv: "production",
+        splitChunks: {
+          chunks: 'all',
+          minSize: 50,
+          
+        },
+        minimize: true,
+        minimizer: [
+          new TerserPlugin({
+            test: /\.js(\?.*)?$/i,
+            terserOptions: {
+              // 移除 comments
+              format: {
+                comments: false,
+              }
+            }
+          }),
+          new CssMinimizerPlugin({
+            test: /\.css(\?.*)?$/i,
+            minimizerOptions: {
+              preset: [
+                "default",
+                {
+                  // 移除 comments
+                  discardComments: {removeAll: true},
+                }
+              ]
+            }
+          }),
+          new ImageMinizerPlugin({
+            minimizer: {
+              implementation: ImageMinizerPlugin.imageminMinify,
+              options: {
+                plugins: ["svgo"]
+              }
+            }
+          })
+        ],
+    },
 };
