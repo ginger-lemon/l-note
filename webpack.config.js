@@ -124,7 +124,9 @@ module.exports = {
           new webpack.optimize.LimitChunkCountPlugin({
             maxChunks: 10
           }),
-          new BundleAnalyzerPlugin(),
+          new BundleAnalyzerPlugin({
+            openAnalyzer: false
+          }),
         ],
     },
 
