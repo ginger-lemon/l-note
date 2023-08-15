@@ -1,13 +1,11 @@
 import React, { useRef, useState } from "react";
 import Dialog from "../dialog";
 import copyUrlIcon from "../../img/copy-icon.svg"
-import { useNoteData } from "../../Hooks/NoteContext";
 
-export default function ShareDialog({ setShowShareDialog }) {
-    const { noteID } = useNoteData();
+export default function ShareDialog({ setShowShareDialog, urlNoteID }) {
     const [isCopied, setIsCopied] = useState(false);
     const copyUrlRef = useRef();
-    const noteUrl = "https://l.note" + "/" + noteID;
+    const noteUrl = "https://" + "l-note-app.web.app" + "/" + urlNoteID;
 
     function closeShareDialog() {
         setShowShareDialog(false);

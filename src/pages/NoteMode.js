@@ -138,6 +138,7 @@ export default function NoteMode() {
             { showShareDialog && 
                 <ShareDialog 
                     setShowShareDialog={setShowShareDialog}
+                    urlNoteID={urlNoteID}
                 />
             }
             { showVarifyDialog && (
