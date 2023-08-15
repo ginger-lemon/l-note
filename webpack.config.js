@@ -69,7 +69,12 @@ module.exports = {
       ],
     },
 
+    externals: {
+      'firebase': 'firebase',
+    },
+
     optimization: {
+        // runtimeChunk: 'single',
         nodeEnv: "production",
         splitChunks: {
           chunks: 'all',
@@ -124,6 +129,6 @@ module.exports = {
     },
 
     performance: {
-      hints: 'warning',
+      hints: false,
     },
 };
