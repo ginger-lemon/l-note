@@ -3,6 +3,8 @@ A lightweight tool for publishing notes.
 
 ## What is l-note?
 
+![mockup](https://i.imgur.com/nMvRZpZ.png)
+
 [l-note](l-note-app.web.app/) is a non-login lightweight note tool. 
 The main idea refers to [telegra.ph](telegra.ph), basing on its anonymous-publish, l-note adding features such as deleteing notes and password setting in parallel. 
 Users can edit can remove notes across devices.
@@ -12,19 +14,38 @@ Users can edit can remove notes across devices.
 ### 📝 Edit Mode
 
 - edit: before publish, input can be store in local storage
+
+![publish](https://i.imgur.com/daKZ9oR.gif)
+
 - password: to support editing in different devices
+
+![password](https://i.imgur.com/Kp6Dk5b.gif)
+
 - delete: enable to delete note if knowing password
+
+![delete](https://i.imgur.com/mZXbPoM.gif)
 
 ### 📄 Note Mode
 
-- show note
-- edit verity: person can entry edit mode if has correct password
+- edit verify: user can re-edit the note if having correct password 
+
+![reedit](https://i.imgur.com/pvVcXwN.gif)
 
 ### ❌ Error Mode
 
 - error page: direact to edit page
 
+![direct](https://i.imgur.com/YHgHEII.gif)
+
+### 📱 Accross Devices 
+
+- implement the Responsive Web Design (RWD) for mobile users
+
+![rwd](https://i.imgur.com/ZXSHSto.gif)
+
 ## Techniques
+
+![structure](https://i.imgur.com/i41Rxjw.png)
 
 l-note uses React and Webpack build the frontend environment; partly features implemented with packages,
 such as password encryption and SPA...
@@ -44,7 +65,8 @@ finally, deploy project to the internet with firebase-hosting.
 - React Router: implementing SPA
 - styled-components: manage style for the component
 - react-markdown: supporting easy markdown
-- crytpo-js: using SHA256 to encrypt password value when send data to firestore
+- crypto-js: using SHA256 to encrypt password value when send data to firestore
+
   
 ### Data Storage
 
