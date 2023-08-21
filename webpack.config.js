@@ -15,7 +15,7 @@ module.exports = {
     mode: modeEnv,
     entry: './src/index.js',
     output: {
-        filename: '[name].js',
+        filename: '[name].[hash].js',
         path: path.resolve(__dirname, 'dist'),
         clean: true,
     },
