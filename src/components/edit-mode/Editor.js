@@ -57,6 +57,7 @@ export default function Editor({ handlePublish }) {
     
     // ＝＝＝＝＝ input 事件處理函數 ＝＝＝＝＝
     function handleChangeTitle(e) {
+        e.preventDefault();
         setNoteTitle(e.target.value);
     }
 
@@ -65,6 +66,7 @@ export default function Editor({ handlePublish }) {
     }
 
     function handleChangeTexts(e) {
+        e.preventDefault();
         setNoteTexts(e.target.value);
     }
 

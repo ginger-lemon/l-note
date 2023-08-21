@@ -21,9 +21,9 @@ export default function App() {
                 <Route path="/error" element={<ErrorMode />} />
             </Routes>
             </NoteDataContextProvider>
-            <StyledFooter>
+            {/* <StyledFooter>
                 Copyright © 2023 L.Note 
-            </StyledFooter>
+            </StyledFooter> */}
         </>
     );
 }

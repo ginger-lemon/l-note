@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 
 function useAutoResizeTextatea(value) {
     const ref = useRef();
-
+    
     useEffect(() => {
         resizeTextarea();
     }, [value]);
