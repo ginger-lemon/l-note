@@ -36,7 +36,7 @@ The main idea is inspired by [telegra.ph](telegra.ph), building upon its anonymo
 
 ![direct](https://i.imgur.com/YHgHEII.gif)
 
-### 📱 Accross Devices 
+### 📱 Across Devices 
 
 - Implemented Responsive Web Design (RWD) for mobile users.
 
@@ -80,3 +80,6 @@ Easy components, feature, and context testing.
 - git/GitHub: version control and CI/CD
 - Webpack: environment configure, bundle Javascript, optimization
 
+## Development Diary
+
+You can check the weekly diary here: [development record](https://ginger-lemon.medium.com/list/ec709041c5be)
