@@ -5,11 +5,21 @@ A lightweight tool for publishing notes.
 
 ![mockup](https://i.imgur.com/nMvRZpZ.png)
 
-[l-note](l-note-app.web.app/) is a non-login lightweight note tool. 
-The main idea is inspired by [telegra.ph](telegra.ph), building upon its anonymous publishing feature. l-note adds additional features like note deletion and password protection in parallel. Users can edit can remove notes across devices.
+[l-note](https://l-note-app.web.app/) is a non-login lightweight note tool. 
+The main idea is inspired by [telegra.ph](https://telegra.ph), building upon its anonymous publishing feature. l-note adds additional features like note deletion and password protection in parallel. Users can edit can remove notes across devices.
 
-## Available Script
+## Getting Started 
 
+### Prerequisites
+
+Before running the application, make sure you have the following installed:
+
+- node.js: v18.16.0
+- npm: v9.5.1
+
+### Available Script 
+
+- `npm install` to install dependencies for the app after cloning the repository.
 - `npm start` to run the app in the development mode.
 - `npm test` to test the app.
 - `npm run build` to build the app in the production mode.
