@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { StyledMainContainer, StyledAsideContainer } from "../styles/Styled-Main-Aside";
 import { StyledArticle } from "../styles/Styled-Article";
-import Button from "../components/button";
+import Button from "../components/button/Button";
 import ShareDialog from "../components/note-mode/ShareDialog";
 import Note from "../components/note-mode/Note";
 import { useNavigate, useParams } from "react-router-dom";

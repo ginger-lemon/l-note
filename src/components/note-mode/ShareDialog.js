@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import Dialog from "../dialog";
+import Dialog from "../dialog/Dialog";
 import copyUrlIcon from "../../img/copy-icon.svg"
 
 export default function ShareDialog({ setShowShareDialog, urlNoteID }) {
@@ -20,9 +20,9 @@ export default function ShareDialog({ setShowShareDialog, urlNoteID }) {
 
     return (
         <Dialog 
-            dialogTitle="Share URL of this note"
-            dialogDescribe={isCopied && "Url copied."}
-            doneButtonMission={closeShareDialog}
+            title="Share URL of this note"
+            describe={isCopied && "Url copied."}
+            handleClick={closeShareDialog}
         >
             <input
                 style={{ width: "250px" }}

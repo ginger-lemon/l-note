@@ -1,5 +1,5 @@
 import React, { forwardRef, useRef, useState } from "react";
-import Dialog from "./dialog";
+import Dialog from "./dialog/Dialog";
 import { StyledDialogCustomDiv } from "../styles/Styled.Dialog";
 import showPWDIcon from "../img/show-PWD-icon.svg";
 import unshowPWDIcon from "../img/unshow-PWD-icon.svg";
@@ -49,9 +49,9 @@ const VarifyPasswordDialog = forwardRef(function VarifyPasswordDialog( props , r
         <div ref={ref}>
             <Dialog
                 id="dialog-container"
-                dialogTitle="Enter the password for this note"
-                dialogDescribe={ inputError && inputErrorMessage }
-                doneButtonMission={doneButtonMission}
+                title="Enter the password for this note"
+                describe={ inputError && inputErrorMessage }
+                handleClick={doneButtonMission}
             >
                 <StyledDialogCustomDiv>
                     <input

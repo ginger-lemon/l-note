@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from "react";
-import Button from "../components/button.js";
+import Button from "../components/button/Button.js";
 import { StyledAsideContainer, StyledMainContainer } from "../styles/Styled-Main-Aside.js";
 import { StyledArticle } from "../styles/Styled-Article.js";
 import { useNoteData } from "../Hooks/NoteContext.js";

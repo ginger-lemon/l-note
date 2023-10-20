@@ -1,5 +1,5 @@
 import React from "react";
-import Button from "../components/button";
+import Button from "../components/button/Button";
 import { useNavigate } from "react-router-dom";
 import { StyledErrorMode } from "../styles/Styled-ErrorMode";
 import { StyledMainContainer } from "../styles/Styled-Main-Aside";

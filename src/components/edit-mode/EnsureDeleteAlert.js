@@ -1,5 +1,5 @@
 import React from "react";
-import Button from "../button";
+import Button from "../button/Button";
 import { StyledAlert } from "../../styles/Styled-Alert";
 import { useNoteData } from "../../Hooks/NoteContext";
 
