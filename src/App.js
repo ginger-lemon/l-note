@@ -6,18 +6,18 @@ import Note from "./pages/Note/Note";
 import Error from "./pages/Error/Error";
 
 import { Route, Routes } from "react-router-dom";
-import { NoteDataContextProvider } from "./Hooks/NoteContext";
+// import { NoteDataContextProvider } from "./Hooks/NoteContext";
 
 const App = () => {
     return (
         <>  
-            <NoteDataContextProvider>
+            {/* <NoteDataContextProvider> */}
             <Routes>
                 <Route path="/" element={<Edit />}/>
                 <Route path="/:id" element={<Note/>}/>
                 <Route path="*" element={<Error />} />
             </Routes>
-            </NoteDataContextProvider>
+            {/* </NoteDataContextProvider> */}
         </>
     );
 }

@@ -37,7 +37,7 @@
 .author {
     font-size: var(--font-size-h6);
     font-weight: var(--font-weight-normal);
-    color: var(--night)
+    color: var( --dark-quartz-grey)
 }
 
 .texts {
