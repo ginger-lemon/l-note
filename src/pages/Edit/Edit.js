@@ -6,10 +6,39 @@ import UnshowIcon from '../../img/unshow-PWD-icon.svg'
 import Button from "../../components/button/Button";
 
 const Edit = () => {
+    const initialNote = {
+        id: '',
+        title: '',
+        author: '',
+        texts: '',
+        password: '',
+    }
+
     const [showPassword, setShowPassword] = useState(false)
+    const [note, setNote] = useState(initialNote)
 
     const handleToggleShowPassword = () => {
         setShowPassword(!showPassword);
+    }
+
+    const handleChangeTitle = (e) => {
+        setNote({ ...note, title: e.target.value })
+        console.log(note)
+    }
+
+    const handleChangeAuthor = (e) => {
+        setNote({ ...note, author: e.target.value })
+        console.log(note)
+    }
+
+    const handleChangeTexts = (e) => {
+        setNote({ ...note, texts: e.target.value})
+        console.log(note)
+    }
+
+    const handleChangePassword = (e) => {
+        setNote({ ...note, password: e.target.value })
+        console.log(note)
     }
 
     return (
@@ -22,24 +51,24 @@ const Edit = () => {
                             type="textarea"
                             placeholder="title"
                             rows={1}
-                            // value={}
-                            // onChange={}
+                            value={note.title}
+                            onChange={handleChangeTitle}
                         >
                         </textarea>
                         <input 
                             type="text"
                             className={`&{Styles.input} ${Styles.author}`}
                             placeholder="author"
-                            // value={}
-                            // onChange={}
+                            value={note.author}
+                            onChange={handleChangeAuthor}
                         >
                         </input>
                         <textarea 
                             className={`${Styles.textarea} ${Styles.texts}`}
                             placeholder="contents"
                             rows={15}
-                            // value={}
-                            // onChange={}
+                            value={note.texts}
+                            onChange={handleChangeTexts}
                         >
                         </textarea>
                         <div className={Styles.passwordWrapper}>
@@ -53,6 +82,8 @@ const Edit = () => {
                                     placeholder="6-12"
                                     mimLength={6}
                                     maxLength={12}
+                                    value={note.password}
+                                    onChange={handleChangePassword}
                                 >
                                 </input>
                                 <img 
@@ -78,9 +109,11 @@ const Edit = () => {
                     <Button 
                         buttonName="Reset"
                     />
-                    <Button 
-                        buttonName="Delete"
-                    />
+                    { note.id === '' || 
+                        <Button 
+                            buttonName="Delete"
+                        />
+                    }
                 </div>
             </form>
         </main>
