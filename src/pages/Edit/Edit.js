@@ -1,9 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Styles from './Edit.module.css'
 
+import Button from "../../components/button/Button";
 import ShowIcon from '../../img/show-PWD-icon.svg'
 import UnshowIcon from '../../img/unshow-PWD-icon.svg'
-import Button from "../../components/button/Button";
+
+import { SHA256 } from "crypto-js";
+import { useNavigate } from "react-router-dom";
+import { doc, setDoc } from "firebase/firestore";
+import { database } from "../../firebaseConfig";
 
 const Edit = () => {
     const initialNote = {
@@ -15,30 +20,92 @@ const Edit = () => {
     }
 
     const [showPassword, setShowPassword] = useState(false)
-    const [note, setNote] = useState(initialNote)
+    const [note, setNote] = useState(
+        () => {
+            const storageData = JSON.parse(localStorage.getItem("note"))
+            return storageData ? storageData : initialNote
+        }
+    )
 
+    const navigate = useNavigate()
+
+    // 資料儲存於 localStorage
+    const storageDataToLocalStorage = () => {
+        const noteData = {
+            title: note.title,
+            author: note.author,
+            texts: note.texts,
+        }
+        localStorage.setItem("note", JSON.stringify(noteData))
+    }
+
+    useEffect(() => {
+        storageDataToLocalStorage();
+    }, [note])
+
+    // post/update/delete data
+    const postData = async (id, data) => {
+        try {
+            await setDoc(doc(database, "notes", id), data)
+        } catch (error) {
+            console.error(error)
+        }
+    }
+  
+    const getPublishTime = () => {
+        const time = new Date()
+        const year = time.getFullYear()
+        const month = time.getMonth()
+        const date = time.getDate()
+        const publishedTime = year + '-' + month + '-' + date
+
+        return publishedTime
+    }
+
+    const handlePublish = (e) => {
+        e.preventDefault()
+        const publishedTime = getPublishTime()
+        const id = note.title.replace(/\s/g, '-') + '-' + publishedTime
+        const encryptedPassword = SHA256(note.password).toString()
+        const noteData = {
+            id: id,
+            contents: {
+                title: note.title,
+                author: note.author,
+                texts: note.texts,
+            },
+            password: encryptedPassword,
+            publishedTime: publishedTime,
+        }
+
+        postData(id, noteData)
+        navigate(`/${id}`)
+    }
+
+    const handleResetNoteData = (e) => {
+        e.preventDefault()
+        localStorage.removeItem("note")
+        setNote(initialNote)
+    }
+ 
     const handleToggleShowPassword = () => {
         setShowPassword(!showPassword);
     }
 
     const handleChangeTitle = (e) => {
         setNote({ ...note, title: e.target.value })
-        console.log(note)
     }
 
     const handleChangeAuthor = (e) => {
         setNote({ ...note, author: e.target.value })
-        console.log(note)
     }
 
     const handleChangeTexts = (e) => {
         setNote({ ...note, texts: e.target.value})
-        console.log(note)
     }
 
     const handleChangePassword = (e) => {
         setNote({ ...note, password: e.target.value })
-        console.log(note)
     }
 
     return (
@@ -105,9 +172,11 @@ const Edit = () => {
                 <div className={Styles.buttonWrapper}>
                     <Button 
                         buttonName="Publish"
+                        handleClick={handlePublish}
                     />
                     <Button 
                         buttonName="Reset"
+                        handleClick={handleResetNoteData}
                     />
                     { note.id === '' || 
                         <Button 
