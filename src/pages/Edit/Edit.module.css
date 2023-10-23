@@ -1,0 +1,115 @@
+.form {
+    /* border: 1px solid red; */
+    margin: 60px auto 30px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 20px;
+
+    @media (max-width: 768px) {
+        flex-direction: column;
+        gap: 30px;
+    }
+}
+
+/* 表格區域 */
+.inputsWrapper {
+    /* border: 1px solid blue; */
+    width: 700px;
+    display: flex;
+    flex-direction: column;
+    /* padding: 20px; */
+
+    @media (max-width: 768px) {
+        width: 100%;
+    }
+}
+
+.inputsWrapper > * {
+    /* border: 1px solid red; */
+    padding: 0 20px 10px;
+    border: none;
+    outline: none;
+    resize: none;
+}
+
+.textarea {
+    border: none;
+    outline: none;
+    resize: none;
+    font-family: var(--font-family);
+}
+
+.input {
+    border: none;
+    outline: none;
+    resize: none;
+    font-family: var(--font-family);
+}
+
+.title {
+    font-size: var(--font-size-h1);
+    font-weight: var(--font-weight-bold);
+    color: var(--night)
+}
+
+.author {
+    font-family: inherit;
+    font-size: var(--font-size-h6);
+    font-weight: var(--font-weight-bold);
+    color: var(--night);
+}
+
+.texts {
+    font-size: var(--font-size-p);
+    font-weight: var(--font-weight-normal);
+}
+
+.passwordWrapper {
+    /* border: 1px solid red; */
+    margin-top: 20px;
+    font-family: var(--font-family);
+}
+
+.passwordWrapper > * {
+    /* border: 1px solid blue; */
+    padding: 0;
+    margin-bottom: 6px;
+}
+
+.label {
+    font-weight: var(--font-weight-bold);
+    color: var(--dark-quartz-grey);
+}
+
+.password {
+    border: none;
+    outline: none;
+    border-bottom: 1px solid var(--dark-quartz-grey);
+    width: 150px;
+    margin-left: 6px;
+    padding: 5px;
+    font-size: var(--font-size-p);
+}
+
+.img {
+    transform: translate(-100%, 25%);
+}
+
+.hint {
+    margin-left: 8px;
+}
+
+
+
+/* 按鈕區域 */
+.buttonWrapper {
+    /* border: 1px solid green; */
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    @media (max-width: 768px) {
+        flex-direction: row;        
+    }
+}

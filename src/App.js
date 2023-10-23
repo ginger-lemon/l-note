@@ -1,6 +1,8 @@
 import React, { useState } from "react";
-import { StyledFooter } from "./styles/Styled-footer";
-import EditMode from "./pages/Editmode";
+import './styles/global.css'
+
+import Edit from "./pages/Edit/Edit";
+
 import NoteMode from "./pages/NoteMode";
 import { CSSReset} from "./styles/CSS-Reset";
 import { Route, Routes, useParams } from "react-router-dom";
@@ -13,17 +15,14 @@ export default function App() {
 
     return (
         <>  
-            <CSSReset />
+            {/* <CSSReset /> */}
             <NoteDataContextProvider>
             <Routes>
-                <Route path="/" element={<EditMode />}/>
+                <Route path="/" element={<Edit />}/>
                 <Route path="/:urlNoteID" element={<NoteMode/>}/>
                 <Route path="/error" element={<ErrorMode />} />
             </Routes>
             </NoteDataContextProvider>
-            {/* <StyledFooter>
-                Copyright © 2023 L.Note 
-            </StyledFooter> */}
         </>
     );
 }

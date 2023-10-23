@@ -1,0 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&display=swap');
+
+:root {
+    --night: #121113;;
+    --white: #ffffff;
+    --dark-quartz-grey: #5E646A;
+    --light-gray: #EBECEB;
+
+    --font-family: 'Noto Sans TC', sans-serif;
+    --font-size-h1: 32px;
+    --font-size-h6: 18px;
+    --font-size-p: 16px;
+
+    --font-weight-normal: 400;
+    --font-weight-bold: 700;
+    --font-weight-black: 900;
+}

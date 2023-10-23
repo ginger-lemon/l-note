@@ -171,22 +171,22 @@ export default function EditMode() {
             </StyledArticle>
             <StyledAsideContainer>
                 <Button 
-                    type="submit"
+                    buttonType="submit"
                     form="noteForm"
-                    btnName="Publish"
+                    buttonName="Publish"
                     onClick={handlePublish}
                 />
                 <Button 
-                    type="submit"
+                    buttonType="submit"
                     form="noteForm"
-                    btnName="Reset"
+                    buttonName="Reset"
                     onClick={clearLoccalStorage}
                 />
                 { noteTimeStamp !== 11111 ? (
                     <Button 
-                        type="submit"
+                        ButtonType="submit"
                         form="noteForm"
-                        btnName="Delete"
+                        buttonName="Delete"
                         onClick={handleClickDeleteButton}
                     />
                     ) : null } 

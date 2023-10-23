@@ -1,6 +1,6 @@
 import React from "react";
 import Button from "../button/Button";
-import { StyledDialog, StyledDialogChildren } from "./StyledDialog";
+import { StyledDialog, StyledDialogChildren } from "./Styled-Dialog";
 
 const Dialog = ({
      title, describe, children,
