@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import './styles/global.css'
 
 import Edit from "./pages/Edit/Edit";
+import Note from "./pages/Note/Note";
 
 import NoteMode from "./pages/NoteMode";
 import { CSSReset} from "./styles/CSS-Reset";
@@ -11,7 +12,7 @@ import ErrorMode from "./pages/ErrorMode";
 
 export default function App() {
     // TO DO: 處理 noteID 的問題，先用 testNote 當測試路徑
-    const { urlNoteID } = useParams();
+    const { id } = useParams();
 
     return (
         <>  
@@ -19,7 +20,7 @@ export default function App() {
             <NoteDataContextProvider>
             <Routes>
                 <Route path="/" element={<Edit />}/>
-                <Route path="/:urlNoteID" element={<NoteMode/>}/>
+                <Route path="/:id" element={<Note/>}/>
                 <Route path="/error" element={<ErrorMode />} />
             </Routes>
             </NoteDataContextProvider>
