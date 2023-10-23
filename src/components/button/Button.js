@@ -1,16 +1,15 @@
 import React from "react";
-import { StyledButton } from './Styled-Button'
-
+import Styles from './Button.module.css'
 
 const Button = ({ buttonType, handleClick, buttonName }) => {
     return (
-        <StyledButton
+        <button
+            className={Styles.button}
             type={buttonType}
             onClick={handleClick}
-
         >
             {buttonName}
-        </StyledButton>
+        </button>
     )
 }
 

@@ -1,0 +1,18 @@
+.button {
+    display: block;
+    border: 3px solid var(--night);
+    background-color: #ffffff;
+    border-radius: 25px;
+
+    color: var(--night);
+    font-family: "Inter";
+    font-size: var(--font-size-h6);
+    font-weight: bold;
+    padding: 10px 20px;
+}
+
+.button:hover {
+    background-color: var(--night);
+    color: var(--white);
+    cursor: pointer;
+}
