@@ -3,6 +3,7 @@ import './styles/global.css'
 
 import Edit from "./pages/Edit/Edit";
 import Note from "./pages/Note/Note";
+import Error from "./pages/Error/Error";
 
 import NoteMode from "./pages/NoteMode";
 import { CSSReset} from "./styles/CSS-Reset";
@@ -21,7 +22,7 @@ export default function App() {
             <Routes>
                 <Route path="/" element={<Edit />}/>
                 <Route path="/:id" element={<Note/>}/>
-                <Route path="/error" element={<ErrorMode />} />
+                <Route path="/error" element={<Error />} />
             </Routes>
             </NoteDataContextProvider>
         </>
