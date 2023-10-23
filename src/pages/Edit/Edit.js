@@ -9,6 +9,7 @@ import { SHA256 } from "crypto-js";
 import { useNavigate } from "react-router-dom";
 import { doc, setDoc } from "firebase/firestore";
 import { database } from "../../firebaseConfig";
+import useAutoResizeTextatea from "../../Hooks/useAutoResizeTextarea";
 
 const Edit = () => {
     const initialNote = {
@@ -26,6 +27,8 @@ const Edit = () => {
             return storageData ? storageData : initialNote
         }
     )
+    const titleRef = useAutoResizeTextatea(note.title)
+    const textsRef = useAutoResizeTextatea(note.texts)
 
     const navigate = useNavigate()
 
@@ -118,6 +121,7 @@ const Edit = () => {
                             type="textarea"
                             placeholder="title"
                             rows={1}
+                            ref={titleRef}
                             value={note.title}
                             onChange={handleChangeTitle}
                         >
@@ -133,6 +137,7 @@ const Edit = () => {
                         <textarea 
                             className={`${Styles.textarea} ${Styles.texts}`}
                             placeholder="contents"
+                            ref={textsRef}
                             rows={15}
                             value={note.texts}
                             onChange={handleChangeTexts}
