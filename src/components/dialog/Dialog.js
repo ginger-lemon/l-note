@@ -2,44 +2,25 @@ import React from "react";
 import Styles from './Dialog.module.css'
 import Button from "../button/Button";
 
-import { StyledDialog, StyledDialogChildren } from "./Styled-Dialog";
-
 const Dialog = ({
-     title, describe, children,
+     title, description, children,
      buttonName, buttonType, handleClick 
     }) => {
 
     return (
-        <StyledDialog>
+        <div className={Styles.container}>
             <h2>{title}</h2>
-            <p>{describe}</p>
-            <StyledDialogChildren>
-                {children}
-            </StyledDialogChildren>
-            <div>
+            <p>{description}</p>
+            {children}
+            <div className={Styles.buttonWrapper}>
                 <Button 
                     buttonName={buttonName}
                     buttonType={buttonType}
                     handleClick={handleClick}
                 />
             </div>
-        </StyledDialog>
+        </div>
     )
 }
 
 export default Dialog
-
-{/* <StyledDialog>
-    <h2>{title}</h2>
-    <p>{describe}</p>
-    <StyledDialogChildren>
-        {children}
-    </StyledDialogChildren>
-    <div>
-        <Button 
-            buttonName={buttonName}
-            buttonType={buttonType}
-            handleClick={handleClick}
-        />
-    </div>
-</StyledDialog> */}
