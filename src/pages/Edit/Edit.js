@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Styles from './Edit.module.css'
 
 import Button from "../../components/button/Button";
@@ -21,6 +21,7 @@ const Edit = () => {
     }
 
     const [showPassword, setShowPassword] = useState(false)
+    const [passwordHint, setPasswordHint] = useState('Please set the password')
     const [note, setNote] = useState(
         () => {
             const storageData = JSON.parse(localStorage.getItem("note"))
@@ -29,6 +30,8 @@ const Edit = () => {
     )
     const titleRef = useAutoResizeTextarea(note.title)
     const textsRef = useAutoResizeTextarea(note.texts)
+    const passwordRef = useRef()
+    const hintRef = useRef()
 
     const navigate = useNavigate()
 
@@ -83,11 +86,23 @@ const Edit = () => {
         return publishedTime
     }
 
+    // 送出記事
     const handlePublish = (e) => {
         e.preventDefault()
+        if (!note.password || note.password.length < 6 ) {
+            alert("Please set the password with 6-12 characters.")
+            passwordRef.current.focus()
+            setNote({ ...note, password: '', })
+
+            return
+        }
+
         const publishedTime = getPublishTime()
-        const noteId = note.title.replace(/\s/g, '-') + '-' + publishedTime
+        const noteId = note.title === '' 
+            ? 'untitle' + '-' + publishedTime
+            : note.title.replace(/\s/g, '-') + '-' + publishedTime
         const encryptedPassword = SHA256(note.password).toString()
+        console.log(noteId)
 
         if (note.id === '') {
             postData(noteId, {
@@ -117,7 +132,7 @@ const Edit = () => {
     // 按鈕觸發事件處理器
     const handleDeleteNoteData = (e, title) => {
         e.preventDefault()
-        const needToDelete = window.confirm("Are you sure delete?")
+        const needToDelete = window.confirm("Are you sure to delete?")
         if (needToDelete) {
             alert(`"${title}" has been deleted!`)
             deleteData(note.id)
@@ -128,6 +143,7 @@ const Edit = () => {
         }
     } 
 
+    // TODO: 刪除
     const handleResetNoteData = (e) => {
         e.preventDefault()
         localStorage.removeItem("note")
@@ -152,7 +168,21 @@ const Edit = () => {
     }
 
     const handleChangePassword = (e) => {
-        setNote({ ...note, password: e.target.value })
+        // ^字串開頭｜[]允許的字元集合規則｜+複數字元｜$字串結尾
+        if (!/^[a-zA-Z0-9]+$/.test(e.target.value)) {
+            hintRef.current.classList.remove(Styles.hintGreen)
+            setPasswordHint('Number and English only.')
+            hintRef.current.classList.add(Styles.hintRed)
+        } else if (e.target.value.length < 6) {
+            hintRef.current.classList.remove(Styles.hintGreen)
+            setPasswordHint('Password should be 6-12 characters')
+            hintRef.current.classList.add(Styles.hintRed)
+        } else {
+            hintRef.current.classList.remove(Styles.hintRed)
+            hintRef.current.classList.add(Styles.hintGreen)
+            setPasswordHint('Password done. Please remember the password.')
+        }
+        setNote({ ...note, password: e.target.value })   
     }
 
     return (
@@ -195,9 +225,10 @@ const Edit = () => {
                                 <input 
                                     className={Styles.password}
                                     type={showPassword ? "text" : "password"}
-                                    placeholder="6-12"
+                                    placeholder="6-12 characters"
                                     mimLength={6}
                                     maxLength={12}
+                                    ref={passwordRef}
                                     value={note.password}
                                     onChange={handleChangePassword}
                                 >
@@ -213,7 +244,12 @@ const Edit = () => {
                                 <span className={Styles.label}>
                                     Password hint:  
                                 </span>
-                                <span className={Styles.hint}>hints</span>  
+                                <span 
+                                    className={`${Styles.hint} ${Styles.hintRed}` }
+                                    ref={hintRef}
+                                >
+                                    {passwordHint}
+                                </span>  
                             </div>
                         </div>
                     </div>
@@ -223,6 +259,7 @@ const Edit = () => {
                         buttonName="Publish"
                         handleClick={handlePublish}
                     />
+                    {/* TODO: 刪除 reset */}
                     <Button 
                         buttonName="Reset"
                         handleClick={handleResetNoteData}

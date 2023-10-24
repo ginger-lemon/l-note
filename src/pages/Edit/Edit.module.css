@@ -100,7 +100,13 @@
     margin-left: 8px;
 }
 
+.hintRed {
+    color: firebrick;
+}
 
+.hintGreen {
+    color: olive;
+}
 
 /* 按鈕區域 */
 .buttonWrapper {

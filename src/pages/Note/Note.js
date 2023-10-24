@@ -38,8 +38,8 @@ const Note = () => {
     }
 
     useEffect(() => {
+        localStorage.removeItem("note")
         getData(id)
-        // localStorage.removeItem("note")
     }, [])
 
     const getPasswordData = async (id) => {
