@@ -3,12 +3,18 @@ import Styles from './Note.module.css'
 import Dialog from "../../components/dialog/Dialog";
 import ShowIcon from "../../img/show-PWD-icon.svg"
 import UnshowIcon from "../../img/unshow-PWD-icon.svg"
+import { useDispatch } from "react-redux";
+import { setUserPassword } from "../../Redux/notes/notesSlice";
 
 const PasswordDialog = ({ handleClick }) => {
+    const dispatch = useDispatch()
     const [showPassword, setShowPassword] = useState(false)
-    const [password, setPassword] = useState(null)
 
     // TODO: 驗證密碼
+
+    const handleChangePassword = (e) => {
+        dispatch(setUserPassword(e.target.value))
+    }
 
     const handleToggleShowIcon = () => {
         setShowPassword(!showPassword)
@@ -29,7 +35,8 @@ const PasswordDialog = ({ handleClick }) => {
                     minLength={6}
                     maxLength={12}
                     placeholder="6-12 numbers"
-                    value={password}
+                    // value={passwordValue}
+                    onChange={handleChangePassword}
                 >
                 </input>
                 <img

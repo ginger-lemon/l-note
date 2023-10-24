@@ -7,9 +7,9 @@ import UnshowIcon from '../../img/unshow-PWD-icon.svg'
 
 import { SHA256 } from "crypto-js";
 import { useNavigate } from "react-router-dom";
-import { doc, setDoc } from "firebase/firestore";
+import { deleteDoc, doc, setDoc } from "firebase/firestore";
 import { database } from "../../firebaseConfig";
-import useAutoResizeTextatea from "../../Hooks/useAutoResizeTextarea";
+import useAutoResizeTextarea from "../../Hooks/useAutoResizeTextarea";
 
 const Edit = () => {
     const initialNote = {
@@ -27,14 +27,15 @@ const Edit = () => {
             return storageData ? storageData : initialNote
         }
     )
-    const titleRef = useAutoResizeTextatea(note.title)
-    const textsRef = useAutoResizeTextatea(note.texts)
+    const titleRef = useAutoResizeTextarea(note.title)
+    const textsRef = useAutoResizeTextarea(note.texts)
 
     const navigate = useNavigate()
 
     // 資料儲存於 localStorage
     const storageDataToLocalStorage = () => {
         const noteData = {
+            id: note.id,
             title: note.title,
             author: note.author,
             texts: note.texts,
@@ -54,6 +55,23 @@ const Edit = () => {
             console.error(error)
         }
     }
+
+    const updateData = async (id, data) => {
+        const dataRef = doc(database, "notes", id)
+        try {
+            await updateData(dataRef, data)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const deleteData = async (id) => {
+        try {
+            await deleteDoc(doc(database, "notes", id))
+        } catch (error) {
+            console.log(error)
+        }
+    }
   
     const getPublishTime = () => {
         const time = new Date()
@@ -68,22 +86,47 @@ const Edit = () => {
     const handlePublish = (e) => {
         e.preventDefault()
         const publishedTime = getPublishTime()
-        const id = note.title.replace(/\s/g, '-') + '-' + publishedTime
+        const noteId = note.title.replace(/\s/g, '-') + '-' + publishedTime
         const encryptedPassword = SHA256(note.password).toString()
-        const noteData = {
-            id: id,
-            contents: {
-                title: note.title,
-                author: note.author,
-                texts: note.texts,
-            },
-            password: encryptedPassword,
-            publishedTime: publishedTime,
+
+        if (note.id === '') {
+            postData(noteId, {
+                id: noteId,
+                contents: {
+                    title: note.title,
+                    author: note.author,
+                    texts: note.texts,
+                },
+                password: encryptedPassword,
+                publishedTime: publishedTime,
+            })
+        } else if (note.id !== '') {
+            updateData(note.id, {
+                contents : {
+                    title: note.title,
+                    author: note.author,
+                    texts: note.texts,
+                },
+                password: encryptedPassword
+            })
         }
 
-        postData(id, noteData)
-        navigate(`/${id}`)
+        navigate(`/${noteId}`)
     }
+
+    // 按鈕觸發事件處理器
+    const handleDeleteNoteData = (e, title) => {
+        e.preventDefault()
+        const needToDelete = window.confirm("Are you sure delete?")
+        if (needToDelete) {
+            alert(`"${title}" has been deleted!`)
+            deleteData(note.id)
+            localStorage.removeItem("note")
+            setNote(initialNote)
+        } else {
+            return
+        }
+    } 
 
     const handleResetNoteData = (e) => {
         e.preventDefault()
@@ -95,6 +138,7 @@ const Edit = () => {
         setShowPassword(!showPassword);
     }
 
+    // 資料事件處理器
     const handleChangeTitle = (e) => {
         setNote({ ...note, title: e.target.value })
     }
@@ -186,6 +230,7 @@ const Edit = () => {
                     { note.id === '' || 
                         <Button 
                             buttonName="Delete"
+                            handleClick={(e) => handleDeleteNoteData(e, note.title)}
                         />
                     }
                 </div>
