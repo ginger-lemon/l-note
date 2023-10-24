@@ -10,8 +10,6 @@ const PasswordDialog = ({ handleClick }) => {
     const dispatch = useDispatch()
     const [showPassword, setShowPassword] = useState(false)
 
-    // TODO: 驗證密碼
-
     const handleChangePassword = (e) => {
         dispatch(setUserPassword(e.target.value))
     }
