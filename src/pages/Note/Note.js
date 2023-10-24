@@ -3,6 +3,7 @@ import Styles from './Note.module.css'
 import Button from "../../components/button/Button";
 import SharedDialog from "./SharedDialog";
 import PasswordDialog from "./PasswordDialog";
+import ReactMarkdown from "react-markdown";
 
 import { useNavigate, useParams } from "react-router-dom";
 import { doc, getDoc } from "firebase/firestore";
@@ -98,9 +99,10 @@ const Note = () => {
                 <h6 className={Styles.author}>
                     {noteData.author}・{noteData.publishedTime}
                 </h6>
-                <p className={Styles.texts}>
-                    {noteData.texts}
-                </p>
+                <ReactMarkdown
+                     className="custom-markdown"
+                    children={noteData.texts}
+                />
             </article>
             <aside className={Styles.aside}>
                 <Button 

@@ -1,15 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
 import Styles from './Edit.module.css'
-
 import Button from "../../components/button/Button";
 import ShowIcon from '../../img/show-PWD-icon.svg'
 import UnshowIcon from '../../img/unshow-PWD-icon.svg'
+import useAutoResizeTextarea from "../../Hooks/useAutoResizeTextarea";
 
 import { SHA256 } from "crypto-js";
 import { useNavigate } from "react-router-dom";
 import { deleteDoc, doc, setDoc, updateDoc } from "firebase/firestore";
 import { database } from "../../firebaseConfig";
-import useAutoResizeTextarea from "../../Hooks/useAutoResizeTextarea";
 
 const Edit = () => {
     const initialNote = {
@@ -187,7 +186,7 @@ const Edit = () => {
                         <textarea 
                             className={`${Styles.textarea} ${Styles.title}`}
                             type="textarea"
-                            placeholder="title"
+                            placeholder="Title"
                             rows={1}
                             ref={titleRef}
                             value={note.title}
@@ -197,14 +196,14 @@ const Edit = () => {
                         <input 
                             type="text"
                             className={`&{Styles.input} ${Styles.author}`}
-                            placeholder="author"
+                            placeholder="Author"
                             value={note.author}
                             onChange={handleChangeAuthor}
                         >
                         </input>
                         <textarea 
                             className={`${Styles.textarea} ${Styles.texts}`}
-                            placeholder="contents"
+                            placeholder="Contents, can write easy markdown type."
                             ref={textsRef}
                             rows={15}
                             value={note.texts}
