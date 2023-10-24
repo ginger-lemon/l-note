@@ -7,13 +7,13 @@ import UnshowIcon from '../../img/unshow-PWD-icon.svg'
 
 import { SHA256 } from "crypto-js";
 import { useNavigate } from "react-router-dom";
-import { deleteDoc, doc, setDoc } from "firebase/firestore";
+import { deleteDoc, doc, setDoc, updateDoc } from "firebase/firestore";
 import { database } from "../../firebaseConfig";
 import useAutoResizeTextarea from "../../Hooks/useAutoResizeTextarea";
 
 const Edit = () => {
     const initialNote = {
-        id: '',
+        id: null,
         title: '',
         author: '',
         texts: '',
@@ -62,7 +62,7 @@ const Edit = () => {
     const updateData = async (id, data) => {
         const dataRef = doc(database, "notes", id)
         try {
-            await updateData(dataRef, data)
+            await updateDoc(dataRef, data)
         } catch (error) {
             console.log(error)
         }
@@ -96,37 +96,38 @@ const Edit = () => {
 
             return
         }
-
+        
         const publishedTime = getPublishTime()
-        const noteId = note.title === '' 
-            ? 'untitle' + '-' + publishedTime
-            : note.title.replace(/\s/g, '-') + '-' + publishedTime
         const encryptedPassword = SHA256(note.password).toString()
-        console.log(noteId)
 
-        if (note.id === '') {
+        if (note.id === null) {
+            const noteId = note.title === '' 
+                ? 'untitle' + '-' + publishedTime
+                : note.title.replace(/\s/g, '-') + '-' + publishedTime
+
             postData(noteId, {
                 id: noteId,
                 contents: {
-                    title: note.title,
+                    title: note.title, 
                     author: note.author,
                     texts: note.texts,
                 },
                 password: encryptedPassword,
                 publishedTime: publishedTime,
             })
-        } else if (note.id !== '') {
+            navigate(`/${noteId}`)
+
+        } else if (note.id !== null) {
             updateData(note.id, {
                 contents : {
-                    title: note.title,
+                    title: note.title, 
                     author: note.author,
                     texts: note.texts,
                 },
                 password: encryptedPassword
             })
+            navigate(`/${note.id}`)
         }
-
-        navigate(`/${noteId}`)
     }
 
     // 按鈕觸發事件處理器
@@ -142,13 +143,6 @@ const Edit = () => {
             return
         }
     } 
-
-    // TODO: 刪除
-    const handleResetNoteData = (e) => {
-        e.preventDefault()
-        localStorage.removeItem("note")
-        setNote(initialNote)
-    }
  
     const handleToggleShowPassword = () => {
         setShowPassword(!showPassword);
@@ -258,11 +252,6 @@ const Edit = () => {
                     <Button 
                         buttonName="Publish"
                         handleClick={handlePublish}
-                    />
-                    {/* TODO: 刪除 reset */}
-                    <Button 
-                        buttonName="Reset"
-                        handleClick={handleResetNoteData}
                     />
                     { note.id === '' || 
                         <Button 
