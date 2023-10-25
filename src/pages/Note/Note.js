@@ -10,6 +10,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { database } from "../../firebaseConfig";
 import { useSelector } from "react-redux";
 import { SHA256 } from "crypto-js";
+import Error from "../Error/Error";
 
 const Note = () => {
     const { id } = useParams()
@@ -20,11 +21,11 @@ const Note = () => {
     const userPassword = useSelector(state => state.notes.userPassword)
 
     const getData = async (id) => {
-        const docRef = doc(database, "notes", id)
         try {
+            const docRef = doc(database, "notes", id)
             const docSnap = await getDoc(docRef)
-            if (docSnap) {
-                const data = docSnap.data()
+            const data = docSnap.data()
+            if (data) {
                 setData({
                     id: data.id,
                     title: data.contents.title,
@@ -32,6 +33,9 @@ const Note = () => {
                     texts: data.contents.texts,
                     publishedTime: data.publishedTime,
                 })
+            } else {
+                // TODO: 如果資料庫撈不到資料就導到 error
+                navigate("*")
             }
         } catch(error) {
             console.log(error)
@@ -40,6 +44,7 @@ const Note = () => {
 
     useEffect(() => {
         localStorage.removeItem("note")
+        console.log(id)
         getData(id)
     }, [])
 
