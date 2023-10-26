@@ -148,17 +148,20 @@ const Edit = () => {
     }
 
     // 資料事件處理器
-    const handleChangeTitle = (e) => {
-        setNote({ ...note, title: e.target.value })
+    const handleSetNote = (e) => {
+        setNote((prev) => ({ ...prev, [e.target.name]: e.target.value}))
     }
+    // const handleChangeTitle = (e) => {
+    //     setNote({ ...note, title: e.target.value })
+    // }
 
-    const handleChangeAuthor = (e) => {
-        setNote({ ...note, author: e.target.value })
-    }
+    // const handleChangeAuthor = (e) => {
+    //     setNote({ ...note, author: e.target.value })
+    // }
 
-    const handleChangeTexts = (e) => {
-        setNote({ ...note, texts: e.target.value})
-    }
+    // const handleChangeTexts = (e) => {
+    //     setNote({ ...note, texts: e.target.value})
+    // }
 
     const handleChangePassword = (e) => {
         // ^字串開頭｜[]允許的字元集合規則｜+複數字元｜$字串結尾
@@ -185,29 +188,32 @@ const Edit = () => {
                     <div className={Styles.inputsWrapper}>
                         <textarea 
                             className={`${Styles.textarea} ${Styles.title}`}
+                            name="title"
                             type="textarea"
                             placeholder="Title"
                             rows={1}
                             ref={titleRef}
                             value={note.title}
-                            onChange={handleChangeTitle}
+                            onChange={handleSetNote}
                         >
                         </textarea>
                         <input 
                             type="text"
                             className={`&{Styles.input} ${Styles.author}`}
+                            name="author"
                             placeholder="Author"
                             value={note.author}
-                            onChange={handleChangeAuthor}
+                            onChange={handleSetNote}
                         >
                         </input>
                         <textarea 
                             className={`${Styles.textarea} ${Styles.texts}`}
+                            name="texts"
                             placeholder="Contents, can write easy markdown type."
                             ref={textsRef}
                             rows={15}
                             value={note.texts}
-                            onChange={handleChangeTexts}
+                            onChange={handleSetNote}
                         >
                         </textarea>
                         <div className={Styles.passwordWrapper}>
@@ -217,6 +223,7 @@ const Edit = () => {
                                 </label>
                                 <input 
                                     className={Styles.password}
+                                    name="password"
                                     type={showPassword ? "text" : "password"}
                                     placeholder="6-12 characters"
                                     mimLength={6}
