@@ -259,7 +259,7 @@ const Edit = () => {
                         buttonName="Publish"
                         handleClick={handlePublish}
                     />
-                    { note.id === '' || 
+                    { note.id === null || 
                         <Button 
                             buttonName="Delete"
                             handleClick={(e) => handleDeleteNoteData(e, note.title)}
